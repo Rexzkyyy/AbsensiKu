@@ -70,35 +70,62 @@
 </aside>
 
 <!-- Mobile Bottom Navigation -->
-<div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-xl border-t border-white/50 z-50 px-2 py-2 flex justify-around items-center shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+<div class="lg:hidden fixed bottom-4 left-4 right-4 bg-white/70 backdrop-blur-2xl border border-white/60 z-50 px-2 py-2.5 flex justify-around items-center shadow-[0_8px_30px_rgba(0,0,0,0.08)] rounded-3xl">
     @if ($role === 'mentor' || $role === 'admin')
-        <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-home text-lg mb-1"></i> Dashboard
+        <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-blue-100 p-2 rounded-xl' : 'p-2' }}">
+                <i class="fas fa-home text-xl"></i>
+            </div>
+            <span class="mt-1">Beranda</span>
         </a>
-        <a href="{{ route('admin.buat_qr') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('admin/buat-qr*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-qrcode text-lg mb-1"></i> QR
+        <a href="{{ route('admin.buat_qr') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('admin/buat-qr*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('admin/buat-qr*') ? 'bg-blue-100 p-2 rounded-xl' : 'p-2' }}">
+                <i class="fas fa-qrcode text-xl"></i>
+            </div>
+            <span class="mt-1">QR Code</span>
         </a>
-        <a href="{{ route('admin.users') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('admin/users*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-user-cog text-lg mb-1"></i> User
+        <a href="{{ route('admin.users') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('admin/users*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('admin/users*') ? 'bg-blue-100 p-2 rounded-xl' : 'p-2' }}">
+                <i class="fas fa-user-cog text-xl"></i>
+            </div>
+            <span class="mt-1">Kelola</span>
         </a>
-        <a href="{{ route('admin.laporan') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('admin/laporan*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-file-alt text-lg mb-1"></i> Laporan
+        <a href="{{ route('admin.laporan') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('admin/laporan*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('admin/laporan*') ? 'bg-blue-100 p-2 rounded-xl' : 'p-2' }}">
+                <i class="fas fa-file-alt text-xl"></i>
+            </div>
+            <span class="mt-1">Laporan</span>
         </a>
     @elseif ($role === 'magang')
-        <a href="{{ route('magang.dashboard') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-home text-lg mb-1"></i> Beranda
+        <a href="{{ route('magang.dashboard') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('magang') || Request::is('magang/dashboard') ? 'bg-blue-100 p-2 rounded-xl shadow-inner' : 'p-2' }}">
+                <i class="fas fa-home text-xl"></i>
+            </div>
+            <span class="mt-1">Beranda</span>
         </a>
-        <a href="{{ route('magang.scan') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('magang/scan*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-camera text-lg mb-1"></i> Scan
+        <a href="{{ route('magang.scan') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('magang/scan*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('magang/scan*') ? 'bg-blue-100 p-2 rounded-xl shadow-inner' : 'p-2' }}">
+                <i class="fas fa-camera text-xl"></i>
+            </div>
+            <span class="mt-1">Scan</span>
         </a>
-        <a href="{{ route('magang.riwayat') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('magang/riwayat*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-history text-lg mb-1"></i> Riwayat
+        <a href="{{ route('magang.riwayat') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('magang/riwayat*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('magang/riwayat*') ? 'bg-blue-100 p-2 rounded-xl shadow-inner' : 'p-2' }}">
+                <i class="fas fa-history text-xl"></i>
+            </div>
+            <span class="mt-1">Riwayat</span>
         </a>
-        <a href="{{ route('magang.peserta') }}" class="flex flex-col items-center p-2 text-xs {{ Request::is('magang/peserta*') ? 'text-primary-600 font-bold' : 'text-gray-500' }}">
-            <i class="fas fa-user text-lg mb-1"></i> Peserta
+        <a href="{{ route('magang.peserta') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('magang/peserta*') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="{{ Request::is('magang/peserta*') ? 'bg-blue-100 p-2 rounded-xl shadow-inner' : 'p-2' }}">
+                <i class="fas fa-user text-xl"></i>
+            </div>
+            <span class="mt-1">Profil</span>
         </a>
-        <a href="{{ route('logout') }}" onclick="return confirmLogout()" class="flex flex-col items-center p-2 text-xs text-red-500">
-            <i class="fas fa-sign-out-alt text-lg mb-1"></i> Keluar
+        <a href="{{ route('logout') }}" onclick="return confirmLogout()" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all text-red-400 font-medium hover:text-red-600">
+            <div class="p-2">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+            </div>
+            <span class="mt-1">Keluar</span>
         </a>
     @endif
 </div>

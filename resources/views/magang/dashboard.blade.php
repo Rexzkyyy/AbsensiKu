@@ -89,7 +89,7 @@
 @endif
 
 <!-- Riwayat Absensi Saya -->
-<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+<div class="bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 overflow-hidden mb-24">
     <div class="px-6 py-5 border-b border-white/40 bg-white/30">
         <h3 class="font-extrabold text-slate-800 flex items-center gap-2 text-xl tracking-tight">
             <i class="fas fa-history text-cyan-500"></i> Riwayat Absensi Saya

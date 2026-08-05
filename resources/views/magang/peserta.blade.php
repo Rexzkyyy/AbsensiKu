@@ -6,7 +6,7 @@
 @section('content')
 
 @if ($magang)
-<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-3xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
     <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
             <i class="fas fa-check-circle text-lg"></i>
@@ -37,7 +37,7 @@
 </div>
 @endif
 
-<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+<div class="bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 overflow-hidden mb-24">
     <div class="bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-5">
         <h3 class="font-extrabold text-white text-xl flex items-center gap-2">
             <i class="fas fa-user-edit text-cyan-200"></i> Lengkapi Biodata Magang

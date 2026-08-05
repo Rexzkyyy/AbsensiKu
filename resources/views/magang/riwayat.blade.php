@@ -122,66 +122,77 @@
 
         const element = document.createElement('div');
         element.innerHTML = `
-            <div style="font-family: 'Inter', 'Space Grotesk', 'Segoe UI', sans-serif; padding: 40px; background: #050711; color: white; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); width: 450px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); position: relative; overflow: hidden;">
-                <!-- Glowing Top Strip -->
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ff7b00, #7209b7, #00b4d8);"></div>
-
-                <!-- Header -->
-                <div style="text-align: center; border-bottom: 2px dashed rgba(255, 255, 255, 0.1); padding-bottom: 20px; margin-bottom: 20px;">
-                    <div style="font-size: 0.8rem; font-weight: 700; color: #ff7b00; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px;">Sistem Presensi Digital</div>
-                    <h2 style="margin: 0; font-size: 1.60rem; font-weight: 700; color: white;">Absensi<span style="color: #ff7b00;">Ku</span></h2>
-                    <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); margin-top: 5px;">BPS Provinsi Sulawesi Tenggara</div>
+            <div style="font-family: 'Inter', 'Segoe UI', sans-serif; padding: 40px; background: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; width: 600px; margin: 0 auto; position: relative;">
+                
+                <!-- Header Laporan -->
+                <div style="text-align: center; border-bottom: 2px solid #cbd5e1; padding-bottom: 20px; margin-bottom: 30px;">
+                    <div style="font-size: 0.9rem; font-weight: 700; color: #3b82f6; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px;">Sistem Presensi Digital</div>
+                    <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; color: #0f172a;">BUKTI KEHADIRAN</h2>
+                    <div style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Badan Pusat Statistik Provinsi Sulawesi Tenggara</div>
                 </div>
                 
                 <!-- Status Badge -->
-                <div style="background: ${statusColor}; color: ${statusText === 'Terlambat' ? 'black' : 'white'}; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; margin-bottom: 25px; font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase;">
-                    STATUS: ${statusText}
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <span style="background: ${statusText === 'Hadir' ? '#d1fae5' : (statusText === 'Terlambat' ? '#fef3c7' : '#e0f2fe')}; 
+                                 color: ${statusText === 'Hadir' ? '#047857' : (statusText === 'Terlambat' ? '#b45309' : '#0369a1')}; 
+                                 border: 1px solid ${statusText === 'Hadir' ? '#34d399' : (statusText === 'Terlambat' ? '#fbbf24' : '#38bdf8')};
+                                 padding: 8px 24px; border-radius: 9999px; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase;">
+                        Status: ${statusText}
+                    </span>
                 </div>
 
                 <!-- Info Grid -->
-                <div style="margin-bottom: 25px;">
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem;">
-                        <span style="color: rgba(255, 255, 255, 0.5); font-weight: 500;">Nama Pengguna:</span>
-                        <span style="font-weight: 600; color: white;">{{ $username }}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem;">
-                        <span style="color: rgba(255, 255, 255, 0.5); font-weight: 500;">Kegiatan:</span>
-                        <span style="font-weight: 600; color: white;">${kegiatan}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem;">
-                        <span style="color: rgba(255, 255, 255, 0.5); font-weight: 500;">Hari & Tanggal:</span>
-                        <span style="font-weight: 600; color: white;">${hari}, ${tanggal}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem;">
-                        <span style="color: rgba(255, 255, 255, 0.5); font-weight: 500;">Waktu Check-in:</span>
-                        <span style="font-weight: 600; color: #00b4d8;">${cekIn}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem;">
-                        <span style="color: rgba(255, 255, 255, 0.5); font-weight: 500;">Waktu Check-out:</span>
-                        <span style="font-weight: 600; color: #ff7b00;">${cekOut}</span>
-                    </div>
+                <div style="margin-bottom: 30px; background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 12px; padding: 20px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                        <tr>
+                            <td style="padding: 10px 0; color: #64748b; font-weight: 600; width: 40%; border-bottom: 1px dashed #e2e8f0;">Nama Pengguna</td>
+                            <td style="padding: 10px 0; font-weight: 700; color: #0f172a; text-align: right; border-bottom: 1px dashed #e2e8f0;">{{ $username }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #64748b; font-weight: 600; border-bottom: 1px dashed #e2e8f0;">Kegiatan</td>
+                            <td style="padding: 10px 0; font-weight: 700; color: #0f172a; text-align: right; border-bottom: 1px dashed #e2e8f0;">${kegiatan}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #64748b; font-weight: 600; border-bottom: 1px dashed #e2e8f0;">Hari & Tanggal</td>
+                            <td style="padding: 10px 0; font-weight: 700; color: #0f172a; text-align: right; border-bottom: 1px dashed #e2e8f0;">${hari}, ${tanggal}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #64748b; font-weight: 600; border-bottom: 1px dashed #e2e8f0;">Waktu Check-in</td>
+                            <td style="padding: 10px 0; font-weight: 700; color: #2563eb; text-align: right; border-bottom: 1px dashed #e2e8f0;">${cekIn}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #64748b; font-weight: 600;">Waktu Check-out</td>
+                            <td style="padding: 10px 0; font-weight: 700; color: #ea580c; text-align: right;">${cekOut}</td>
+                        </tr>
+                    </table>
                 </div>
 
                 ${cekOut !== '-' ? `
-                <div style="background: rgba(255, 123, 0, 0.08); border-left: 4px solid #ff7b00; padding: 14px; margin-bottom: 25px; border-radius: 10px;">
-                    <span style="font-size: 0.8rem; color: rgba(255, 123, 0, 0.8); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total Waktu Kerja</span>
-                    <div style="font-size: 1.2rem; font-weight: 700; color: #ffa600; margin-top: 2px;">${durasi} <span style="font-size: 0.85rem; font-weight: normal; color: rgba(255, 255, 255, 0.55);">(${totalSec})</span></div>
+                <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 16px; margin-bottom: 30px; border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; items-center;">
+                    <span style="font-size: 0.9rem; color: #9a3412; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Total Waktu Kerja</span>
+                    <div style="font-size: 1.1rem; font-weight: 800; color: #c2410c;">${durasi} <span style="font-size: 0.85rem; font-weight: normal; color: #ea580c;">(${totalSec})</span></div>
                 </div>
                 ` : ''}
 
-                <!-- Footer -->
-                <div style="text-align: center; margin-top: 30px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 15px; line-height: 1.4;">
-                    Dokumen ini sah diunduh dari Sistem Absensi Digital BPS Sultra.<br>
-                    Diunduh pada: ${new Date().toLocaleString('id-ID')} WITA
+                <!-- Footer / Tanda Tangan placeholder -->
+                <div style="margin-top: 50px; text-align: right;">
+                    <div style="font-size: 0.9rem; color: #475569; margin-bottom: 50px;">Kendari, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
+                    <div style="font-size: 0.9rem; font-weight: 700; color: #0f172a; border-top: 1px solid #cbd5e1; display: inline-block; padding-top: 5px; width: 200px; text-align: center;">Tercatat secara digital</div>
+                </div>
+                
+                <!-- Info Dokumen -->
+                <div style="text-align: center; margin-top: 40px; font-size: 0.7rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                    Dokumen ini dihasilkan secara otomatis oleh Sistem Absensi Digital BPS Sultra.<br>
+                    Waktu Cetak: ${new Date().toLocaleString('id-ID')} WITA
                 </div>
             </div>
         `;
 
         const opt = {
-            margin:       15,
+            margin:       10,
             filename:     `Bukti_Absensi_${tanggal.replace(/ /g, '_')}_${kegiatan.replace(/ /g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#050711' },
+            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 

@@ -5,12 +5,24 @@
 
 @section('styles')
     <style>
-        /* Smooth Video Feed Scaling to Cover full screen scanner box */
+        /* Smooth Video Feed Scaling */
         #reader video {
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
-            border-radius: 18px;
+        }
+        /* Custom scanner overlay frame */
+        .scan-overlay-frame {
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+        }
+        .scan-corner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid #3b82f6;
+            position: absolute;
+            border-radius: 4px;
         }
     </style>
 @endsection
@@ -42,13 +54,60 @@
                 <!-- Result will be injected here -->
             </div>
 
-            <!-- Scanner Box -->
-            <div id="reader" class="w-full max-w-lg h-[380px] bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden group hover:border-primary-400 hover:bg-primary-50/30">
-                <i class="fas fa-camera text-6xl text-primary-400 mb-4 opacity-80 group-hover:scale-110 transition-transform"></i>
-                <p class="text-lg text-gray-500 mb-6 font-medium">Kamera siap untuk scan QR Code</p>
-                <button onclick="startScanner()" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                    <i class="fas fa-play"></i> Mulai Scan
+            <!-- Scanner Box (Desktop / Initial View) -->
+            <div id="scanner-container" class="w-full max-w-lg h-[380px] bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden group hover:border-blue-400 hover:bg-blue-50/30">
+                <i class="fas fa-qrcode text-6xl text-blue-400 mb-4 opacity-80 group-hover:scale-110 transition-transform"></i>
+                <p class="text-lg text-slate-500 mb-6 font-medium">Kamera siap untuk scan QR Code</p>
+                <button onclick="startScanner()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 flex items-center justify-center gap-2 hover:-translate-y-1">
+                    <i class="fas fa-camera"></i> Mulai Scan Layar Penuh
                 </button>
+            </div>
+
+            <!-- Full Screen Scanner View (Hidden initially) -->
+            <div id="fullscreen-scanner" class="fixed inset-0 z-[60] bg-black hidden flex-col">
+                <!-- Top Bar -->
+                <div class="absolute top-0 left-0 right-0 p-6 z-20 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+                    <button onclick="stopScanner()" class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                    <div class="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-white font-bold text-sm tracking-wide">
+                        SCAN <span id="overlay-scan-type" class="uppercase text-cyan-300"></span>
+                    </div>
+                </div>
+                
+                <!-- Camera Feed -->
+                <div id="reader" class="w-full h-full absolute inset-0 z-0"></div>
+                
+                <!-- Scanner Frame Overlay -->
+                <div class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+                    <div class="w-64 h-64 md:w-80 md:h-80 relative scan-overlay-frame">
+                        <div class="scan-corner" style="top: -2px; left: -2px; border-right: none; border-bottom: none;"></div>
+                        <div class="scan-corner" style="top: -2px; right: -2px; border-left: none; border-bottom: none;"></div>
+                        <div class="scan-corner" style="bottom: -2px; left: -2px; border-right: none; border-top: none;"></div>
+                        <div class="scan-corner" style="bottom: -2px; right: -2px; border-left: none; border-top: none;"></div>
+                        
+                        <!-- Scanning Line Animation -->
+                        <div class="w-full h-[2px] bg-cyan-400 absolute left-0 shadow-[0_0_8px_2px_rgba(34,211,238,0.8)] animate-[scan_2s_ease-in-out_infinite]"></div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Help Text -->
+                <div class="absolute bottom-10 left-0 right-0 text-center z-20 px-6">
+                    <p class="text-white/80 font-medium text-sm md:text-base drop-shadow-md">Arahkan kamera ke QR Code kegiatan</p>
+                </div>
+                
+                <style>
+                    @keyframes scan {
+                        0%, 100% { top: 10px; opacity: 0; }
+                        10% { opacity: 1; }
+                        50% { top: 50%; opacity: 1; }
+                        90% { opacity: 1; }
+                        100% { top: calc(100% - 10px); opacity: 0; }
+                    }
+                    /* Hide html5-qrcode extra elements */
+                    #reader img, #reader span, #reader select { display: none !important; }
+                    #reader__dashboard_section_csr span { color: white !important; }
+                </style>
             </div>
 
             <p class="text-sm text-gray-400 mt-4 mb-8">Arahkan kamera ke QR Code kegiatan yang disediakan oleh Pembimbing atau Mentor.</p>
@@ -203,18 +262,20 @@
         }
 
         function startScanner() {
-            const readerElement = document.getElementById('reader');
-
-            // Bersihkan placeholder awal
-            readerElement.innerHTML = '';
-            readerElement.className = 'w-full max-w-lg h-[380px] bg-gray-900 border-2 border-primary-500 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden shadow-lg shadow-primary-500/20';
+            // Show fullscreen scanner overlay
+            document.getElementById('fullscreen-scanner').classList.remove('hidden');
+            document.getElementById('fullscreen-scanner').classList.add('flex');
+            
+            const typeText = currentAbsensiType === 'check_in' ? 'Check-in' : 'Check-out';
+            document.getElementById('overlay-scan-type').textContent = typeText;
 
             // Inisialisasi scanner
             html5QrcodeScanner = new Html5Qrcode("reader");
 
             const config = {
                 fps: 15,
-                qrbox: { width: 300, height: 300 }
+                qrbox: { width: 300, height: 300 },
+                aspectRatio: window.innerWidth / window.innerHeight
             };
 
             html5QrcodeScanner.start(
@@ -222,40 +283,29 @@
                 config,
                 onScanSuccess,
                 onScanFailure
-            ).then(() => {
-                const stopBtn = document.createElement('button');
-                stopBtn.className = 'absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm z-10 transition-colors';
-                stopBtn.innerHTML = '<i class="fas fa-stop"></i> Berhenti Scan';
-                stopBtn.onclick = stopScanner;
-                readerElement.appendChild(stopBtn);
-            }).catch(err => {
+            ).catch(err => {
                 console.error("Gagal memulai kamera:", err);
                 alert("Tidak dapat mengakses kamera. Pastikan Anda memberikan izin akses kamera.");
-                resetScanner();
+                stopScanner();
             });
         }
 
         function stopScanner() {
             if (html5QrcodeScanner) {
                 html5QrcodeScanner.stop().then(() => {
-                    resetScanner();
+                    closeFullscreen();
                 }).catch(err => {
                     console.error("Failed to stop scanner", err);
-                    resetScanner();
+                    closeFullscreen();
                 });
+            } else {
+                closeFullscreen();
             }
         }
 
-        function resetScanner() {
-            const readerElement = document.getElementById('reader');
-            readerElement.className = 'w-full max-w-lg h-[380px] bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden group hover:border-primary-400 hover:bg-primary-50/30';
-            readerElement.innerHTML = `
-                <i class="fas fa-camera text-6xl text-primary-400 mb-4 opacity-80 group-hover:scale-110 transition-transform"></i>
-                <p class="text-lg text-gray-500 mb-6 font-medium">Kamera siap untuk scan QR Code</p>
-                <button onclick="startScanner()" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                    <i class="fas fa-play"></i> Mulai Scan
-                </button>
-            `;
+        function closeFullscreen() {
+            document.getElementById('fullscreen-scanner').classList.add('hidden');
+            document.getElementById('fullscreen-scanner').classList.remove('flex');
         }
 
         function onScanSuccess(decodedText, decodedResult) {
@@ -265,8 +315,8 @@
             const typeIcon = currentAbsensiType === 'check_in' ? 'sign-in-alt' : 'sign-out-alt';
             const resultElement = document.getElementById('scanner-result');
             
-            const readerElement = document.getElementById('reader');
-            readerElement.classList.add('hidden');
+            const containerElement = document.getElementById('scanner-container');
+            containerElement.classList.add('hidden');
 
             resultElement.innerHTML = `
                 <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl mb-6 flex items-center justify-center gap-2 font-bold shadow-sm">

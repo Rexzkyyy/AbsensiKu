@@ -41,8 +41,9 @@
 </head>
 
 <body
-    class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative"
-    x-data="{ sidebarOpen: false }">
+    class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-blue-500 selection:text-white flex h-screen relative"
+    x-data="{ sidebarOpen: false, pageLoaded: false }"
+    x-init="setTimeout(() => pageLoaded = true, 50)">
 
     <!-- Decorative Background Elements -->
     <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-400/10 blur-[100px] pointer-events-none"></div>
@@ -89,7 +90,12 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative transition-all duration-500 ease-out transform"
+              x-show="pageLoaded"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 translate-y-4"
+              x-transition:enter-end="opacity-100 translate-y-0"
+              style="display: none;">
 
             <!-- Session Messages -->
             @if(session('success'))
