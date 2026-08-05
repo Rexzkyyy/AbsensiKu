@@ -2,10 +2,10 @@
     $role = Auth::user()->role ?? 'magang';
 @endphp
 
-<!-- Desktop Sidebar -->
+<!-- Desktop Sidebar - tanpa blur, solid white -->
 <aside
-    class="hidden lg:flex flex-col w-64 bg-white/80 backdrop-blur-md border-r border-gray-200/50 h-screen shadow-lg z-20 transition-all duration-300 relative">
-    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+    class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200 h-screen shadow-sm z-20 transition-all duration-300">
+    <div class="h-16 flex items-center px-6 border-b border-gray-200">
         <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
             <i class="fas fa-fingerprint text-primary-600"></i>
             <span>AbsensiKu</span>
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
         @if ($role === 'mentor' || $role === 'admin')
             <a href="{{ route('admin.dashboard') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
@@ -79,7 +79,7 @@
             </a>
         @endif
 
-        <div class="my-4 border-t border-gray-100"></div>
+        <div class="my-4 border-t border-gray-200"></div>
 
         <a href="{{ route('logout') }}" onclick="return confirmLogout()"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
@@ -89,73 +89,79 @@
     </nav>
 </aside>
 
-<!-- Mobile Bottom Navigation - DIPERBAIKI -->
+<!-- Mobile Bottom Navigation - solid background, tanpa blur -->
 <div
-    class="lg:hidden fixed bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm border border-gray-200/60 z-50 px-1 py-1.5 flex justify-around items-center shadow-[0_4px_20px_rgba(0,0,0,0.08)] rounded-2xl">
+    class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.04)] z-50 px-1 py-1 flex justify-around items-center">
     @if ($role === 'mentor' || $role === 'admin')
         <a href="{{ route('admin.dashboard') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div
-                class="{{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-blue-50 p-1.5 rounded-lg' : 'p-1.5' }}">
-                <i class="fas fa-home text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-home text-xl"></i>
             </div>
             <span class="mt-0.5">Beranda</span>
         </a>
         <a href="{{ route('admin.buat_qr') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('admin/buat-qr*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('admin/buat-qr*') ? 'bg-blue-50 p-1.5 rounded-lg' : 'p-1.5' }}">
-                <i class="fas fa-qrcode text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/buat-qr*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('admin/buat-qr*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-qrcode text-xl"></i>
             </div>
-            <span class="mt-0.5">QR</span>
+            <span class="mt-0.5">QR Code</span>
         </a>
         <a href="{{ route('admin.users') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('admin/users*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('admin/users*') ? 'bg-blue-50 p-1.5 rounded-lg' : 'p-1.5' }}">
-                <i class="fas fa-user-cog text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/users*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('admin/users*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-user-cog text-xl"></i>
             </div>
             <span class="mt-0.5">Kelola</span>
         </a>
         <a href="{{ route('admin.laporan') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('admin/laporan*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('admin/laporan*') ? 'bg-blue-50 p-1.5 rounded-lg' : 'p-1.5' }}">
-                <i class="fas fa-file-alt text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/laporan*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('admin/laporan*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-file-alt text-xl"></i>
             </div>
             <span class="mt-0.5">Laporan</span>
         </a>
+        <a href="{{ route('logout') }}" onclick="return confirmLogout()"
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all text-red-400 font-medium hover:text-red-600">
+            <div class="p-1.5">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+            </div>
+            <span class="mt-0.5">Keluar</span>
+        </a>
     @elseif ($role === 'magang')
         <a href="{{ route('magang.dashboard') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
             <div
-                class="{{ Request::is('magang') || Request::is('magang/dashboard') ? 'bg-blue-50 p-1.5 rounded-lg shadow-sm' : 'p-1.5' }}">
-                <i class="fas fa-home text-lg sm:text-xl"></i>
+                class="p-1.5 {{ Request::is('magang') || Request::is('magang/dashboard') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-home text-xl"></i>
             </div>
             <span class="mt-0.5">Beranda</span>
         </a>
         <a href="{{ route('magang.scan') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('magang/scan*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('magang/scan*') ? 'bg-blue-50 p-1.5 rounded-lg shadow-sm' : 'p-1.5' }}">
-                <i class="fas fa-camera text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/scan*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('magang/scan*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-camera text-xl"></i>
             </div>
             <span class="mt-0.5">Scan</span>
         </a>
         <a href="{{ route('magang.riwayat') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('magang/riwayat*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('magang/riwayat*') ? 'bg-blue-50 p-1.5 rounded-lg shadow-sm' : 'p-1.5' }}">
-                <i class="fas fa-history text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/riwayat*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('magang/riwayat*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-history text-xl"></i>
             </div>
             <span class="mt-0.5">Riwayat</span>
         </a>
         <a href="{{ route('magang.peserta') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all {{ Request::is('magang/peserta*') ? 'text-blue-600 font-bold' : 'text-gray-400 font-medium hover:text-gray-600' }}">
-            <div class="{{ Request::is('magang/peserta*') ? 'bg-blue-50 p-1.5 rounded-lg shadow-sm' : 'p-1.5' }}">
-                <i class="fas fa-user text-lg sm:text-xl"></i>
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/peserta*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
+            <div class="p-1.5 {{ Request::is('magang/peserta*') ? 'bg-blue-50 rounded-xl' : '' }}">
+                <i class="fas fa-user text-xl"></i>
             </div>
             <span class="mt-0.5">Profil</span>
         </a>
         <a href="{{ route('logout') }}" onclick="return confirmLogout()"
-            class="flex flex-col items-center py-1.5 px-2 text-[9px] sm:text-[10px] transition-all text-red-400 font-medium hover:text-red-600">
+            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all text-red-400 font-medium hover:text-red-600">
             <div class="p-1.5">
-                <i class="fas fa-sign-out-alt text-lg sm:text-xl"></i>
+                <i class="fas fa-sign-out-alt text-xl"></i>
             </div>
             <span class="mt-0.5">Keluar</span>
         </a>

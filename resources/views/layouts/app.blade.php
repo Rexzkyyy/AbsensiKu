@@ -1,188 +1,236 @@
-@php
-    $role = Auth::user()->role ?? 'magang';
-@endphp
+<!DOCTYPE html>
+<html lang="id">
 
-<!-- Desktop Sidebar -->
-<aside
-    class="hidden lg:flex flex-col w-64 bg-white/80 backdrop-blur-sm border-r border-gray-100/80 h-screen shadow-[4px_0_24px_rgba(0,0,0,0.03)] z-20 transition-all duration-300 relative">
-    <div class="h-16 flex items-center px-6 border-b border-gray-100/60">
-        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <i class="fas fa-fingerprint text-primary-600"></i>
-            <span>AbsensiKu</span>
-        </h2>
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="@yield('meta_description', 'AbsensiKu - Sistem Presensi Digital Badan Pusat Statistik Provinsi Sulawesi Tenggara (BPS Sultra).')">
+    <title>@yield('title') - AbsensiKu</title>
 
-    <div class="px-6 py-3">
-        <div
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-100">
-            <i class="fas fa-circle text-[8px] mr-1.5 text-primary-500"></i>
-            {{ $role === 'mentor' ? 'Mentor / Admin' : ucfirst($role) }}
-        </div>
-    </div>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        @if ($role === 'mentor' || $role === 'admin')
-            <a href="{{ route('admin.dashboard') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-home w-5 text-center {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Dashboard
-            </a>
-            <a href="{{ route('admin.buat_qr') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin/buat-qr*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-qrcode w-5 text-center {{ Request::is('admin/buat-qr*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Buat QR Code
-            </a>
-            <a href="{{ route('admin.users') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin/users*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-user-cog w-5 text-center {{ Request::is('admin/users*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Kelola User
-            </a>
-            <a href="{{ route('admin.prestasi') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin/prestasi*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-chart-line w-5 text-center {{ Request::is('admin/prestasi*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Prestasi
-            </a>
-            <a href="{{ route('admin.laporan') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('admin/laporan*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-file-alt w-5 text-center {{ Request::is('admin/laporan*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Laporan
-            </a>
-        @elseif ($role === 'magang')
-            <a href="{{ route('magang.dashboard') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('magang') || Request::is('magang/dashboard') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-home w-5 text-center {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Dashboard
-            </a>
-            <a href="{{ route('magang.scan') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('magang/scan*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-camera w-5 text-center {{ Request::is('magang/scan*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Scan QR Absensi
-            </a>
-            <a href="{{ route('magang.riwayat') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('magang/riwayat*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-history w-5 text-center {{ Request::is('magang/riwayat*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Riwayat Absensi
-            </a>
-            <a href="{{ route('magang.peserta') }}"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ Request::is('magang/peserta*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                <i
-                    class="fas fa-user w-5 text-center {{ Request::is('magang/peserta*') ? 'text-primary-600' : 'text-gray-400' }}"></i>
-                Data Peserta
-            </a>
-        @endif
-
-        <div class="my-4 border-t border-gray-100"></div>
-
-        <a href="{{ route('logout') }}" onclick="return confirmLogout()"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
-            <i class="fas fa-sign-out-alt w-5 text-center text-red-500"></i>
-            Logout
-        </a>
-    </nav>
-</aside>
-
-<!-- Mobile Bottom Navigation - diperbaiki, tanpa blur berlebihan -->
-<div
-    class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100/80 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-50 px-1 py-1 flex justify-around items-center">
-    @if ($role === 'mentor' || $role === 'admin')
-        <a href="{{ route('admin.dashboard') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin') || Request::is('admin/dashboard') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('admin') || Request::is('admin/dashboard') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-home text-xl"></i>
-            </div>
-            <span class="mt-0.5">Beranda</span>
-        </a>
-        <a href="{{ route('admin.buat_qr') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/buat-qr*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('admin/buat-qr*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-qrcode text-xl"></i>
-            </div>
-            <span class="mt-0.5">QR Code</span>
-        </a>
-        <a href="{{ route('admin.users') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/users*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('admin/users*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-user-cog text-xl"></i>
-            </div>
-            <span class="mt-0.5">Kelola</span>
-        </a>
-        <a href="{{ route('admin.laporan') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('admin/laporan*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('admin/laporan*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-file-alt text-xl"></i>
-            </div>
-            <span class="mt-0.5">Laporan</span>
-        </a>
-        <a href="{{ route('logout') }}" onclick="return confirmLogout()"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all text-red-400 font-medium hover:text-red-600">
-            <div class="p-1.5">
-                <i class="fas fa-sign-out-alt text-xl"></i>
-            </div>
-            <span class="mt-0.5">Keluar</span>
-        </a>
-    @elseif ($role === 'magang')
-        <a href="{{ route('magang.dashboard') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div
-                class="p-1.5 {{ Request::is('magang') || Request::is('magang/dashboard') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-home text-xl"></i>
-            </div>
-            <span class="mt-0.5">Beranda</span>
-        </a>
-        <a href="{{ route('magang.scan') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/scan*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('magang/scan*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-camera text-xl"></i>
-            </div>
-            <span class="mt-0.5">Scan</span>
-        </a>
-        <a href="{{ route('magang.riwayat') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/riwayat*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('magang/riwayat*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-history text-xl"></i>
-            </div>
-            <span class="mt-0.5">Riwayat</span>
-        </a>
-        <a href="{{ route('magang.peserta') }}"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all {{ Request::is('magang/peserta*') ? 'text-blue-600 font-extrabold' : 'text-slate-400 font-medium hover:text-slate-600' }}">
-            <div class="p-1.5 {{ Request::is('magang/peserta*') ? 'bg-blue-50 rounded-xl' : '' }}">
-                <i class="fas fa-user text-xl"></i>
-            </div>
-            <span class="mt-0.5">Profil</span>
-        </a>
-        <a href="{{ route('logout') }}" onclick="return confirmLogout()"
-            class="flex flex-col items-center py-1.5 px-2 text-[10px] transition-all text-red-400 font-medium hover:text-red-600">
-            <div class="p-1.5">
-                <i class="fas fa-sign-out-alt text-xl"></i>
-            </div>
-            <span class="mt-0.5">Keluar</span>
-        </a>
-    @endif
-</div>
-
-<script>
-    function confirmLogout() {
-        if (confirm('Apakah Anda yakin ingin logout?')) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = "{{ route('logout') }}";
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = "{{ csrf_token() }}";
-            form.appendChild(csrfInput);
-            document.body.appendChild(form);
-            form.submit();
-            return false;
+    <!-- Tailwind CSS (CDN for instant deployment) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        secondary: {
+                            500: '#ec4899',
+                            600: '#db2777',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'blob': {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
         }
-        return false;
-    }
-</script>
+    </script>
+
+    <style>
+        /* Glassmorphism yang lebih bersih - tanpa blur berlebihan */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Animated background - lembut */
+        .animated-bg {
+            background: linear-gradient(-45deg, #f5f3ff, #e0e7ff, #fae8ff, #f0fdf4);
+            background-size: 400% 400%;
+            animation: gradient-x 15s ease infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.25);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+
+        /* Reset beberapa style bawaan */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+
+    @yield('styles')
+</head>
+
+<body
+    class="animated-bg text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative"
+    x-data="{ pageLoaded: false }" x-init="setTimeout(() => pageLoaded = true, 80)">
+
+    <!-- Decorative Background Elements (Animated Blobs) -->
+    <div
+        class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary-400/20 blur-[100px] pointer-events-none animate-blob">
+    </div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-500/10 blur-[100px] pointer-events-none animate-blob"
+        style="animation-delay: 2s"></div>
+    <div class="fixed top-[40%] left-[20%] w-[30%] h-[30%] rounded-full bg-emerald-400/10 blur-[80px] pointer-events-none animate-blob"
+        style="animation-delay: 4s"></div>
+
+    <!-- Alpine.js for interactive UI -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Sidebar -->
+    @include('layouts.sidebar')
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative z-10">
+
+        <!-- Header -->
+        <header
+            class="glass-panel z-30 py-3 px-6 flex items-center justify-between sticky top-0 transition-all duration-300">
+            <div class="flex items-center gap-4">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">@yield('header_title')</h1>
+            </div>
+
+            <div class="flex items-center gap-3">
+                @php
+                    $username = Auth::user()->username ?? 'User';
+                    $initials = strtoupper(substr($username, 0, 2));
+                @endphp
+                @if(Auth::user() && Auth::user()->role !== 'magang')
+                    <span class="hidden md:block font-semibold text-gray-700 text-sm">Hai, {{ $username }}</span>
+                @endif
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-blue-600 text-white flex items-center justify-center font-bold shadow-md">
+                    {{ $initials }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area - dengan padding bawah agar tidak tertutup bottom nav -->
+        <main
+            class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative transition-all duration-500 ease-out transform pb-20 lg:pb-8"
+            x-show="pageLoaded" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
+            style="display: none;">
+
+            <!-- Session Messages -->
+            @if(session('success'))
+                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 mb-6 rounded-r-lg shadow-sm flex items-start">
+                    <i class="fas fa-check-circle text-emerald-500 mt-1 mr-3 text-lg"></i>
+                    <div class="text-emerald-800 font-medium">{{ session('success') }}</div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg shadow-sm flex items-start">
+                    <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-3 text-lg"></i>
+                    <div class="text-red-800 font-medium">{{ session('error') }}</div>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg shadow-sm flex items-start">
+                    <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-3 text-lg"></i>
+                    <div class="text-red-800 font-medium">
+                        <ul class="list-disc pl-5">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Yield Content -->
+            @yield('content')
+
+        </main>
+    </div>
+
+    <!-- Script to update time on dashboard (if elements exist) -->
+    <script>
+        function updateTime() {
+            const dateElement = document.getElementById('current-date');
+            const timeElement = document.getElementById('current-time');
+            if (!dateElement || !timeElement) return;
+
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            dateElement.textContent = `${dayName}, ${date} ${monthName} ${year} - ${hours}:${minutes}:${seconds} WITA`;
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000);
+        document.addEventListener('DOMContentLoaded', updateTime);
+    </script>
+
+    @yield('scripts')
+</body>
+
+</html>
