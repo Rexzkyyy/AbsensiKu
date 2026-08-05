@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>AbsensiKu Offline</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            align-items: center;
+            background: #f8fafc;
+            color: #0f172a;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        main {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+            max-width: 420px;
+            padding: 28px;
+            text-align: center;
+            width: 100%;
+        }
+
+        img {
+            height: 72px;
+            object-fit: contain;
+            width: 72px;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            margin: 18px 0 8px;
+        }
+
+        p {
+            color: #475569;
+            line-height: 1.6;
+            margin: 0 0 22px;
+        }
+
+        button {
+            background: #2563eb;
+            border: 0;
+            border-radius: 999px;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 12px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <img src="/assets/icons/icon-192.png" alt="AbsensiKu">
+        <h1>Koneksi Terputus</h1>
+        <p>AbsensiKu perlu koneksi internet untuk login dan memproses scan QR. Coba lagi setelah jaringan aktif.</p>
+        <button type="button" onclick="window.location.reload()">Muat Ulang</button>
+    </main>
+</body>
+
+</html>

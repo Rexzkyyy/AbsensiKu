@@ -54,7 +54,7 @@ class ScannerController extends Controller
                 ->first();
 
             if (!$qr) {
-                return back()->with('error', 'QR Code tidak valid atau sudah kadaluarsa!')->withInput();
+                return $this->scanFailure($request, 'QR Code tidak valid atau sudah kadaluarsa!');
             }
 
             // Cek apakah sudah absen hari ini
@@ -66,7 +66,7 @@ class ScannerController extends Controller
             if ($absensiType === 'check_in') {
                 // === PROSES CHECK-IN ===
                 if ($existingAttendance && $existingAttendance->absen_cek_in !== null) {
-                    return back()->with('error', 'Anda sudah melakukan check-in untuk kegiatan ini hari ini!')->withInput();
+                    return $this->scanFailure($request, 'Anda sudah melakukan check-in untuk kegiatan ini hari ini!');
                 }
 
                 // Tentukan waktu batas check-in
@@ -114,16 +114,16 @@ class ScannerController extends Controller
                     'waktu_khusus_hari' => $waktuKhususHari,
                 ];
 
-                return redirect()->route('magang.scan')->with('success', 'Check-in berhasil! Status: ' . ($statusCekIn === 'hadir' ? 'Hadir' : 'Terlambat'))->with('scanResult', $scanResult);
+                return $this->scanSuccess($request, $scanResult, 'Check-in berhasil! Status: ' . ($statusCekIn === 'hadir' ? 'Hadir' : 'Terlambat'));
 
             } else {
                 // === PROSES CHECK-OUT ===
                 if (!$existingAttendance) {
-                    return back()->with('error', 'Anda belum melakukan check-in! Silakan check-in terlebih dahulu.')->withInput();
+                    return $this->scanFailure($request, 'Anda belum melakukan check-in! Silakan check-in terlebih dahulu.');
                 }
 
                 if ($existingAttendance->absen_cek_out !== null) {
-                    return back()->with('error', 'Anda sudah melakukan check-out untuk kegiatan ini hari ini!')->withInput();
+                    return $this->scanFailure($request, 'Anda sudah melakukan check-out untuk kegiatan ini hari ini!');
                 }
 
                 // Tentukan waktu batas check-out
@@ -162,12 +162,38 @@ class ScannerController extends Controller
                     'waktu_khusus_hari' => $waktuKhususHari,
                 ];
 
-                return redirect()->route('magang.scan')->with('success', 'Check-out berhasil! Status: ' . ($statusCekOut === 'hadir' ? 'Hadir' : 'Pulang Cepat'))->with('scanResult', $scanResult);
+                return $this->scanSuccess($request, $scanResult, 'Check-out berhasil! Status: ' . ($statusCekOut === 'hadir' ? 'Hadir' : 'Pulang Cepat'));
             }
         } catch (\Throwable $e) {
             // Tangkap semua error dan kembalikan pesan error yang informatif ke user
-            return back()->with('error', 'Gagal memproses absensi: ' . $e->getMessage())->withInput();
+            return $this->scanFailure($request, 'Gagal memproses absensi: ' . $e->getMessage(), 422);
         }
+    }
+
+    private function scanSuccess(Request $request, array $scanResult, string $message)
+    {
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(array_merge($scanResult, [
+                'success' => true,
+                'message' => $message,
+            ]));
+        }
+
+        return redirect()->route('magang.scan')
+            ->with('success', $message)
+            ->with('scanResult', $scanResult);
+    }
+
+    private function scanFailure(Request $request, string $message, int $status = 422)
+    {
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => $message,
+            ], $status);
+        }
+
+        return back()->with('error', $message)->withInput();
     }
 
     /**
