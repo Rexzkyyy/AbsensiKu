@@ -426,18 +426,22 @@
         @media (max-width: 960px) {
             .login-split {
                 flex-direction: column;
+                height: 100vh;
+                overflow-y: auto;
             }
 
             .brand-panel {
                 width: 100%;
-                padding: 40px 30px 30px;
-                min-height: auto;
+                min-height: 45vh;
+                padding: 40px 30px;
                 justify-content: center;
                 align-items: center;
+                flex: none;
             }
             
             .brand-cover-img {
-                display: none;
+                display: block;
+                opacity: 0.2;
             }
 
             .brand-content {
