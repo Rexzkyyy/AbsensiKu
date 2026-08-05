@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\LoginController as AuthLoginController;
+use Illuminate\Support\Facades\Artisan;
+
+// Rute otomatis untuk menghapus cache Laravel di Hosting
+Route::get('/sys-clear-cache', function () {
+    Artisan::call('optimize:clear');
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Semua cache Laravel (config, route, view) berhasil dihapus otomatis!'
+    ]);
+});
 
 // Public Guest Routes
 Route::middleware('guest')->group(function () {
