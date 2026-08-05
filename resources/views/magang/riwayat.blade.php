@@ -1,158 +1,92 @@
 @extends('layouts.app')
 
 @section('title', 'Riwayat Absensi')
-
 @section('header_title', 'Riwayat Kehadiran')
 
-@section('styles')
-<style>
-    /* Table Styling */
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-    
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        text-align: left;
-    }
-    
-    th, td {
-        padding: 15px 20px;
-        border-bottom: 1px solid var(--border-light);
-    }
-    
-    th {
-        background-color: rgba(67,97,238,0.03);
-        font-weight: 600;
-        color: var(--text-dark);
-        font-size: 0.95rem;
-    }
-    
-    tr:hover {
-        background-color: rgba(67, 97, 238, 0.02);
-    }
-    
-    .status-badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: capitalize;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .status-hadir {
-        background: rgba(40, 167, 69, 0.15);
-        color: var(--success);
-    }
-    
-    .status-terlambat {
-        background: rgba(255, 193, 7, 0.15);
-        color: #92400e;
-    }
-    
-    .status-pulang-cepat {
-        background: rgba(23, 162, 184, 0.15);
-        color: var(--early);
-    }
-
-    .btn-action-print {
-        padding: 6px 12px;
-        background: rgba(0, 180, 216, 0.08);
-        border: 1px solid rgba(0, 180, 216, 0.3);
-        color: var(--success);
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: var(--transition);
-        font-size: 0.85rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .btn-action-print:hover {
-        background: var(--success);
-        color: white;
-        border-color: var(--success);
-        box-shadow: 0 4px 12px rgba(0, 180, 216, 0.2);
-    }
-</style>
-@endsection
-
 @section('content')
-<div class="card">
-    <h3 class="section-title"><i class="fas fa-history"></i> Seluruh Kehadiran Saya</h3>
-    <p style="margin-bottom: 25px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">
-        Berikut adalah seluruh daftar riwayat kehadiran Anda yang tercatat pada sistem absensi digital BPS Provinsi Sulawesi Tenggara.
-    </p>
+<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+    <div class="px-6 py-5 border-b border-white/40 bg-white/30">
+        <h3 class="font-extrabold text-slate-800 text-xl flex items-center gap-2 tracking-tight">
+            <i class="fas fa-history text-cyan-500"></i> Seluruh Kehadiran Saya
+        </h3>
+        <p class="text-sm text-slate-500 font-medium mt-1">
+            Berikut adalah daftar riwayat kehadiran Anda yang tercatat pada sistem absensi digital.
+        </p>
+    </div>
 
-    <div class="table-container">
-        @if ($riwayat->isEmpty())
-            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
-                <i class="fas fa-folder-open fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
-                <p>Belum ada riwayat kehadiran tercatat.</p>
+    @if ($riwayat->isEmpty())
+        <div class="text-center py-16 flex flex-col justify-center items-center">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-4">
+                <i class="fas fa-folder-open text-3xl"></i>
             </div>
-        @else
-            <table>
+            <h4 class="font-medium text-gray-600">Belum Ada Riwayat</h4>
+            <p class="text-sm text-gray-400">Belum ada riwayat kehadiran yang tercatat untuk Anda.</p>
+        </div>
+    @else
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Hari / Tanggal</th>
-                        <th>Kegiatan</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Durasi Kerja</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                    <tr class="bg-gray-50/80 border-b border-gray-100 text-[13px]">
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">No</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Hari / Tanggal</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Kegiatan</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-in</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-out</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Durasi Kerja</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Status</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-50">
                     @foreach ($riwayat as $index => $r)
                         @php
                             $rowNum = $riwayat->firstItem() + $index;
                             $checkInTime = $r->absen_cek_in ? Carbon\Carbon::parse($r->absen_cek_in)->format('H:i') . ' WITA' : '-';
                             $checkOutTime = $r->absen_cek_out ? Carbon\Carbon::parse($r->absen_cek_out)->format('H:i') . ' WITA' : '-';
-                            $attendanceDate = Carbon\Carbon::parse($r->created_at)->isoFormat('D MMMM Y');
                             $attendanceDay = $r->hari_absen;
+                            $attendanceDate = Carbon\Carbon::parse($r->created_at)->isoFormat('D MMMM Y');
                         @endphp
-                        <tr>
-                            <td>{{ $rowNum }}</td>
-                            <td>
-                                <strong>{{ $attendanceDay }}</strong>
-                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">{{ $attendanceDate }}</div>
+                        <tr class="hover:bg-gray-50/50 transition">
+                            <td class="py-4 px-5 text-sm text-gray-500 font-mono">{{ $rowNum }}</td>
+                            <td class="py-4 px-5">
+                                <div class="font-bold text-gray-700 text-sm">{{ $attendanceDay }}</div>
+                                <div class="text-[11px] text-gray-500 mt-0.5">{{ $attendanceDate }}</div>
                             </td>
-                            <td>{{ $r->qr->nama_kegiatan ?? 'Kegiatan' }}</td>
-                            <td>
-                                <span style="font-weight: 500; color: var(--success);">{{ $checkInTime }}</span>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Badge: {{ $r->status_cek_in }}</div>
+                            <td class="py-4 px-5 text-sm text-gray-600 max-w-[150px] truncate">
+                                {{ htmlspecialchars($r->qr->nama_kegiatan ?? 'Kegiatan') }}
                             </td>
-                            <td>
-                                <span style="font-weight: 500; color: var(--total-waktu);">{{ $checkOutTime }}</span>
+                            <td class="py-4 px-5">
+                                <div class="font-bold text-emerald-600 text-sm">{{ $checkInTime }}</div>
+                                <div class="text-[11px] text-gray-500 mt-0.5 capitalize">Cek in: {{ $r->status_cek_in }}</div>
+                            </td>
+                            <td class="py-4 px-5">
+                                <div class="font-bold text-amber-600 text-sm">{{ $checkOutTime }}</div>
                                 @if ($r->absen_cek_out)
-                                    <div style="font-size: 0.8rem; color: var(--text-muted);">Badge: {{ $r->status_cek_out ?? 'hadir' }}</div>
+                                    <div class="text-[11px] text-gray-500 mt-0.5 capitalize">Cek out: {{ $r->status_cek_out ?? 'hadir' }}</div>
                                 @endif
                             </td>
-                            <td>
-                                <strong>{{ $r->total_waktu_formatted }}</strong>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">({{ $r->total_waktu }})</div>
+                            <td class="py-4 px-5">
+                                <div class="font-bold text-gray-800 text-sm">{{ $r->total_waktu_formatted }}</div>
+                                <div class="text-[11px] text-gray-500 mt-0.5">({{ $r->total_waktu }})</div>
                             </td>
-                            <td>
+                            <td class="py-4 px-5">
                                 @if ($r->status_cek_in === 'hadir' && ($r->status_cek_out === 'hadir' || empty($r->status_cek_out)))
-                                    <span class="status-badge status-hadir"><i class="fas fa-check-circle"></i> Hadir</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase">
+                                        <i class="fas fa-check-circle"></i> Hadir
+                                    </span>
                                 @elseif ($r->status_cek_in === 'terlambat')
-                                    <span class="status-badge status-terlambat"><i class="fas fa-clock"></i> Terlambat</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase">
+                                        <i class="fas fa-clock"></i> Terlambat
+                                    </span>
                                 @else
-                                    <span class="status-badge status-pulang-cepat"><i class="fas fa-running"></i> Pulang Cepat</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase">
+                                        <i class="fas fa-running"></i> Pulang Cepat
+                                    </span>
                                 @endif
                             </td>
-                            <td>
-                                <button onclick="downloadPDFAttendance('{{ $r->id_absensi }}', '{{ $r->qr->nama_kegiatan ?? 'Kegiatan' }}', '{{ $attendanceDay }}', '{{ $attendanceDate }}', '{{ $checkInTime }}', '{{ $checkOutTime }}', '{{ $r->total_waktu_formatted }}', '{{ $r->total_waktu }}', '{{ $r->status_cek_in }}', '{{ $r->status_cek_out ?? 'hadir' }}')" class="btn-action-print">
+                            <td class="py-4 px-5 text-center">
+                                <button onclick="downloadPDFAttendance('{{ $r->id_absensi }}', '{{ htmlspecialchars($r->qr->nama_kegiatan ?? 'Kegiatan') }}', '{{ $attendanceDay }}', '{{ $attendanceDate }}', '{{ $checkInTime }}', '{{ $checkOutTime }}', '{{ $r->total_waktu_formatted }}', '{{ $r->total_waktu }}', '{{ $r->status_cek_in }}', '{{ $r->status_cek_out ?? 'hadir' }}')" 
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-cyan-50 text-cyan-600 border border-cyan-100 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all shadow-sm">
                                     <i class="fas fa-file-pdf"></i> PDF
                                 </button>
                             </td>
@@ -160,13 +94,13 @@
                     @endforeach
                 </tbody>
             </table>
-            
-            <!-- Pagination Wrapper -->
-            <div class="pagination-wrapper" style="margin-top: 25px; display: flex; justify-content: center;">
-                {{ $riwayat->links() }}
-            </div>
-        @endif
-    </div>
+        </div>
+        
+        <!-- Pagination Wrapper -->
+        <div class="px-6 py-4 border-t border-gray-50 flex justify-center bg-gray-50/30">
+            {{ $riwayat->links() }}
+        </div>
+    @endif
 </div>
 @endsection
 
@@ -174,7 +108,6 @@
 <!-- Load html2pdf bundle from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-    // Fungsi download PDF bukti kehadiran magang dengan format modern
     function downloadPDFAttendance(id, kegiatan, hari, tanggal, cekIn, cekOut, durasi, totalSec, statusCekIn, statusCekOut) {
         let statusText = 'Hadir';
         let statusColor = '#00b4d8';
@@ -189,7 +122,7 @@
 
         const element = document.createElement('div');
         element.innerHTML = `
-            <div style="font-family: 'Space Grotesk', 'Segoe UI', sans-serif; padding: 40px; background: #050711; color: white; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); width: 450px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); position: relative; overflow: hidden;">
+            <div style="font-family: 'Inter', 'Space Grotesk', 'Segoe UI', sans-serif; padding: 40px; background: #050711; color: white; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); width: 450px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); position: relative; overflow: hidden;">
                 <!-- Glowing Top Strip -->
                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ff7b00, #7209b7, #00b4d8);"></div>
 
@@ -252,7 +185,6 @@
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // Jalankan proses download PDF
         html2pdf().from(element).set(opt).save();
     }
 </script>
