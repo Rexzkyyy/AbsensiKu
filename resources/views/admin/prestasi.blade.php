@@ -8,17 +8,17 @@
 <style>
     /* Filter Styles */
     .filter-container {
-        background: white; border-radius: 12px; padding: 20px;
+        background: var(--glass-bg); border-radius: 12px; padding: 20px;
         margin-bottom: 20px; box-shadow: var(--card-shadow);
         border: 1px solid rgba(0,0,0,0.03);
     }
     .filter-form { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
     .filter-group { flex: 1; min-width: 200px; }
-    .filter-label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark); font-size: 0.9rem; }
+    .filter-label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); font-size: 0.9rem; }
     .filter-select, .filter-input {
-        width: 100%; padding: 12px 15px; border: 1px solid var(--light-gray);
-        border-radius: 10px; background: white; font-size: 0.95rem; transition: var(--transition);
-        color: var(--dark);
+        width: 100%; padding: 12px 15px; border: 1px solid var(--border-light);
+        border-radius: 10px; background: var(--glass-bg); font-size: 0.95rem; transition: var(--transition);
+        color: var(--text-dark);
     }
     .filter-select:focus, .filter-input:focus {
         outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
@@ -31,14 +31,14 @@
         font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px;
     }
     .btn-reset {
-        padding: 12px 20px; background: var(--light-gray); color: var(--gray);
+        padding: 12px 20px; background: var(--border-light); color: var(--text-muted);
         border: none; border-radius: 10px; cursor: pointer;
         font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; text-decoration: none;
     }
     
     /* Tabs Styles */
     .tabs-container {
-        background: white;
+        background: var(--glass-bg);
         border-radius: 16px;
         box-shadow: var(--card-shadow);
         margin-bottom: 30px;
@@ -47,8 +47,8 @@
     
     .tabs-header {
         display: flex;
-        background: var(--light);
-        border-bottom: 1px solid var(--light-gray);
+        background: rgba(67,97,238,0.03);
+        border-bottom: 1px solid var(--border-light);
     }
     
     .tab {
@@ -58,7 +58,7 @@
         cursor: pointer;
         transition: var(--transition);
         font-weight: 600;
-        color: var(--gray);
+        color: var(--text-muted);
         border-bottom: 3px solid transparent;
         display: flex;
         align-items: center;
@@ -72,7 +72,7 @@
     }
     
     .tab.active {
-        background: white;
+        background: var(--glass-bg);
         color: var(--primary);
         border-bottom: 3px solid var(--primary);
     }
@@ -95,7 +95,7 @@
     }
     
     .ranking-card {
-        background: white;
+        background: var(--glass-bg);
         border-radius: 16px;
         padding: 25px;
         box-shadow: var(--card-shadow);
@@ -140,7 +140,7 @@
     }
     
     .ranking-warning .ranking-badge {
-        background: linear-gradient(135deg, var(--tidak-hadir), #e35d6a);
+        background: linear-gradient(135deg, var(--danger), #e35d6a);
     }
     
     .ranking-datang-cepat .ranking-badge {
@@ -167,11 +167,11 @@
         font-size: 1.3rem;
         font-weight: 700;
         margin-bottom: 5px;
-        color: var(--dark);
+        color: var(--text-dark);
     }
     
     .user-position {
-        color: var(--gray);
+        color: var(--text-muted);
         margin-bottom: 15px;
         font-size: 0.95rem;
     }
@@ -187,7 +187,7 @@
         text-align: center;
         padding: 15px;
         border-radius: 10px;
-        background: var(--light);
+        background: rgba(67,97,238,0.03);
         min-width: 120px;
     }
     
@@ -199,12 +199,12 @@
     
     .stat-label {
         font-size: 0.85rem;
-        color: var(--gray);
+        color: var(--text-muted);
     }
     
-    .stat-hadir { color: var(--hadir); }
-    .stat-terlambat { color: var(--terlambat); }
-    .stat-tidak-hadir { color: var(--tidak-hadir); }
+    .stat-hadir { color: var(--success); }
+    .stat-terlambat { color: var(--warning); }
+    .stat-tidak-hadir { color: var(--danger); }
     .stat-pulang-cepat { color: var(--early); }
     .stat-jam-kerja { color: var(--primary); }
     .stat-datang-cepat { color: #20c997; }
@@ -212,7 +212,7 @@
     .empty-state {
         text-align: center;
         padding: 40px 20px;
-        color: var(--gray);
+        color: var(--text-muted);
         grid-column: 1 / -1;
     }
     

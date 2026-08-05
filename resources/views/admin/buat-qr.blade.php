@@ -11,106 +11,100 @@
         grid-template-columns: 1.2fr 1.8fr;
         gap: 25px;
     }
-    
+
     .jumat-section {
-        background: rgba(156, 39, 176, 0.05);
-        border: 1px solid rgba(156, 39, 176, 0.2);
-        border-radius: 10px;
-        padding: 15px;
+        background: rgba(114, 9, 183, 0.04);
+        border: 1px solid rgba(114, 9, 183, 0.12);
+        border-radius: 12px;
+        padding: 16px;
         margin-top: 10px;
     }
-    
+
     .jumat-label {
-        color: var(--jumat);
+        color: var(--secondary);
         font-weight: 600;
     }
-    
+
     /* QR Result */
-    .qr-container { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 20px 0; 
+    .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
     }
-    
-    .qr-image-wrapper { 
-        margin-bottom: 20px; 
-        padding: 15px; 
-        border: 1px solid #eee; 
-        border-radius: 12px; 
-        background: white;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+    .qr-image-wrapper {
+        margin-bottom: 20px;
+        padding: 16px;
+        border: 1px solid var(--border-light);
+        border-radius: 16px;
+        background: var(--glass-bg);
+        box-shadow: var(--card-shadow);
     }
-    
-    .qr-image-wrapper img { 
-        max-width: 230px; 
-        height: auto; 
+
+    .qr-image-wrapper img {
+        max-width: 230px;
+        height: auto;
     }
-    
-    .qr-info { 
-        text-align: center; 
-        color: var(--gray); 
-        margin-bottom: 20px; 
+
+    .qr-info {
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 20px;
         width: 100%;
     }
-    
+
     /* List */
-    .qr-item { 
-        display: flex; 
-        align-items: center; 
-        padding: 15px 0; 
-        border-bottom: 1px solid var(--light-gray); 
+    .qr-item {
+        display: flex;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border-light);
     }
-    
-    .qr-item:last-child {
-        border-bottom: none;
+
+    .qr-item:last-child { border-bottom: none; }
+
+    .qr-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: rgba(67, 97, 238, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+        color: var(--primary);
+        flex-shrink: 0;
     }
-    
-    .qr-icon { 
-        width: 40px; 
-        height: 40px; 
-        border-radius: 50%; 
-        background: var(--light-gray); 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        margin-right: 15px; 
-        color: var(--primary); 
-    }
-    
-    .qr-details { 
-        flex: 1; 
-    }
-    
-    .qr-actions { 
-        display: flex; 
-        gap: 8px; 
-    }
-    
-    .qr-status { 
-        padding: 5px 10px; 
-        border-radius: 20px; 
-        font-size: 0.8rem; 
-        font-weight: 500; 
-        text-transform: capitalize;
+
+    .qr-details { flex: 1; }
+    .qr-actions { display: flex; gap: 8px; }
+
+    .qr-status {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
         display: inline-block;
         margin-top: 5px;
+        letter-spacing: 0.03em;
     }
-    
-    .status-active { 
-        background: rgba(76,201,240,0.15); 
-        color: var(--primary-dark); 
+
+    .status-active {
+        background: rgba(16, 185, 129, 0.08);
+        color: var(--success);
     }
-    
-    .status-expired { 
-        background: rgba(247,37,133,0.15); 
-        color: var(--warning); 
+
+    .status-expired {
+        background: rgba(239, 68, 68, 0.08);
+        color: var(--danger);
     }
 
     .btn-action-small {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -119,115 +113,91 @@
         transition: var(--transition);
         border: none;
         cursor: pointer;
+        font-size: 0.85rem;
     }
 
-    .btn-show {
-        background: #00b4d8;
-    }
-    .btn-show:hover {
-        background: #0077b6;
-        transform: scale(1.1);
-    }
-    .btn-edit {
-        background: var(--primary);
-    }
-    .btn-edit:hover {
-        background: var(--primary-dark);
-        transform: scale(1.1);
-    }
-    .btn-delete {
-        background: var(--tidak-hadir);
-    }
-    .btn-delete:hover {
-        background: #bd2130;
-        transform: scale(1.1);
-    }
-    
+    .btn-show { background: var(--info); }
+    .btn-show:hover { background: #0891b2; transform: scale(1.08); }
+    .btn-edit { background: var(--primary); }
+    .btn-edit:hover { background: var(--primary-dark); transform: scale(1.08); }
+    .btn-delete { background: var(--danger); }
+    .btn-delete:hover { background: #dc2626; transform: scale(1.08); }
+
     @media (max-width: 1100px) {
-        .grid-container {
-            grid-template-columns: 1fr;
-        }
+        .grid-container { grid-template-columns: 1fr; }
     }
 
-    /* Custom Modal Glassmorphism and animations */
+    /* Custom Modal Glassmorphism */
     .custom-modal {
         display: none;
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.4);
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.25);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         z-index: 9999;
         justify-content: center;
         align-items: center;
         opacity: 0;
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.3s ease;
     }
-    
-    .custom-modal.show {
-        display: flex;
-        opacity: 1;
-    }
-    
+
+    .custom-modal.show { display: flex; opacity: 1; }
+
     .custom-modal-content {
         background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
         border-radius: 24px;
-        padding: 30px;
+        padding: 32px;
         width: 90%;
         max-width: 440px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
         transform: scale(0.9) translateY(20px);
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         position: relative;
     }
-    
+
     .custom-modal.show .custom-modal-content {
         transform: scale(1) translateY(0);
     }
-    
+
     .close-modal-btn {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 1.5rem;
-        color: var(--gray);
+        top: 18px; right: 18px;
+        font-size: 1.3rem;
+        color: var(--text-muted);
         cursor: pointer;
         transition: var(--transition);
-        background: rgba(0, 0, 0, 0.05);
+        background: rgba(0, 0, 0, 0.04);
         border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+        width: 34px; height: 34px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         outline: none;
     }
-    
+
     .close-modal-btn:hover {
-        color: var(--tidak-hadir);
-        background: rgba(220, 53, 69, 0.1);
+        color: var(--danger);
+        background: rgba(239, 68, 68, 0.08);
         transform: rotate(90deg);
     }
-    
+
     .modal-qr-img-wrapper {
         margin: 20px auto;
-        padding: 15px;
-        border: 1px solid var(--light-gray);
+        padding: 16px;
+        border: 1px solid var(--border-light);
         border-radius: 16px;
-        background: white;
+        background: var(--glass-bg);
         display: inline-block;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        box-shadow: var(--card-shadow);
     }
-    
+
     .modal-qr-img-wrapper img {
-        width: 180px;
-        height: 180px;
-        display: block;
+        width: 180px; height: 180px; display: block;
     }
 </style>
 @endsection
@@ -249,19 +219,19 @@
     <div>
         <!-- Menampilkan Hasil QR Code yang Baru Dibuat -->
         @if ($generatedData)
-        <div class="card" style="border: 2px solid var(--hadir);">
-            <h3 class="section-title" style="color: var(--hadir);"><i class="fas fa-check-circle"></i> Hasil QR Code</h3>
+        <div class="card" style="border: 2px solid var(--success);">
+            <h3 class="section-title" style="color: var(--success);"><i class="fas fa-check-circle"></i> Hasil QR Code</h3>
             <div class="qr-container">
                 <div class="qr-image-wrapper">
                     <img src="{{ $generatedData['url_img'] }}" alt="QR Code" id="qr-img">
                 </div>
                 
                 <div class="qr-info">
-                    <h3 style="font-size: 1.4rem; color: var(--dark); margin-bottom: 5px;">{{ $generatedData['kode'] }}</h3>
-                    <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 15px;">{{ htmlspecialchars($generatedData['nama_kegiatan']) }}</p>
+                    <h3 style="font-size: 1.4rem; color: var(--text-dark); margin-bottom: 5px;">{{ $generatedData['kode'] }}</h3>
+                    <p style="font-weight: 600; color: var(--primary); margin-bottom: 15px;">{{ htmlspecialchars($generatedData['nama_kegiatan']) }}</p>
                     
-                    <div style="background: var(--light); padding: 15px; border-radius: 12px; text-align: left; font-size: 0.9rem;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #ddd; padding-bottom:5px;">
+                    <div style="background: rgba(67,97,238,0.03); padding: 15px; border-radius: 12px; text-align: left; font-size: 0.9rem; border: 1px solid var(--border-light);">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid var(--border-light); padding-bottom:5px;">
                             <span>Check-in:</span>
                             <strong>{{ Carbon\Carbon::parse($generatedData['cek_in'])->format('H:i') }} WITA</strong>
                         </div>
@@ -294,7 +264,7 @@
                 <i class="fas {{ $editMode ? 'fa-edit' : 'fa-cogs' }}"></i> 
                 {{ $editMode ? 'Edit QR Code' : 'Pengaturan QR Code Baru' }}
             </h3>
-            <p style="margin-bottom: 20px; color: #666; font-size: 0.9rem; line-height: 1.5;">
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
                 @if ($editMode)
                     Edit data QR Code. <strong>Kode QR baru akan dibuat otomatis</strong> untuk menjaga validitas log.
                 @else
@@ -369,13 +339,13 @@
     <div>
         <div class="card">
             <h3 class="section-title"><i class="fas fa-history"></i> Riwayat QR Code</h3>
-            <p style="margin-bottom: 20px; color: #666; font-size: 0.9rem;">
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.88rem;">
                 Daftar QR Code yang telah dibuat oleh sistem. Anda dapat mengedit batas jam presensi atau menghapus barcode log.
             </p>
 
             <div id="recent-qr">
                 @if ($recentQrs->isEmpty())
-                    <div style="text-align:center; color:#999; padding: 30px;">
+                    <div style="text-align:center; color:var(--text-muted); padding: 30px;">
                         <i class="fas fa-qrcode fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
                         <p>Belum ada QR Code yang dibuat.</p>
                     </div>
@@ -390,18 +360,18 @@
                             </div>
                             <div class="qr-details">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <strong style="color:var(--dark); font-size:1.05rem;">{{ $qr->kode_qr }}</strong>
+                                    <strong style="color:var(--text-dark); font-size:1rem; font-weight:700;">{{ $qr->kode_qr }}</strong>
                                     <span class="qr-status {{ $isExpired ? 'status-expired' : 'status-active' }}">
                                         {{ $isExpired ? 'expired' : 'aktif' }}
                                     </span>
                                 </div>
-                                <div style="font-weight: 600; color: var(--primary-dark); margin: 3px 0;">{{ htmlspecialchars($qr->nama_kegiatan ?? 'Tanpa Nama') }}</div>
-                                <div style="font-size:0.85rem; color:#666;">
+                                <div style="font-weight: 600; color: var(--primary); margin: 3px 0; font-size: 0.9rem;">{{ htmlspecialchars($qr->nama_kegiatan ?? 'Tanpa Nama') }}</div>
+                                <div style="font-size:0.82rem; color:var(--text-muted);">
                                     <i class="fas fa-clock"></i> 
                                     Masuk: <strong>{{ Carbon\Carbon::parse($qr->cek_in)->format('H:i') }}</strong> | 
                                     Pulang: <strong>{{ Carbon\Carbon::parse($qr->cek_out)->format('H:i') }}</strong> WITA
                                 </div>
-                                <div style="font-size:0.8rem; color:#888; margin-top:2px;">
+                                <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
                                     Batas Expired: {{ Carbon\Carbon::parse($qr->expired_at)->isoFormat('D MMM Y - H:i') }} WITA
                                 </div>
                             </div>
@@ -438,29 +408,29 @@
     <div class="custom-modal-content">
         <button class="close-modal-btn" onclick="closeQrModal()">&times;</button>
         
-        <h3 style="font-size: 1.4rem; color: var(--dark); font-weight:600; margin-bottom: 5px;">Detail QR Code</h3>
-        <p id="modal-qr-title" style="font-weight: 600; color: var(--primary-dark); font-size:1.1rem; margin-bottom:15px;"></p>
+        <h3 style="font-size: 1.3rem; color: var(--text-dark); font-weight:700; margin-bottom: 5px;">Detail QR Code</h3>
+        <p id="modal-qr-title" style="font-weight: 600; color: var(--primary); font-size:1rem; margin-bottom:15px;"></p>
         
         <div class="modal-qr-img-wrapper">
             <img id="modal-qr-img" src="" alt="QR Code">
         </div>
         
         <div style="margin-bottom: 20px;">
-            <span id="modal-qr-code" style="background: rgba(76,201,240,0.15); color: var(--primary-dark); padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 1rem; display: inline-block;"></span>
+            <span id="modal-qr-code" style="background: rgba(67,97,238,0.08); color: var(--primary); padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; display: inline-block;"></span>
         </div>
         
-        <div style="background: var(--light); padding: 15px; border-radius: 12px; text-align: left; font-size: 0.9rem; margin-bottom: 20px; border: 1px solid var(--light-gray);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                <span style="color:var(--gray);">Check-in:</span>
+        <div style="background: rgba(67,97,238,0.03); padding: 15px; border-radius: 12px; text-align: left; font-size: 0.88rem; margin-bottom: 20px; border: 1px solid var(--border-light);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid var(--border-light); padding-bottom:5px;">
+                <span style="color:var(--text-muted);">Check-in:</span>
                 <strong id="modal-qr-cekin"></strong>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                <span style="color:var(--gray);">Check-out:</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid var(--border-light); padding-bottom:5px;">
+                <span style="color:var(--text-muted);">Check-out:</span>
                 <strong id="modal-qr-cekout"></strong>
             </div>
             <div style="display:flex; justify-content:space-between;">
-                <span style="color:var(--gray);">Batas Expired:</span>
-                <strong id="modal-qr-expired" style="color: var(--warning);"></strong>
+                <span style="color:var(--text-muted);">Batas Expired:</span>
+                <strong id="modal-qr-expired" style="color: var(--danger);"></strong>
             </div>
         </div>
         
@@ -497,7 +467,7 @@
         win.document.write('<img src="' + url + '" alt="QR Code">');
         win.document.write('<br><br>');
         win.document.write('<span class="badge">KODE: ' + kode + '</span>');
-        win.document.write('<p style="font-size:0.8rem; color:#666; margin-top:20px;">Berlaku s/d: ' + expired + '</p>');
+        win.document.write('<p style="font-size:0.8rem; color:var(--text-muted); margin-top:20px;">Berlaku s/d: ' + expired + '</p>');
         win.document.write('</div>');
         win.document.write('</body></html>');
         win.document.close();

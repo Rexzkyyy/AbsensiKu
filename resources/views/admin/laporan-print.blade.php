@@ -34,7 +34,7 @@
         .header p {
             margin: 5px 0 0 0;
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-muted);
         }
         
         .title {
@@ -158,7 +158,7 @@
         <tbody>
             @if ($laporan->isEmpty())
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 30px; color: #999;">Tidak ada data laporan absensi magang.</td>
+                    <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-muted);">Tidak ada data laporan absensi magang.</td>
                 </tr>
             @else
                 @foreach ($laporan as $index => $log)

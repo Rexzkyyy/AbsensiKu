@@ -42,7 +42,7 @@
         font-weight: 600;
         text-transform: uppercase;
         background: rgba(40, 167, 69, 0.2);
-        color: var(--hadir);
+        color: var(--success);
     }
     
     @media (max-width: 768px) {
@@ -64,7 +64,7 @@
 @if ($magang)
 <div class="status-panel">
     <div class="status-text">
-        <i class="fas fa-check-circle" style="color: var(--hadir); margin-right: 8px;"></i>
+        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 8px;"></i>
         Status Profil Magang: <strong>Tercatat Aktif</strong>
     </div>
     <span class="status-pill">{{ $magang->status }}</span>
@@ -81,7 +81,7 @@
 
 <div class="card">
     <h3 class="section-title"><i class="fas fa-user-edit"></i> Lengkapi Biodata Magang</h3>
-    <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem; line-height: 1.5;">
+    <p style="margin-bottom: 25px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">
         Harap isi data berikut dengan lengkap dan benar sesuai dengan surat keputusan (SK) Magang Anda dari BPS Provinsi Sulawesi Tenggara.
     </p>
 

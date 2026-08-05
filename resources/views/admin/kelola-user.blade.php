@@ -21,13 +21,13 @@
     
     th, td {
         padding: 15px 20px;
-        border-bottom: 1px solid var(--light-gray);
+        border-bottom: 1px solid var(--border-light);
     }
     
     th {
-        background-color: var(--light);
+        background-color: rgba(67,97,238,0.03);
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-dark);
         font-size: 0.95rem;
     }
     
@@ -50,12 +50,12 @@
     
     .badge-admin {
         background: rgba(40, 167, 69, 0.15);
-        color: var(--hadir);
+        color: var(--success);
     }
     
     .badge-magang {
         background: rgba(255, 193, 7, 0.15);
-        color: #856404;
+        color: #92400e;
     }
 
     .btn-action {
@@ -80,10 +80,10 @@
         background: var(--primary-dark);
     }
     .btn-delete {
-        background: var(--tidak-hadir);
+        background: var(--danger);
     }
     .btn-delete:hover {
-        background: #bd2130;
+        background: #dc2626;
     }
 
     /* Modal Backdrop */
@@ -103,7 +103,7 @@
     }
 
     .modal-card {
-        background: white;
+        background: var(--glass-bg);
         border-radius: 16px;
         width: 100%;
         max-width: 500px;
@@ -161,13 +161,13 @@
         </button>
     </div>
     
-    <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
+    <p style="margin-bottom: 25px; color: var(--text-muted); font-size: 0.95rem;">
         Berikut adalah daftar seluruh akun pengguna sistem AbsensiKu. Anda dapat mendaftarkan mentor, admin, atau peserta magang baru di sini.
     </p>
 
     <div class="table-container">
         @if ($users->isEmpty())
-            <div style="text-align:center; color:#999; padding: 40px;">
+            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
                 <i class="fas fa-user-slash fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
                 <p>Belum ada pengguna terdaftar.</p>
             </div>
@@ -241,7 +241,7 @@
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
                     <input type="text" class="form-input" id="password" name="password" placeholder="Minimal 4 karakter" required>
-                    <small style="color:#666;">Password akan disimpan dan digunakan login langsung oleh user.</small>
+                    <small style="color:var(--text-muted);">Password akan disimpan dan digunakan login langsung oleh user.</small>
                 </div>
 
                 <div class="form-group">
@@ -290,7 +290,7 @@
                 <div class="form-group">
                     <label class="form-label" for="edit_password">Password Baru</label>
                     <input type="text" class="form-input" id="edit_password" name="password" placeholder="Kosongkan jika tidak ingin mengubah password">
-                    <small style="color:#666;">Biarkan kosong kecuali ingin merubah password pengguna tersebut.</small>
+                    <small style="color:var(--text-muted);">Biarkan kosong kecuali ingin merubah password pengguna tersebut.</small>
                 </div>
 
                 <div class="form-group">

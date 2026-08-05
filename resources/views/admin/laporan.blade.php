@@ -8,7 +8,7 @@
 <style>
     /* Filter Laporan Styles */
     .report-filter-card {
-        background: white;
+        background: var(--glass-bg);
         border-radius: 16px;
         padding: 25px;
         box-shadow: var(--card-shadow);
@@ -72,13 +72,13 @@
     
     th, td {
         padding: 15px 20px;
-        border-bottom: 1px solid var(--light-gray);
+        border-bottom: 1px solid var(--border-light);
     }
     
     th {
-        background-color: var(--light);
+        background-color: rgba(67,97,238,0.03);
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-dark);
         font-size: 0.95rem;
     }
     
@@ -99,12 +99,12 @@
     
     .status-hadir {
         background: rgba(40, 167, 69, 0.15);
-        color: var(--hadir);
+        color: var(--success);
     }
     
     .status-terlambat {
         background: rgba(255, 193, 7, 0.15);
-        color: #856404;
+        color: #92400e;
     }
     
     .status-pulang-cepat {
@@ -194,7 +194,7 @@
     
     <div class="table-container">
         @if ($laporan->isEmpty())
-            <div style="text-align:center; color:#999; padding: 40px;">
+            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
                 <i class="fas fa-folder-open fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
                 <p>Tidak ada data absensi magang yang cocok dengan kriteria filter.</p>
             </div>
@@ -224,28 +224,28 @@
                             <td>{{ $rowNum }}</td>
                             <td>
                                 <strong>{{ htmlspecialchars($log->user->magang->nama_lengkap ?? $log->user->username ?? 'Magang') }}</strong>
-                                <div style="font-size:0.8rem; color:#666; margin-top:2px;">
+                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
                                     <i class="fas fa-university"></i> {{ htmlspecialchars($log->user->magang->instansi ?? '-') }}
                                 </div>
                             </td>
                             <td>
                                 <strong>{{ $log->hari_absen }}</strong>
-                                <div style="font-size:0.8rem; color:#666; margin-top:2px;">{{ $attendanceDate }}</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">{{ $attendanceDate }}</div>
                             </td>
                             <td>{{ htmlspecialchars($log->qr->nama_kegiatan ?? 'Kegiatan') }}</td>
                             <td>
-                                <span style="color:var(--hadir); font-weight:500;">{{ $checkInTime }}</span>
-                                <div style="font-size:0.75rem; color:#888;">Cek in: {{ $log->status_cek_in }}</div>
+                                <span style="color:var(--success); font-weight:500;">{{ $checkInTime }}</span>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">Cek in: {{ $log->status_cek_in }}</div>
                             </td>
                             <td>
                                 <span style="color:var(--total-waktu); font-weight:500;">{{ $checkOutTime }}</span>
                                 @if ($log->absen_cek_out)
-                                    <div style="font-size:0.75rem; color:#888;">Cek out: {{ $log->status_cek_out ?? 'hadir' }}</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">Cek out: {{ $log->status_cek_out ?? 'hadir' }}</div>
                                 @endif
                             </td>
                             <td>
                                 <strong>{{ $log->total_waktu_formatted }}</strong>
-                                <div style="font-size:0.75rem; color:#888;">({{ $log->total_waktu }})</div>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">({{ $log->total_waktu }})</div>
                             </td>
                             <td>
                                 @if ($log->status_cek_in === 'hadir' && ($log->status_cek_out === 'hadir' || empty($log->status_cek_out)))

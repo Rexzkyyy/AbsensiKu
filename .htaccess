@@ -1,4 +1,11 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Strip InfinityFree tracking parameter ?i=N
+    RewriteCond %{QUERY_STRING} ^i=[0-9]+$ [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Forward everything to public/
+    RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

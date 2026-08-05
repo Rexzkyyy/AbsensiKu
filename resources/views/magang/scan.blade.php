@@ -14,7 +14,7 @@
             text-align: center !important;
             background: rgba(15, 19, 42, 0.6) !important;
             backdrop-filter: blur(25px) !important;
-            border: 1px solid var(--border-color) !important;
+            border: 1px solid var(--border-light) !important;
             box-shadow: var(--card-shadow) !important;
             border-radius: 14px !important;
             color: white !important;
@@ -67,7 +67,7 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            border: 2px dashed var(--border-color);
+            border: 2px dashed var(--border-light);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
@@ -103,7 +103,7 @@
             max-width: 400px;
             margin: 30px auto 0;
             padding-top: 20px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-light);
         }
 
         /* Result Styles */
@@ -132,7 +132,7 @@
         /* Attendance Info */
         .attendance-info {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-light);
             padding: 20px;
             border-radius: 16px;
             margin: 20px 0;
@@ -144,7 +144,7 @@
             justify-content: space-between;
             margin-bottom: 10px;
             padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .info-item:last-child {
@@ -177,13 +177,13 @@
 
         .status-hadir {
             background: rgba(0, 180, 216, 0.08);
-            color: var(--hadir);
+            color: var(--success);
             border: 1px solid rgba(0, 180, 216, 0.15);
         }
 
         .status-terlambat {
             background: rgba(255, 193, 7, 0.08);
-            color: var(--terlambat);
+            color: var(--warning);
             border: 1px solid rgba(255, 193, 7, 0.15);
         }
 
@@ -232,10 +232,10 @@
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
-            background: var(--card-bg);
+            background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-light);
             padding: 16px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
@@ -245,7 +245,7 @@
             flex: 1;
             text-align: center;
             padding: 14px;
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--border-light);
             border-radius: 12px;
             cursor: pointer;
             transition: var(--transition);
@@ -259,7 +259,7 @@
         }
 
         .type-checkin.active {
-            border-color: var(--hadir);
+            border-color: var(--success);
             background: rgba(0, 180, 216, 0.08);
             color: white;
             box-shadow: 0 8px 20px rgba(0, 180, 216, 0.15);
@@ -295,7 +295,7 @@
     <!-- Absensi Type Selector -->
     <div class="absensi-type-selector">
         <div class="type-option type-checkin active" onclick="selectAbsensiType('check_in')">
-            <i class="fas fa-sign-in-alt" style="color: var(--hadir);"></i>
+            <i class="fas fa-sign-in-alt" style="color: var(--success);"></i>
             <div>Check-in</div>
             <small>Absen Masuk</small>
         </div>
@@ -350,10 +350,10 @@
                 <div class="result-icon result-success">
                     <i class="fas fa-check"></i>
                 </div>
-                <h2 style="color: var(--hadir); margin-bottom: 10px; font-size: 1.8rem;">
+                <h2 style="color: var(--success); margin-bottom: 10px; font-size: 1.8rem;">
                     {{ $scanResult['type'] === 'check_in' ? 'Check-in Berhasil!' : 'Check-out Berhasil!' }}
                 </h2>
-                <p style="color: var(--gray); margin-bottom: 25px;">Data absensi Anda telah tercatat dengan baik</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Data absensi Anda telah tercatat dengan baik</p>
 
                 <div class="attendance-info">
                     <div class="info-item">
@@ -587,7 +587,7 @@
                 win.document.write('.print-container{max-width:400px; margin:0 auto; background:white; padding:30px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.1); border: 1px solid #ddd;}');
                 win.document.write('h2{color:#4361ee; margin-bottom:5px;}');
                 win.document.write('h3{color:#333; margin-bottom:20px; font-size:1.1rem; font-weight:600;}');
-                win.document.write('.info-item{text-align:left; margin:10px 0; padding:10px; background:#f8f9fa; border-radius:8px; border-bottom: 1px solid #eee;}');
+                win.document.write('.info-item{text-align:left; margin:10px 0; padding:10px; background:#f8f9fa; border-radius:8px; border-bottom: 1px solid var(--border-light);}');
                 win.document.write('.total-waktu{background:#fff3cd; border-left:4px solid #fd7e14; padding:10px; margin:15px 0; border-radius:8px;}');
                 win.document.write('</style>');
                 win.document.write('</head><body>');
@@ -622,7 +622,7 @@
                     win.document.write('<strong><i class="fas fa-clock"></i> Total Waktu Kerja:</strong><br>' + totalWaktu + ' (' + totalWaktuStr + ')');
                     win.document.write('</div>');
                 }
-                win.document.write('<div style="margin-top:25px; font-size:0.85rem; color:#666;">');
+                win.document.write('<div style="margin-top:25px; font-size:0.85rem; color:var(--text-muted);">');
                 win.document.write('<p>Badan Pusat Statistik Provinsi Sulawesi Tenggara</p>');
                 win.document.write('</div>');
                 win.document.write('</div>');

@@ -3,30 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensiku — Login</title>
-    
-    <!-- Modern Geometric Fonts from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Vector Icons -->
+    <title>AbsensiKu — Login</title>
+    <meta name="description" content="Login ke AbsensiKu - Sistem Presensi Digital BPS Provinsi Sulawesi Tenggara">
+
+    <!-- Inter Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
-            --bg-dark: #050711;
-            --card-bg: rgba(15, 19, 42, 0.6);
-            --border-color: rgba(255, 255, 255, 0.06);
-            --accent-orange: #ff7b00;
-            --accent-orange-light: #ffa600;
-            --accent-purple: #7209b7;
-            --accent-cyan: #00b4d8;
-            --text-bright: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.55);
-            
-            /* Typography Scale */
-            --font-heading: 'Space Grotesk', sans-serif;
-            --font-body: 'Outfit', sans-serif;
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --primary: #4361ee;
+            --primary-light: #5e7bff;
+            --primary-dark: #3651d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --bg-base: #f0f2f8;
+            --bg-white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+            --text-dark: #1a1d2e;
+            --text-body: #4a4d60;
+            --text-muted: #8b8fa3;
+            --border-light: rgba(0, 0, 0, 0.06);
+            --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -37,706 +41,583 @@
 
         body {
             min-height: 100vh;
-            background-color: var(--bg-dark);
-            font-family: var(--font-body);
-            color: var(--text-bright);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-base);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
             overflow-x: hidden;
-            overflow-y: auto;
-            padding: 60px 20px;
-            perspective: 1000px; /* Required for 3D card tilt */
         }
 
-        /* 🟣 Liquid Glowing Blobs in Background */
-        .glow-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(130px);
-            opacity: 0.28;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .blob-1 {
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, var(--accent-orange), rgba(255, 123, 0, 0));
-            top: -150px;
-            left: 10%;
-            animation: float-blob-1 25s infinite alternate;
-        }
-
-        .blob-2 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-purple), rgba(114, 9, 183, 0));
-            bottom: -200px;
-            right: 10%;
-            animation: float-blob-2 30s infinite alternate;
-        }
-
-        .blob-3 {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, var(--accent-cyan), rgba(0, 180, 216, 0));
-            top: 30%;
-            right: 25%;
-            animation: float-blob-3 20s infinite alternate;
-        }
-
-        @keyframes float-blob-1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(80px, 60px) scale(1.15); }
-        }
-
-        @keyframes float-blob-2 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-80px, -60px) scale(1.1); }
-        }
-
-        @keyframes float-blob-3 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, -40px) scale(1.2); }
-        }
-
-        /* 🌐 Blueprint Tech Lines Mask */
-        .grid-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* ═══════════════ SPLIT SCREEN LAYOUT ═══════════════ */
+        .login-split {
+            display: flex;
             width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 0;
-            pointer-events: none;
-            mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+            min-height: 100vh;
         }
 
-        /* ✨ Ambient Floating Particles */
-        #particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes drift {
-            0% {
-                transform: translateY(0) translateX(0) scale(1);
-            }
-            50% {
-                transform: translateY(-80px) translateX(30px) scale(1.3);
-            }
-            100% {
-                transform: translateY(-160px) translateX(10px) scale(0.7);
-                opacity: 0;
-            }
-        }
-
-        /* 🚪 Centered Cohesive Portal Layout */
-        .portal-wrapper {
-            width: 100%;
-            max-width: 480px; /* Dibatasi agar kartu terlihat sangat solid dan proporsional */
+        /* ── Left Panel: Branding ── */
+        .brand-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #4361ee 0%, #7209b7 50%, #f72585 100%);
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            z-index: 10;
-        }
-
-        /* 🏷️ Header Brand Info */
-        .header-brand {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: fadeInDown 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both;
-        }
-
-        .brand-badge {
-            font-family: var(--font-heading);
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent-orange);
-            letter-spacing: 0.25em;
-            background: rgba(255, 123, 0, 0.06);
-            border: 1px solid rgba(255, 123, 0, 0.15);
-            padding: 6px 14px;
-            border-radius: 30px;
-            display: inline-block;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(255, 123, 0, 0.05);
-        }
-
-        .header-brand h1 {
-            font-family: var(--font-heading);
-            font-size: 1.85rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: white;
-            margin-bottom: 4px;
-            line-height: 1.2;
-        }
-        
-        .header-brand h1 span {
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-brand p {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* 🎴 3D Tilt Glassmorphism Login Card */
-        .login-box {
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 45px 35px;
-            border-radius: 28px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            padding: 60px 50px;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-            animation: scaleIn 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both;
         }
 
-        .login-box:hover {
-            box-shadow: 0 35px 80px rgba(255, 123, 0, 0.06), 0 30px 70px rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Glowing Top Neon Border Line */
-        .login-box::before {
+        /* Decorative circles on brand panel */
+        .brand-panel::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-orange), var(--accent-purple), var(--accent-cyan));
-            z-index: 10;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            top: -150px;
+            right: -100px;
         }
 
-        /* 🔦 Interactive Mouse-Spotlight Glowing Effect */
-        .login-box::after {
+        .brand-panel::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 123, 0, 0.09), transparent 45%);
-            z-index: 1;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            bottom: -100px;
+            left: -80px;
         }
 
-        /* Branding row inside login box */
-        .brand-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 35px;
-            transform: translateZ(30px); /* 3D Depth effect */
+        .brand-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 420px;
         }
 
-        .brand-logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(255, 123, 0, 0.08);
-            border: 1px solid rgba(255, 123, 0, 0.2);
+        .brand-logo-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            color: var(--accent-orange);
-            box-shadow: 0 8px 20px rgba(255, 123, 0, 0.1);
-            position: relative;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
 
-        .brand-logo-img img {
+        .brand-logo-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 24px;
         }
 
-        .brand-titles h3 {
-            font-family: var(--font-heading);
-            font-size: 1.45rem;
-            font-weight: 700;
+        .brand-logo-circle i {
+            font-size: 2.2rem;
             color: white;
-            line-height: 1.1;
         }
 
-        .brand-titles h3 span {
-            color: var(--accent-orange);
+        .brand-content h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
-        .brand-titles span {
-            font-size: 0.72rem;
-            color: var(--text-muted);
+        .brand-content h1 span {
+            opacity: 0.85;
             font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
         }
 
-        /* ✍️ Form Inputs with Floating Labels and Left Border Accent */
-        .input-group {
-            position: relative;
-            margin-bottom: 30px;
-            transform: translateZ(20px); /* 3D Depth */
+        .brand-tagline {
+            font-size: 1.05rem;
+            opacity: 0.85;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 40px;
         }
 
-        .input-wrapper {
-            position: relative;
-        }
-
-        input {
+        /* Feature badges on brand panel */
+        .brand-features {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             width: 100%;
-            padding: 18px 16px 18px 50px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-left: 3px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 16px 20px;
+            border-radius: 16px;
+            transition: var(--transition);
+        }
+
+        .brand-feature:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateX(5px);
+        }
+
+        .brand-feature-icon {
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            outline: none;
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-bright);
-            font-size: 0.95rem;
-            font-family: var(--font-body);
-            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
-        input:focus {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.1);
-            border-left-color: var(--accent-orange);
-            box-shadow: 0 8px 20px rgba(255, 123, 0, 0.08);
+        .brand-feature-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
         }
 
-        /* 🛡️ Override Chrome/Edge Autofill Background style */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #0f132a inset !important; /* Matches card glass color */
-            -webkit-text-fill-color: white !important;
-            transition: background-color 5000s ease-in-out 0s;
-            border-left: 3px solid var(--accent-orange) !important;
+        .brand-feature-text p {
+            font-size: 0.78rem;
+            opacity: 0.75;
+            font-weight: 400;
         }
 
-        /* Unique Floating Label styles */
-        .input-label {
+        /* ── Right Panel: Login Form ── */
+        .form-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 50px;
+            background: var(--bg-base);
+            position: relative;
+        }
+
+        .form-panel::before {
+            content: '';
             position: absolute;
-            left: 50px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: var(--font-heading);
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-muted);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.08), transparent 70%);
+            top: 10%;
+            right: 10%;
             pointer-events: none;
-            transition: var(--transition);
         }
 
-        /* Float the label perfectly when input is focused or not empty */
-        input:focus ~ .input-label,
-        input:not(:placeholder-shown) ~ .input-label {
-            top: -10px;
-            left: 12px;
-            font-size: 0.76rem;
+        .form-panel::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(114, 9, 183, 0.06), transparent 70%);
+            bottom: 15%;
+            left: 5%;
+            pointer-events: none;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 48px 40px;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            z-index: 2;
+            animation: cardFadeIn 0.6s ease-out both;
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top accent line */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            right: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 0 0 3px 3px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .form-header .greeting-badge {
+            display: inline-block;
+            font-size: 0.72rem;
             font-weight: 700;
-            color: var(--accent-orange);
-            background: #0f132a; /* Matches card inner solid background for readability */
-            padding: 2px 8px;
-            border-radius: 4px;
-            letter-spacing: 0.05em;
+            color: var(--primary);
+            letter-spacing: 0.15em;
             text-transform: uppercase;
+            background: rgba(67, 97, 238, 0.08);
+            border: 1px solid rgba(67, 97, 238, 0.15);
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-bottom: 16px;
         }
 
-        .input-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
+        .form-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .form-header p {
+            font-size: 0.9rem;
             color: var(--text-muted);
-            font-size: 1.15rem;
-            transition: var(--transition);
-            pointer-events: none;
+            font-weight: 400;
         }
 
-        input:focus ~ .input-icon {
-            color: var(--accent-orange);
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        /* 🛑 Modern Crimson Error Badge */
-        .error-msg {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            padding: 12px 16px;
-            border-radius: 12px;
+        /* Error message */
+        .error-alert {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #dc2626;
+            padding: 14px 18px;
+            border-radius: 14px;
             font-size: 0.88rem;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-family: var(--font-body);
-            animation: shake 0.5s ease-in-out;
-            transform: translateZ(25px);
+            animation: shakeIn 0.5s ease-in-out;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0) translateZ(25px); }
-            25% { transform: translateX(-5px) translateZ(25px); }
-            75% { transform: translateX(5px) translateZ(25px); }
+        @keyframes shakeIn {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
-        /* 🎟️ Button with gloss sweep */
-        button {
+        /* Form inputs */
+        .input-field {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 14px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .input-field input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .input-field input:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+        .input-field .field-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .input-field input:focus ~ .field-icon {
+            color: var(--primary);
+        }
+
+        .input-field .float-label {
+            position: absolute;
+            left: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: var(--transition);
+            background: transparent;
+        }
+
+        .input-field input:focus ~ .float-label,
+        .input-field input:not(:placeholder-shown) ~ .float-label {
+            top: -8px;
+            left: 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* Submit button */
+        .btn-login {
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-light));
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            font-family: var(--font-heading);
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(255, 123, 0, 0.2);
-            margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.25);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.06em;
             position: relative;
             overflow: hidden;
-            transform: translateZ(35px); /* Highest 3D depth */
+            margin-top: 8px;
         }
 
-        button::after {
+        .btn-login::after {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: all 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.6s ease;
         }
 
-        button:hover {
-            transform: translateY(-2px) translateZ(40px);
-            box-shadow: 0 12px 35px rgba(255, 123, 0, 0.4);
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.35);
         }
 
-        button:hover::after {
+        .btn-login:hover::after {
             left: 100%;
         }
 
-        /* 📋 Bottom Features Row (Perfect alignment and spaciousness) */
-        .features-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 35px;
-            width: 100%;
-            z-index: 10;
-            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s both;
+        .btn-login:active {
+            transform: translateY(0);
         }
 
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            background: rgba(15, 19, 42, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 16px 20px;
-            border-radius: 18px;
-            flex: 1;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .feature-item:hover {
-            background: rgba(15, 19, 42, 0.5);
-            border-color: rgba(255, 123, 0, 0.25);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .feature-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            background: rgba(255, 123, 0, 0.07);
-            border: 1px solid rgba(255, 123, 0, 0.15);
-            color: var(--accent-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-            transition: var(--transition);
-        }
-
-        .feature-item:hover .feature-icon {
-            background: rgba(255, 123, 0, 0.15);
-            color: var(--accent-orange-light);
-            transform: scale(1.05);
-        }
-
-        .feature-item h5 {
-            font-family: var(--font-heading);
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .feature-item p {
-            font-size: 0.76rem;
+        /* Footer text */
+        .form-footer {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 0.78rem;
             color: var(--text-muted);
-            line-height: 1.4;
         }
 
-        /* 🎬 Keyframe Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .form-footer i {
+            color: var(--primary);
+            margin-right: 4px;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* 📱 Flawless Fluid Responsiveness */
-        @media (max-width: 768px) {
-            body {
-                padding: 40px 15px;
-            }
-
-            .header-brand {
-                margin-bottom: 25px;
-            }
-
-            .header-brand h1 {
-                font-size: 1.6rem;
-            }
-
-            .header-brand p {
-                font-size: 0.82rem;
-            }
-
-            .login-box {
-                padding: 35px 22px;
-                border-radius: 24px;
-            }
-
-            .features-row {
+        /* ═══════════════ RESPONSIVE ═══════════════ */
+        @media (max-width: 960px) {
+            .login-split {
                 flex-direction: column;
-                gap: 15px;
-                margin-top: 25px;
             }
 
-            .feature-item {
-                padding: 16px 20px;
-                border-radius: 16px;
+            .brand-panel {
+                padding: 40px 30px;
+                min-height: auto;
+            }
+
+            .brand-content h1 {
+                font-size: 1.7rem;
+            }
+
+            .brand-tagline {
+                margin-bottom: 25px;
+                font-size: 0.95rem;
+            }
+
+            .brand-features {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .brand-feature {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .form-panel {
+                padding: 40px 30px;
+            }
+
+            .login-card {
+                padding: 36px 28px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .brand-panel {
+                padding: 35px 20px;
+            }
+
+            .brand-content h1 {
+                font-size: 1.4rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.88rem;
+                margin-bottom: 20px;
+            }
+
+            .brand-features {
+                flex-direction: column;
+            }
+
+            .brand-feature {
+                padding: 12px 16px;
+            }
+
+            .brand-logo-circle {
+                width: 70px;
+                height: 70px;
+                border-radius: 18px;
+                margin-bottom: 20px;
+            }
+
+            .form-panel {
+                padding: 30px 20px;
+            }
+
+            .login-card {
+                padding: 32px 22px;
+                border-radius: 22px;
+            }
+
+            .form-header h2 {
+                font-size: 1.35rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Background glowing atmospheric mesh lights -->
-    <div class="glow-blob blob-1"></div>
-    <div class="glow-blob blob-2"></div>
-    <div class="glow-blob blob-3"></div>
-
-    <!-- Blueprint mesh background -->
-    <div class="grid-lines"></div>
-
-    <!-- Cinematic background drift particles -->
-    <div id="particles-container"></div>
-
-    <!-- Centered cohesive portal -->
-    <div class="portal-wrapper">
-        
-        <!-- Header Brand Info -->
-        <div class="header-brand">
-            <span class="brand-badge">Sistem Presensi Digital</span>
-            <h1>Badan Pusat Statistik <span>Sultra</span></h1>
-            <p>BPS Provinsi Sulawesi Tenggara</p>
-        </div>
-
-        <!-- 3D Parallax & Spotlight Glassmorphism Card -->
-        <div class="login-box" id="login-card">
-            
-            <!-- Branding Row -->
-            <div class="brand-row">
-                <div class="brand-logo-img">
-                    <img src="{{ asset('assets/img/logo_login.png') }}" alt="Logo" class="login-logo-img-el">
+    <div class="login-split">
+        <!-- ═══ Left: Branding Panel ═══ -->
+        <div class="brand-panel">
+            <div class="brand-content">
+                <div class="brand-logo-circle">
+                    <img src="{{ asset('assets/img/logo_login.png') }}" alt="Logo BPS" id="brand-logo-img"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-fingerprint\'></i>';">
                 </div>
-                <div class="brand-titles">
-                    <h3>Absensi<span>Ku</span></h3>
-                    <span>Presensi Digital Sultra</span>
+
+                <h1>AbsensiKu <span>— BPS Sultra</span></h1>
+                <p class="brand-tagline">Sistem Presensi Digital Badan Pusat Statistik Provinsi Sulawesi Tenggara</p>
+
+                <div class="brand-features">
+                    <div class="brand-feature">
+                        <div class="brand-feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="brand-feature-text">
+                            <h4>Laporan Real-time</h4>
+                            <p>Log absensi masuk secara instan ke dashboard</p>
+                        </div>
+                    </div>
+                    <div class="brand-feature">
+                        <div class="brand-feature-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="brand-feature-text">
+                            <h4>QR Code Secure</h4>
+                            <p>Enkripsi kode QR acak untuk keamanan log</p>
+                        </div>
+                    </div>
+                    <div class="brand-feature">
+                        <div class="brand-feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="brand-feature-text">
+                            <h4>Multi-Device</h4>
+                            <p>Akses dari perangkat mana saja, kapan saja</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Laravel validation error handling -->
-            @if($errors->has('error'))
-                <div class="error-msg">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>{{ $errors->first('error') }}</span>
+        <!-- ═══ Right: Login Form Panel ═══ -->
+        <div class="form-panel">
+            <div class="login-card">
+                <div class="form-header">
+                    <span class="greeting-badge">Selamat Datang</span>
+                    <h2>Masuk ke Akun Anda</h2>
+                    <p>Silakan login untuk melanjutkan</p>
                 </div>
-            @endif
 
-            <form method="POST" action="{{ route('login.submit') }}">
-                @csrf
-                
-                <!-- Username Field (Floating Label) -->
-                <div class="input-group">
-                    <div class="input-wrapper">
+                @if($errors->has('error'))
+                    <div class="error-alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>{{ $errors->first('error') }}</span>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login.submit') }}">
+                    @csrf
+
+                    <div class="input-field">
                         <input type="text" id="username" name="username" placeholder=" " value="{{ old('username') }}" required autofocus>
-                        <label class="input-label" for="username">Username / Email</label>
-                        <i class="fas fa-user input-icon"></i>
+                        <i class="fas fa-user field-icon"></i>
+                        <label class="float-label" for="username">Username / Email</label>
                     </div>
-                </div>
-                
-                <!-- Password Field (Floating Label) -->
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <input type="password" id="password" name="password" placeholder=" " required>
-                        <label class="input-label" for="password">Password</label>
-                        <i class="fas fa-lock input-icon"></i>
-                    </div>
-                </div>
-                
-                <!-- Submit Button -->
-                <button type="submit">Login</button>
-            </form>
-        </div>
 
-        <!-- Center aligned outlines feature cards row -->
-        <div class="features-row">
-            <div class="feature-item">
-                <span class="feature-icon"><i class="fas fa-chart-pie"></i></span>
-                <div>
-                    <h5>Laporan Real-time</h5>
-                    <p>Log absensi masuk secara instan ke dashboard.</p>
-                </div>
-            </div>
-            
-            <div class="feature-item">
-                <span class="feature-icon"><i class="fas fa-qrcode"></i></span>
-                <div>
-                    <h5>Random QR Secure</h5>
-                    <p>Enkripsi kode QR acak menjamin keamanan log.</p>
+                    <div class="input-field">
+                        <input type="password" id="password" name="password" placeholder=" " required>
+                        <i class="fas fa-lock field-icon"></i>
+                        <label class="float-label" for="password">Password</label>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> &nbsp;Login
+                    </button>
+                </form>
+
+                <div class="form-footer">
+                    <i class="fas fa-shield-alt"></i> Dilindungi oleh sistem keamanan AbsensiKu
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Interactive Scripts for Mouse tracking, 3D Tilt, and Cinematic Particles -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const card = document.getElementById('login-card');
-            const body = document.body;
-
-            // 1. 🔦 Interactive Spotlight Tracking
-            card.addEventListener('mousemove', function(e) {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-
-            // 2. 🎴 3D Parallax Tilt Effect (Desktop Only)
-            if (window.innerWidth > 768) {
-                body.addEventListener('mousemove', function(e) {
-                    const xAxis = (window.innerWidth / 2 - e.clientX) / 30; // Tilt speed X
-                    const yAxis = (window.innerHeight / 2 - e.clientY) / 30; // Tilt speed Y
-                    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                });
-
-                // Reset tilt smoothly when mouse leaves screen area
-                body.addEventListener('mouseleave', function() {
-                    card.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)';
-                    card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-                });
-
-                body.addEventListener('mouseenter', function() {
-                    card.style.transition = 'none';
-                });
-            }
-
-            // 3. ✨ Ambient Floating Particle Generator
-            const particlesContainer = document.getElementById('particles-container');
-            if (particlesContainer) {
-                const particleCount = 30;
-                for (let i = 0; i < particleCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    
-                    const size = Math.random() * 4 + 1; // 1px to 5px
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    particle.style.left = `${Math.random() * 100}%`;
-                    particle.style.top = `${Math.random() * 100}%`;
-                    particle.style.opacity = Math.random() * 0.4 + 0.1;
-                    
-                    const duration = Math.random() * 20 + 10; // 10s to 30s
-                    particle.style.animation = `drift ${duration}s linear infinite`;
-                    particle.style.animationDelay = `-${Math.random() * duration}s`;
-                    
-                    particlesContainer.appendChild(particle);
-                }
-            }
-
-            // 4. 🖼️ Fallback Logo Handler to avoid HTML parsing errors
-            const logoImg = document.querySelector('.login-logo-img-el');
-            if (logoImg) {
-                logoImg.addEventListener('error', function() {
-                    this.style.display = 'none';
-                    // Replace the container contents safely with FontAwesome icon
-                    const logoContainer = document.querySelector('.brand-logo-img');
-                    if (logoContainer) {
-                        logoContainer.innerHTML = '<i class="fas fa-fingerprint"></i>';
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>

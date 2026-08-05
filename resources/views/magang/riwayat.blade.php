@@ -21,13 +21,13 @@
     
     th, td {
         padding: 15px 20px;
-        border-bottom: 1px solid var(--light-gray);
+        border-bottom: 1px solid var(--border-light);
     }
     
     th {
-        background-color: var(--light);
+        background-color: rgba(67,97,238,0.03);
         font-weight: 600;
-        color: var(--dark);
+        color: var(--text-dark);
         font-size: 0.95rem;
     }
     
@@ -48,12 +48,12 @@
     
     .status-hadir {
         background: rgba(40, 167, 69, 0.15);
-        color: var(--hadir);
+        color: var(--success);
     }
     
     .status-terlambat {
         background: rgba(255, 193, 7, 0.15);
-        color: #856404;
+        color: #92400e;
     }
     
     .status-pulang-cepat {
@@ -94,7 +94,7 @@
 
     <div class="table-container">
         @if ($riwayat->isEmpty())
-            <div style="text-align:center; color:#999; padding: 40px;">
+            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
                 <i class="fas fa-folder-open fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
                 <p>Belum ada riwayat kehadiran tercatat.</p>
             </div>
@@ -129,7 +129,7 @@
                             </td>
                             <td>{{ $r->qr->nama_kegiatan ?? 'Kegiatan' }}</td>
                             <td>
-                                <span style="font-weight: 500; color: var(--hadir);">{{ $checkInTime }}</span>
+                                <span style="font-weight: 500; color: var(--success);">{{ $checkInTime }}</span>
                                 <div style="font-size: 0.8rem; color: var(--text-muted);">Badge: {{ $r->status_cek_in }}</div>
                             </td>
                             <td>
