@@ -26,28 +26,81 @@
                     },
                     colors: {
                         primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6', // Vibrant Violet
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        secondary: {
+                            500: '#ec4899', // Pink
+                            600: '#db2777',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'blob': {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         }
                     }
                 }
             }
         }
     </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .animated-bg {
+            background: linear-gradient(-45deg, #f5f3ff, #e0e7ff, #fae8ff, #f0fdf4);
+            background-size: 400% 400%;
+            animation: gradient-x 15s ease infinite;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.6); }
+    </style>
     @yield('styles')
 </head>
 
 <body
-    class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-blue-500 selection:text-white flex h-screen relative"
+    class="animated-bg text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative"
     x-data="{ sidebarOpen: false, pageLoaded: false }"
     x-init="setTimeout(() => pageLoaded = true, 50)">
 
-    <!-- Decorative Background Elements -->
-    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-400/10 blur-[100px] pointer-events-none"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-400/10 blur-[100px] pointer-events-none"></div>
+    <!-- Decorative Background Elements (Animated Blobs) -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary-400/20 blur-[100px] pointer-events-none animate-blob"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-500/10 blur-[100px] pointer-events-none animate-blob" style="animation-delay: 2s"></div>
+    <div class="fixed top-[40%] left-[20%] w-[30%] h-[30%] rounded-full bg-emerald-400/10 blur-[80px] pointer-events-none animate-blob" style="animation-delay: 4s"></div>
 
     <!-- Alpine.js for interactive UI -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -64,7 +117,7 @@
 
         <!-- Header -->
         <header
-            class="bg-white/70 backdrop-blur-xl border-b border-white/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)] z-30 py-3 px-6 flex items-center justify-between sticky top-0 transition-all duration-300">
+            class="glass-panel z-30 py-3 px-6 flex items-center justify-between sticky top-0 transition-all duration-300">
             <div class="flex items-center gap-4">
                 <!-- Mobile Menu Button -->
                 <button @click="sidebarOpen = true"
