@@ -23,9 +23,9 @@ class DashboardController extends Controller
         // 1. Ambil data metrik statistik
         $stats = [
             'total_users' => User::count(),
-            'total_qr' => Qr::count(),
-            'today_attendance' => Absensi::whereDate('created_at', $today)->count(),
-            'active_qr' => Qr::where('expired_at', '>', $nowString)->count(),
+            'hadir_hari_ini' => Absensi::whereDate('created_at', $today)->where('status_cek_in', 'hadir')->count(),
+            'terlambat_hari_ini' => Absensi::whereDate('created_at', $today)->where('status_cek_in', 'terlambat')->count(),
+            'qr_aktif' => Qr::where('expired_at', '>', $nowString)->count(),
         ];
 
         // 2. Ambil 5 user terbaru
