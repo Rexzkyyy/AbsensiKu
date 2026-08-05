@@ -1,362 +1,37 @@
 @extends('layouts.app')
-
-@section('title', 'Dashboard')
-
+@section('title', 'Dashboard Magang')
 @section('header_title', 'Dashboard')
-
-@section('styles')
-<style>
-    /* ═══ Welcome & Time Section ═══ */
-    .welcome-time-section {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 20px;
-        margin-bottom: 28px;
-        box-shadow: 0 8px 30px rgba(67, 97, 238, 0.2);
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 30px;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .welcome-time-section::before {
-        content: '';
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.06);
-        top: -60px;
-        right: -40px;
-    }
-
-    .welcome-content {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .welcome-text h2 {
-        font-size: 1.6rem;
-        margin-bottom: 6px;
-        font-weight: 700;
-    }
-
-    .welcome-text p {
-        opacity: 0.9;
-        font-size: 1rem;
-        font-weight: 400;
-    }
-
-    .quick-actions-horizontal {
-        display: flex;
-        gap: 12px;
-        margin-top: 8px;
-    }
-
-    .action-btn-small {
-        background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 12px;
-        padding: 10px 18px;
-        text-align: center;
-        transition: var(--transition);
-        cursor: pointer;
-        text-decoration: none;
-        color: white;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        font-size: 0.88rem;
-    }
-
-    .action-btn-small:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-    }
-
-    .time-display-compact {
-        text-align: center;
-        min-width: 200px;
-    }
-
-    .time-display-compact .date {
-        font-size: 0.95rem;
-        font-weight: 500;
-        margin-bottom: 8px;
-        opacity: 0.9;
-    }
-
-    .time-display-compact .time {
-        font-size: 2.2rem;
-        font-weight: 800;
-        margin-bottom: 5px;
-        letter-spacing: 2px;
-    }
-
-    .time-display-compact .location {
-        font-size: 0.85rem;
-        opacity: 0.8;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-
-    /* ═══ Notification Card ═══ */
-    .notification-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        color: var(--text-dark);
-        padding: 20px;
-        border-radius: 16px;
-        margin-bottom: 24px;
-        box-shadow: var(--card-shadow);
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        border-left: 4px solid var(--danger);
-        animation: fadeSlideIn 0.5s ease-out;
-    }
-
-    .notification-card.info {
-        border-left-color: var(--primary);
-    }
-
-    .notification-card.warning-style {
-        border-left-color: var(--warning);
-    }
-
-    @keyframes fadeSlideIn {
-        from { opacity: 0; transform: translateX(-10px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    .notification-icon {
-        font-size: 1.3rem;
-        width: 48px;
-        height: 48px;
-        background: rgba(67, 97, 238, 0.08);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        flex-shrink: 0;
-    }
-
-    .notification-card:not(.info):not(.warning-style) .notification-icon {
-        background: rgba(239, 68, 68, 0.08);
-        color: var(--danger);
-    }
-
-    .notification-card.warning-style .notification-icon {
-        background: rgba(245, 158, 11, 0.08);
-        color: var(--warning);
-    }
-
-    .notification-content { flex: 1; }
-
-    .notification-title {
-        font-weight: 700;
-        margin-bottom: 4px;
-        font-size: 1rem;
-        color: var(--text-dark);
-    }
-
-    .notification-message {
-        color: var(--text-muted);
-        font-size: 0.88rem;
-    }
-
-    .notification-actions {
-        margin-top: 10px;
-        display: flex;
-        gap: 10px;
-    }
-
-    .notification-btn {
-        background: linear-gradient(135deg, var(--primary), var(--primary-light));
-        border: none;
-        border-radius: 10px;
-        padding: 8px 16px;
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.82rem;
-        box-shadow: 0 3px 10px rgba(67, 97, 238, 0.2);
-    }
-
-    .notification-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
-    }
-
-    /* ═══ Attendance List ═══ */
-    .attendance-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .attendance-item {
-        display: flex;
-        align-items: center;
-        padding: 18px;
-        background: rgba(255, 255, 255, 0.5);
-        border-radius: 14px;
-        transition: var(--transition);
-        border-left: 4px solid var(--primary);
-        border: 1px solid var(--border-light);
-    }
-
-    .attendance-item:hover {
-        background: rgba(67, 97, 238, 0.03);
-        transform: translateX(3px);
-    }
-
-    .attendance-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        margin-right: 14px;
-        font-size: 0.85rem;
-        flex-shrink: 0;
-    }
-
-    .attendance-details { flex: 1; }
-
-    .attendance-user {
-        font-weight: 600;
-        color: var(--text-dark);
-        margin-bottom: 4px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.92rem;
-    }
-
-    .attendance-activity {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        margin-bottom: 4px;
-    }
-
-    .attendance-time {
-        display: flex;
-        gap: 14px;
-        font-size: 0.8rem;
-        color: var(--text-muted);
-    }
-
-    .time-section {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .attendance-status {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 5px;
-    }
-
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-    }
-
-    .status-checkin { background: rgba(16, 185, 129, 0.08); color: var(--success); }
-    .status-checkout { background: rgba(245, 158, 11, 0.08); color: #b45309; }
-    .status-complete { background: rgba(6, 182, 212, 0.08); color: var(--info); }
-
-    .total-time {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-        .welcome-time-section {
-            grid-template-columns: 1fr;
-            text-align: center;
-            gap: 20px;
-            padding: 25px;
-        }
-
-        .quick-actions-horizontal {
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .time-display-compact .time { font-size: 1.8rem; }
-
-        .notification-card {
-            flex-direction: column;
-            text-align: center;
-            gap: 12px;
-        }
-
-        .notification-actions { justify-content: center; }
-
-        .attendance-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .attendance-status {
-            align-items: flex-start;
-            width: 100%;
-        }
-    }
-</style>
-@endsection
 
 @section('content')
 <!-- Welcome & Time Section -->
-<div class="welcome-time-section">
-    <div class="welcome-content">
-        <div class="welcome-text">
-            <h2>Halo, {{ htmlspecialchars($username) }}! 👋</h2>
-            <p>Selamat datang di sistem absensi digital</p>
-        </div>
-        <div class="quick-actions-horizontal">
-            <a href="{{ route('magang.scan') }}" class="action-btn-small">
-                <i class="fas fa-qrcode"></i> Scan QR Code
-            </a>
-            <a href="{{ route('magang.peserta') }}" class="action-btn-small">
-                <i class="fas fa-users"></i> Data Peserta
-            </a>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="lg:col-span-2 bg-gradient-to-br from-blue-600 via-primary-600 to-cyan-500 rounded-3xl p-6 md:p-10 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] relative overflow-hidden flex flex-col justify-center">
+        <!-- Decorative Background -->
+        <div class="absolute -right-10 -top-10 w-64 h-64 bg-white/20 rounded-full blur-3xl mix-blend-overlay"></div>
+        <div class="absolute right-32 -bottom-20 w-48 h-48 bg-cyan-300/30 rounded-full blur-2xl mix-blend-overlay"></div>
+        <div class="absolute left-10 top-10 w-24 h-24 bg-blue-300/20 rounded-full blur-xl mix-blend-overlay"></div>
+        
+        <div class="relative z-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Halo, {{ htmlspecialchars($username) }}! 👋</h2>
+            <p class="text-blue-100 mb-6 md:text-lg">Selamat datang di sistem absensi digital</p>
+            
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('magang.scan') }}" class="inline-flex items-center gap-2 bg-white text-primary-600 font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm">
+                    <i class="fas fa-qrcode"></i> Scan QR Code
+                </a>
+                <a href="{{ route('magang.peserta') }}" class="inline-flex items-center gap-2 bg-primary-700/50 hover:bg-primary-700 text-white font-semibold px-5 py-2.5 rounded-xl border border-primary-500/30 transition backdrop-blur-sm shadow-sm">
+                    <i class="fas fa-users"></i> Data Peserta
+                </a>
+            </div>
         </div>
     </div>
-    <div class="time-display-compact">
-        <div class="date" id="current-date">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
-        <div class="time" id="current-time">{{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }}</div>
-        <div class="location">
-            <i class="fas fa-map-marker-alt"></i>
+
+    <!-- Digital Clock Card -->
+    <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-6 flex flex-col items-center justify-center text-center">
+        <div class="text-sm font-bold text-blue-600 mb-2 uppercase tracking-widest" id="current-date">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
+        <div class="text-5xl md:text-6xl font-black text-slate-800 tracking-tighter mb-4 drop-shadow-sm" id="current-time">{{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }}</div>
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full text-xs font-bold text-slate-600 border border-white/50 shadow-sm">
+            <i class="fas fa-map-marker-alt text-blue-500"></i>
             <span>Kendari - WITA</span>
         </div>
     </div>
@@ -364,64 +39,70 @@
 
 <!-- Notification: Data Magang belum lengkap -->
 @if (!$sudahIsiDataMagang)
-<div class="notification-card info">
-    <div class="notification-icon">
+<div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8 shadow-sm flex flex-col md:flex-row gap-5 items-start md:items-center">
+    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-xl">
         <i class="fas fa-info-circle"></i>
     </div>
-    <div class="notification-content">
-        <div class="notification-title">Data Magang Belum Lengkap</div>
-        <div class="notification-message">Anda belum melengkapi biodata magang Anda. Silakan isi data diri terlebih dahulu untuk mempermudah administrasi.</div>
-        <div class="notification-actions">
-            <a href="{{ route('magang.peserta') }}" class="notification-btn">
-                <i class="fas fa-edit"></i> Isi Data Magang
-            </a>
-        </div>
+    <div class="flex-1">
+        <h4 class="font-bold text-blue-900 mb-1">Data Magang Belum Lengkap</h4>
+        <p class="text-blue-700 text-sm">Anda belum melengkapi biodata magang Anda. Silakan isi data diri terlebih dahulu untuk mempermudah administrasi.</p>
+    </div>
+    <div class="flex-shrink-0 mt-3 md:mt-0 w-full md:w-auto">
+        <a href="{{ route('magang.peserta') }}" class="inline-flex justify-center items-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-sm text-sm">
+            <i class="fas fa-edit"></i> Isi Data Magang
+        </a>
     </div>
 </div>
 @endif
 
 <!-- Notification: Absensi hari ini -->
 @if (!$todayAttendance)
-<div class="notification-card">
-    <div class="notification-icon">
+<div class="bg-red-50 border border-red-100 rounded-2xl p-5 mb-8 shadow-sm flex flex-col md:flex-row gap-5 items-start md:items-center">
+    <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0 text-xl">
         <i class="fas fa-exclamation-triangle"></i>
     </div>
-    <div class="notification-content">
-        <div class="notification-title">Perhatian!</div>
-        <div class="notification-message">Anda belum melakukan absen masuk hari ini. Silakan scan QR Code untuk mencatat kehadiran Anda.</div>
-        <div class="notification-actions">
-            <a href="{{ route('magang.scan') }}" class="notification-btn">
-                <i class="fas fa-qrcode"></i> Scan QR Code
-            </a>
-        </div>
+    <div class="flex-1">
+        <h4 class="font-bold text-red-900 mb-1">Perhatian!</h4>
+        <p class="text-red-700 text-sm">Anda belum melakukan absen masuk hari ini. Silakan scan QR Code untuk mencatat kehadiran Anda.</p>
+    </div>
+    <div class="flex-shrink-0 mt-3 md:mt-0 w-full md:w-auto">
+        <a href="{{ route('magang.scan') }}" class="inline-flex justify-center items-center gap-2 w-full bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-sm text-sm">
+            <i class="fas fa-qrcode"></i> Scan QR Code
+        </a>
     </div>
 </div>
 @elseif ($todayAttendance && empty($todayAttendance->absen_cek_out))
-<div class="notification-card warning-style">
-    <div class="notification-icon">
+<div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 mb-8 shadow-sm flex flex-col md:flex-row gap-5 items-start md:items-center">
+    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 text-xl">
         <i class="fas fa-clock"></i>
     </div>
-    <div class="notification-content">
-        <div class="notification-title">Absen Masuk Tercatat</div>
-        <div class="notification-message">Anda sudah melakukan absen masuk pada jam {{ Carbon\Carbon::parse($todayAttendance->absen_cek_in)->format('H:i') }} WITA. Jangan lupa untuk melakukan absen keluar saat jam pulang kerja!</div>
-        <div class="notification-actions">
-            <a href="{{ route('magang.scan') }}" class="notification-btn">
-                <i class="fas fa-qrcode"></i> Scan QR Code Pulang
-            </a>
-        </div>
+    <div class="flex-1">
+        <h4 class="font-bold text-amber-900 mb-1">Absen Masuk Tercatat</h4>
+        <p class="text-amber-700 text-sm">Anda sudah melakukan absen masuk pada jam <strong>{{ Carbon\Carbon::parse($todayAttendance->absen_cek_in)->format('H:i') }} WITA</strong>. Jangan lupa untuk melakukan absen keluar saat jam pulang kerja!</p>
+    </div>
+    <div class="flex-shrink-0 mt-3 md:mt-0 w-full md:w-auto">
+        <a href="{{ route('magang.scan') }}" class="inline-flex justify-center items-center gap-2 w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-sm text-sm">
+            <i class="fas fa-qrcode"></i> Scan QR Pulang
+        </a>
     </div>
 </div>
 @endif
 
 <!-- Riwayat Absensi Saya -->
-<div class="card">
-    <h3 class="section-title"><i class="fas fa-history"></i> Riwayat Absensi Saya</h3>
-    <div class="attendance-list">
+<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+    <div class="px-6 py-5 border-b border-white/40 bg-white/30">
+        <h3 class="font-extrabold text-slate-800 flex items-center gap-2 text-xl tracking-tight">
+            <i class="fas fa-history text-cyan-500"></i> Riwayat Absensi Saya
+        </h3>
+    </div>
+    <div class="p-4 md:p-6 divide-y divide-slate-100/50">
         @if ($myRecentAttendance->isEmpty())
-            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
-                <i class="fas fa-clipboard-list fa-3x" style="margin-bottom: 15px; opacity: 0.3;"></i>
-                <p>Belum ada riwayat absensi.</p>
-                <p style="margin-top: 10px; font-size: 0.88rem;">Lakukan absen pertama Anda dengan scan QR Code</p>
+            <div class="text-center py-10 px-4">
+                <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300 shadow-inner">
+                    <i class="fas fa-clipboard-list text-2xl"></i>
+                </div>
+                <h4 class="font-medium text-gray-600 mb-1">Belum ada riwayat absensi.</h4>
+                <p class="text-sm text-gray-400">Lakukan absen pertama Anda dengan scan QR Code</p>
             </div>
         @else
             @foreach ($myRecentAttendance as $attendance)
@@ -429,50 +110,76 @@
                     $checkInTime = $attendance->absen_cek_in ? Carbon\Carbon::parse($attendance->absen_cek_in)->format('H:i') : '-';
                     $checkOutTime = $attendance->absen_cek_out ? Carbon\Carbon::parse($attendance->absen_cek_out)->format('H:i') : '-';
                     $attendanceDate = Carbon\Carbon::parse($attendance->created_at)->isoFormat('D MMM Y');
-                    $attendanceDay = $attendance->hari_absen;
-
+                    
                     if ($attendance->absen_cek_in && $attendance->absen_cek_out) {
-                        $status = 'complete'; $statusText = 'Selesai'; $borderColor = 'var(--success)';
+                        $statusBadge = 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                        $statusText = 'Selesai'; 
+                        $borderLeft = 'border-l-4 border-l-emerald-500';
                     } elseif ($attendance->absen_cek_in && !$attendance->absen_cek_out) {
-                        $status = 'checkin'; $statusText = 'Masuk'; $borderColor = 'var(--warning)';
+                        $statusBadge = 'bg-amber-100 text-amber-700 border-amber-200';
+                        $statusText = 'Masuk'; 
+                        $borderLeft = 'border-l-4 border-l-amber-500';
                     } else {
-                        $status = 'checkout'; $statusText = 'Keluar'; $borderColor = 'var(--danger)';
+                        $statusBadge = 'bg-red-100 text-red-700 border-red-200';
+                        $statusText = 'Keluar'; 
+                        $borderLeft = 'border-l-4 border-l-red-500';
                     }
+                    $initials = strtoupper(substr($username, 0, 2));
                 @endphp
-                <div class="attendance-item" style="border-left: 4px solid {{ $borderColor }}">
-                    @php $initials = strtoupper(substr($username, 0, 2)); @endphp
-                    <div class="attendance-avatar">{{ $initials }}</div>
-                    <div class="attendance-details">
-                        <div class="attendance-user">
-                            {{ $username }}
-                            <span style="font-size:0.78rem; color:var(--text-muted); font-weight:normal;">
-                                • {{ $attendanceDay }}, {{ $attendanceDate }}
-                            </span>
+                
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4 px-2 {{ $borderLeft }} pl-4 -ml-4 bg-gray-50/30 rounded-r-xl mb-2 hover:bg-gray-50 transition">
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-gray-600 flex flex-shrink-0 items-center justify-center font-bold shadow-inner text-sm">
+                            {{ $initials }}
                         </div>
-                        @if ($attendance->qr)
-                            <div class="attendance-activity">
-                                <i class="fas fa-tasks"></i> {{ $attendance->qr->nama_kegiatan }}
+                        <div>
+                            <div class="font-bold text-gray-800">{{ $username }}</div>
+                            <div class="text-xs font-medium text-gray-500 mt-0.5">
+                                <i class="far fa-calendar-alt mr-1"></i> {{ $attendance->hari_absen }}, {{ $attendanceDate }}
                             </div>
-                        @endif
-                        <div class="attendance-time">
-                            <div class="time-section">
-                                <i class="fas fa-sign-in-alt" style="color:var(--success);"></i>
-                                <span>Masuk: {{ $checkInTime }} WITA</span>
+                            @if ($attendance->qr)
+                                <div class="text-xs text-primary-600 bg-primary-50 px-2 py-0.5 rounded flex w-fit items-center mt-1.5 border border-primary-100">
+                                    <i class="fas fa-tasks mr-1.5"></i> {{ $attendance->qr->nama_kegiatan }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 bg-white p-3 rounded-lg border border-gray-100 shadow-sm w-full lg:w-auto">
+                        <div class="flex items-center gap-2 text-sm">
+                            <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+                                <i class="fas fa-sign-in-alt"></i>
                             </div>
-                            <div class="time-section">
-                                <i class="fas fa-sign-out-alt" style="color:var(--warning);"></i>
-                                <span>Keluar: {{ $checkOutTime }} WITA</span>
+                            <div>
+                                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Masuk</div>
+                                <div class="font-semibold text-gray-800">{{ $checkInTime }} <span class="text-[10px] text-gray-500 font-normal">WITA</span></div>
+                            </div>
+                        </div>
+                        <div class="hidden sm:block w-px h-8 bg-gray-200"></div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <div class="w-7 h-7 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 shrink-0">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Keluar</div>
+                                <div class="font-semibold text-gray-800">{{ $checkOutTime }} <span class="text-[10px] text-gray-500 font-normal">WITA</span></div>
                             </div>
                         </div>
                     </div>
-                    <div class="attendance-status">
-                        <span class="status-badge status-{{ $status }}">{{ $statusText }}</span>
+                    
+                    <div class="flex items-center justify-between lg:flex-col lg:items-end lg:justify-center gap-2 w-full lg:w-auto mt-2 lg:mt-0">
+                        <span class="px-3 py-1 text-xs font-bold rounded-full border {{ $statusBadge }}">
+                            {{ $statusText }}
+                        </span>
+                        
                         @if ($attendance->absen_cek_out)
-                            <span class="total-time">
-                                <i class="fas fa-hourglass-half"></i> Total: {{ $attendance->total_waktu_formatted }}
-                            </span>
+                            <div class="text-xs font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-md flex items-center">
+                                <i class="fas fa-hourglass-half mr-1.5 text-gray-400"></i> Total: {{ $attendance->total_waktu_formatted }}
+                            </div>
                         @endif
                     </div>
+                    
                 </div>
             @endforeach
         @endif
