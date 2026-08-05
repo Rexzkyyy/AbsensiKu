@@ -9,9 +9,9 @@
     <title>@yield('title') - AbsensiKu</title>
 
     <!-- PWA Meta Tags -->
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#8b5cf6">
-    <link rel="apple-touch-icon" href="{{ asset('assets/img/logo_login.png') }}">
+    <link rel="apple-touch-icon" href="/assets/img/logo_login.png">
 
     <!-- Inter Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

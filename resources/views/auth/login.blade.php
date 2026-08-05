@@ -7,9 +7,9 @@
     <meta name="description" content="Login AbsensiKu - Sistem Presensi Digital BPS Sulawesi Tenggara">
 
     <!-- PWA Meta Tags -->
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#8b5cf6">
-    <link rel="apple-touch-icon" href="{{ asset('assets/img/logo_login.png') }}">
+    <link rel="apple-touch-icon" href="/assets/img/logo_login.png">
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
