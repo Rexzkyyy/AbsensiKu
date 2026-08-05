@@ -1,79 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'Scan QR Code')
-
 @section('header_title', 'Scan QR')
 
 @section('styles')
     <style>
-        /* Scanner Styles */
-        /* Time Display Custom Compact Override for Scanner */
-        .time-display {
-            padding: 12px 18px !important;
-            margin-bottom: 20px !important;
-            text-align: center !important;
-            background: rgba(15, 19, 42, 0.6) !important;
-            backdrop-filter: blur(25px) !important;
-            border: 1px solid var(--border-light) !important;
-            box-shadow: var(--card-shadow) !important;
-            border-radius: 14px !important;
-            color: white !important;
-            position: relative;
-        }
-        
-        .time-display::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
-            border-radius: 14px 14px 0 0;
-        }
-
-        .time-display .date {
-            font-family: var(--font-heading) !important;
-            font-size: 0.95rem !important;
-            margin-bottom: 0 !important;
-            font-weight: 600 !important;
-            display: inline-block !important;
-            letter-spacing: 0.5px !important;
-            color: white !important;
-        }
-
-        .time-display .time {
-            display: none !important; /* Sembunyikan jam besar karena jam detik sudah ada di string tanggal */
-        }
-
-        .time-display .location {
-            display: none !important; /* Sembunyikan lokasi agar minimalis */
-        }
-
-        /* Scanner Styles */
-        .scanner-container {
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        .scanner-placeholder {
-            width: 100%;
-            max-width: 500px; /* Increased from 400px */
-            height: 380px;    /* Increased from 300px */
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            border: 2px dashed var(--border-light);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-        }
-
         /* Smooth Video Feed Scaling to Cover full screen scanner box */
         #reader video {
             width: 100% !important;
@@ -81,260 +12,63 @@
             object-fit: cover !important;
             border-radius: 18px;
         }
-
-        .scanner-placeholder:hover {
-            border-color: var(--primary);
-            background: rgba(255, 123, 0, 0.04);
-        }
-
-        .scanner-placeholder i {
-            font-size: 4rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-            opacity: 0.85;
-        }
-
-        .scanner-active {
-            background: rgba(15, 19, 42, 0.95);
-            border: 2px solid var(--primary);
-        }
-
-        .manual-input {
-            max-width: 400px;
-            margin: 30px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-light);
-        }
-
-        /* Result Styles */
-        .result-container {
-            text-align: center;
-            padding: 30px 20px;
-        }
-
-        .result-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-        }
-
-        .result-success {
-            background: linear-gradient(135deg, var(--success), #3dcad8);
-            color: white;
-        }
-
-        /* Attendance Info */
-        .attendance-info {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-light);
-            padding: 20px;
-            border-radius: 16px;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .info-label {
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: var(--primary-light);
-        }
-
-        /* Status Badge */
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
-            font-family: var(--font-heading);
-        }
-
-        .status-hadir {
-            background: rgba(0, 180, 216, 0.08);
-            color: var(--success);
-            border: 1px solid rgba(0, 180, 216, 0.15);
-        }
-
-        .status-terlambat {
-            background: rgba(255, 193, 7, 0.08);
-            color: var(--warning);
-            border: 1px solid rgba(255, 193, 7, 0.15);
-        }
-
-        .status-pulang-cepat {
-            background: rgba(23, 162, 184, 0.08);
-            color: var(--early);
-            border: 1px solid rgba(23, 162, 184, 0.15);
-        }
-
-        /* Total Waktu Badge */
-        .total-waktu-badge {
-            background: linear-gradient(135deg, rgba(253, 126, 20, 0.08), rgba(253, 126, 20, 0.04));
-            border: 1px solid rgba(253, 126, 20, 0.2);
-            color: var(--total-waktu);
-            padding: 12px 18px;
-            border-radius: 12px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        /* Hari Khusus Badge */
-        .hari-khusus-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        .badge-jumat {
-            background: rgba(156, 39, 176, 0.1);
-            color: #d896ff;
-            border: 1px solid rgba(156, 39, 176, 0.2);
-        }
-
-        .badge-minggu {
-            background: rgba(255, 107, 107, 0.1);
-            color: var(--minggu);
-            border: 1px solid rgba(255, 107, 107, 0.2);
-        }
-
-        /* Absensi Type Selector */
-        .absensi-type-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border-light);
-            padding: 16px;
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-        }
-
-        .type-option {
-            flex: 1;
-            text-align: center;
-            padding: 14px;
-            border: 2px solid var(--border-light);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-muted);
-        }
-
-        .type-option i {
-            font-size: 1.5rem;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .type-checkin.active {
-            border-color: var(--success);
-            background: rgba(0, 180, 216, 0.08);
-            color: white;
-            box-shadow: 0 8px 20px rgba(0, 180, 216, 0.15);
-        }
-
-        .type-checkout.active {
-            border-color: var(--total-waktu);
-            background: rgba(253, 126, 20, 0.08);
-            color: white;
-            box-shadow: 0 8px 20px rgba(253, 126, 20, 0.15);
-        }
-
-        /* Stop Scanner Button inside camera container */
-        .stop-btn {
-            margin-top: 15px;
-            z-index: 10;
-        }
     </style>
 @endsection
 
 @section('content')
-    <!-- Time Display -->
-    <div class="time-display">
-        <div class="date" id="current-date">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }} -
-            {{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }} WITA</div>
-        <div class="time" id="current-time">{{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }}</div>
-        <div class="location">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Kendari, Sulawesi Tenggara - WITA</span>
+    <!-- Time Display Overlay -->
+    <div class="bg-gray-900/60 backdrop-blur-md border border-gray-700 shadow-lg rounded-2xl p-4 mb-6 text-center text-white relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-emerald-500"></div>
+        <div class="font-bold text-lg tracking-wide">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
+    </div>
+
+    <!-- Pilihan Tipe Absensi -->
+    <div class="bg-white/70 backdrop-blur-xl border border-white/60 p-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6 flex gap-3">
+        <div class="flex-1 text-center p-4 border-2 border-primary-500 bg-primary-50 text-primary-700 rounded-xl cursor-pointer transition-all hover:bg-primary-50" id="type-checkin-btn" onclick="selectAbsensiType('check_in')">
+            <i class="fas fa-sign-in-alt text-2xl mb-2"></i>
+            <div class="font-bold text-sm">Check-in</div>
+        </div>
+        <div class="flex-1 text-center p-4 border-2 border-transparent text-gray-400 rounded-xl cursor-pointer transition-all hover:bg-gray-50" id="type-checkout-btn" onclick="selectAbsensiType('check_out')">
+            <i class="fas fa-sign-out-alt text-2xl mb-2"></i>
+            <div class="font-bold text-sm">Check-out</div>
         </div>
     </div>
 
-    <!-- Absensi Type Selector -->
-    <div class="absensi-type-selector">
-        <div class="type-option type-checkin active" onclick="selectAbsensiType('check_in')">
-            <i class="fas fa-sign-in-alt" style="color: var(--success);"></i>
-            <div>Check-in</div>
-            <small>Absen Masuk</small>
-        </div>
-        <div class="type-option type-checkout" onclick="selectAbsensiType('check_out')">
-            <i class="fas fa-sign-out-alt" style="color: var(--total-waktu);"></i>
-            <div>Check-out</div>
-            <small>Absen Keluar</small>
-        </div>
-    </div>
+    <!-- Scanner Area -->
+    <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-6 p-6 md:p-8">
+        <div class="text-center">
+            
+            <div id="scanner-result" class="hidden mb-6">
+                <!-- Result will be injected here -->
+            </div>
 
-    <div class="card">
-        <h3 class="section-title"><i class="fas fa-camera"></i> Scanner QR Code</h3>
-
-        <div class="scanner-container">
-            <!-- Scanner placeholder/webcam camera reader -->
-            <div id="reader" class="scanner-placeholder">
-                <i class="fas fa-camera"></i>
-                <p style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-muted);">Kamera siap untuk scan QR Code</p>
-                <button onclick="startScanner()" class="btn btn-primary">
+            <!-- Scanner Box -->
+            <div id="reader" class="w-full max-w-lg h-[380px] bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden group hover:border-primary-400 hover:bg-primary-50/30">
+                <i class="fas fa-camera text-6xl text-primary-400 mb-4 opacity-80 group-hover:scale-110 transition-transform"></i>
+                <p class="text-lg text-gray-500 mb-6 font-medium">Kamera siap untuk scan QR Code</p>
+                <button onclick="startScanner()" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2">
                     <i class="fas fa-play"></i> Mulai Scan
                 </button>
             </div>
 
-            <div id="scanner-result" style="display: none; max-width: 400px; margin: 0 auto 20px;">
-                <!-- Hasil scan sementara sebelum diposting akan muncul di sini -->
-            </div>
+            <p class="text-sm text-gray-400 mt-4 mb-8">Arahkan kamera ke QR Code kegiatan yang disediakan oleh Pembimbing atau Mentor.</p>
 
-            <div class="manual-input">
-                <p style="margin-bottom: 15px; color: var(--text-muted); text-align: center;">
-                    <i class="fas fa-keyboard"></i> Atau masukkan kode QR manual:
-                </p>
-                <form method="POST" action="{{ route('magang.scan.process') }}" id="manual-form">
+            <!-- Manual Input -->
+            <div class="max-w-md mx-auto pt-6 border-t border-gray-100">
+                <p class="text-sm font-semibold text-gray-700 mb-4">Kamera tidak berfungsi? Masukkan kode QR manual:</p>
+                <form method="POST" action="{{ route('magang.scan.process') }}" class="flex flex-col gap-3">
                     @csrf
                     <input type="hidden" name="absensi_type" id="absensi_type" value="check_in">
-                    <div class="form-group">
-                        <input type="text" class="form-input" name="qr_code"
-                            placeholder="Masukkan kode QR (contoh: QR-ABC123)" required>
+                    
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-keyboard text-gray-400"></i>
+                        </div>
+                        <input type="text" name="qr_code" 
+                               class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-center font-mono font-bold tracking-widest uppercase placeholder:normal-case placeholder:font-sans placeholder:font-normal placeholder:tracking-normal" 
+                               placeholder="Contoh: QR-ABC123" required>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
                         <i class="fas fa-check"></i> Validasi Kode
                     </button>
                 </form>
@@ -344,86 +78,96 @@
 
     <!-- Hasil Absensi (Jika Baru Selesai Absen & Data Result Tersimpan di Session) -->
     @if ($scanResult)
-        <div class="card" id="bukti-absensi-card">
-            <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Hasil Absensi</h3>
-            <div class="result-container">
-                <div class="result-icon result-success">
+        <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8" id="bukti-absensi-card">
+            <div class="px-6 py-5 border-b border-white/40 bg-white/30 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-emerald-500 text-xl"></i>
+                <h3 class="font-extrabold text-slate-800 text-xl tracking-tight">Hasil Absensi</h3>
+            </div>
+            
+            <div class="p-6 md:p-8 text-center">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white text-4xl mx-auto mb-6">
                     <i class="fas fa-check"></i>
                 </div>
-                <h2 style="color: var(--success); margin-bottom: 10px; font-size: 1.8rem;">
+                
+                <h2 class="text-2xl font-black text-emerald-600 mb-2">
                     {{ $scanResult['type'] === 'check_in' ? 'Check-in Berhasil!' : 'Check-out Berhasil!' }}
                 </h2>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Data absensi Anda telah tercatat dengan baik</p>
+                <p class="text-gray-500 mb-8 font-medium">Data absensi Anda telah tercatat dengan baik.</p>
 
-                <div class="attendance-info">
-                    <div class="info-item">
-                        <span class="info-label">Kode QR:</span>
-                        <span class="info-value">{{ $scanResult['kode_qr'] }}</span>
+                <div class="bg-gray-50 rounded-2xl p-6 text-left border border-gray-100 shadow-inner mb-8 max-w-xl mx-auto divide-y divide-gray-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Kode QR:</span>
+                        <span class="font-bold text-gray-800">{{ $scanResult['kode_qr'] }}</span>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Kegiatan:</span>
-                        <span class="info-value">{{ $scanResult['nama_kegiatan'] }}</span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Kegiatan:</span>
+                        <span class="font-bold text-gray-800">{{ $scanResult['nama_kegiatan'] }}</span>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Hari Absen:</span>
-                        <span class="info-value">
-                            {{ $scanResult['hari_absen'] }}
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Hari Absen:</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-gray-800">{{ $scanResult['hari_absen'] }}</span>
                             @if (isset($scanResult['waktu_khusus_hari']))
                                 @if ($scanResult['waktu_khusus_hari'] === 'Jumat')
-                                    <span class="hari-khusus-badge badge-jumat">
-                                        <i class="fas fa-star"></i> Khusus Jumat
+                                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-600 border border-purple-200">
+                                        <i class="fas fa-star mr-1"></i> Jumat
                                     </span>
                                 @elseif ($scanResult['waktu_khusus_hari'] === 'Minggu')
-                                    <span class="hari-khusus-badge badge-minggu">
-                                        <i class="fas fa-sun"></i> Khusus Minggu
+                                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-rose-100 text-rose-600 border border-rose-200">
+                                        <i class="fas fa-sun mr-1"></i> Minggu
                                     </span>
                                 @endif
                             @endif
-                        </span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Waktu
-                            {{ $scanResult['type'] === 'check_in' ? 'Check-in' : 'Check-out' }}:</span>
-                        <span class="info-value">{{ $scanResult['waktu_absen_formatted'] }}</span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Waktu {{ $scanResult['type'] === 'check_in' ? 'Check-in' : 'Check-out' }}:</span>
+                        <span class="font-bold text-primary-600 text-lg">{{ $scanResult['waktu_absen_formatted'] }}</span>
                     </div>
                     @if ($scanResult['type'] === 'check_out' && isset($scanResult['waktu_check_in']))
-                        <div class="info-item">
-                            <span class="info-label">Waktu Check-in:</span>
-                            <span class="info-value">{{ Carbon\Carbon::parse($scanResult['waktu_check_in'])->format('H:i') }}
-                                WITA</span>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                            <span class="text-gray-500 font-medium text-sm">Waktu Check-in:</span>
+                            <span class="font-bold text-gray-600">{{ Carbon\Carbon::parse($scanResult['waktu_check_in'])->format('H:i') }} WITA</span>
                         </div>
                     @endif
-                    <div class="info-item">
-                        <span class="info-label">Waktu Batas:</span>
-                        <span class="info-value">
-                            {{ Carbon\Carbon::parse($scanResult['waktu_batas'])->format('H:i') }} WITA
-                        </span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Waktu Batas:</span>
+                        <span class="font-bold text-gray-600">{{ Carbon\Carbon::parse($scanResult['waktu_batas'])->format('H:i') }} WITA</span>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Status:</span>
-                        <span class="info-value">
-                            <span class="status-badge status-{{ $scanResult['status_absen'] }}">
-                                <i
-                                    class="fas @if($scanResult['status_absen'] === 'hadir') fa-check-circle @elseif($scanResult['status_absen'] === 'terlambat') fa-clock @else fa-running @endif"></i>
-                                {{ $scanResult['status_absen'] }}
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-1">
+                        <span class="text-gray-500 font-medium text-sm">Status:</span>
+                        @if($scanResult['status_absen'] === 'hadir')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                <i class="fas fa-check-circle"></i> Hadir
                             </span>
-                        </span>
+                        @elseif($scanResult['status_absen'] === 'terlambat')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-700 border border-amber-200">
+                                <i class="fas fa-clock"></i> Terlambat
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-100 text-cyan-700 border border-cyan-200">
+                                <i class="fas fa-running"></i> Pulang Cepat
+                            </span>
+                        @endif
                     </div>
+                    
                     @if ($scanResult['type'] === 'check_out' && isset($scanResult['total_waktu']))
-                        <div class="total-waktu-badge">
-                            <i class="fas fa-clock"></i>
-                            <strong>Total Waktu Kerja: {{ $scanResult['total_waktu_formatted'] }}</strong>
-                            <br>
-                            <small style="font-weight: normal;">({{ $scanResult['total_waktu'] }})</small>
+                        <div class="py-4 mt-2">
+                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-4 text-center">
+                                <i class="fas fa-clock text-orange-500 text-xl mb-1"></i>
+                                <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">Total Waktu Kerja</div>
+                                <div class="text-xl font-black text-orange-700">{{ $scanResult['total_waktu_formatted'] }}</div>
+                                <div class="text-xs text-orange-500 mt-0.5">({{ $scanResult['total_waktu'] }})</div>
+                            </div>
                         </div>
                     @endif
                 </div>
 
-                <div style="margin-top: 25px; display: flex; justify-content: center; gap: 15px;">
-                    <button onclick="printAttendance()" class="btn btn-outline">
+                <div class="flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="printAttendance()" class="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-700 font-bold py-3 px-6 border border-gray-200 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
                         <i class="fas fa-print"></i> Cetak Bukti
                     </button>
-                    <button onclick="newScan()" class="btn btn-primary">
+                    <button onclick="newScan()" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2">
                         <i class="fas fa-redo"></i> Selesai
                     </button>
                 </div>
@@ -442,16 +186,16 @@
         // Fungsi untuk memilih jenis absensi
         function selectAbsensiType(type) {
             currentAbsensiType = type;
-
-            // Update UI selector
-            document.querySelectorAll('.type-option').forEach(option => {
-                option.classList.remove('active');
-            });
+            
+            const btnCheckin = document.getElementById('type-checkin-btn');
+            const btnCheckout = document.getElementById('type-checkout-btn');
 
             if (type === 'check_in') {
-                document.querySelector('.type-checkin').classList.add('active');
+                btnCheckin.className = 'flex-1 text-center p-4 border-2 border-primary-500 bg-primary-50 text-primary-700 rounded-xl cursor-pointer transition-all hover:bg-primary-50';
+                btnCheckout.className = 'flex-1 text-center p-4 border-2 border-transparent text-gray-400 rounded-xl cursor-pointer transition-all hover:bg-gray-50';
             } else {
-                document.querySelector('.type-checkout').classList.add('active');
+                btnCheckout.className = 'flex-1 text-center p-4 border-2 border-primary-500 bg-primary-50 text-primary-700 rounded-xl cursor-pointer transition-all hover:bg-primary-50';
+                btnCheckin.className = 'flex-1 text-center p-4 border-2 border-transparent text-gray-400 rounded-xl cursor-pointer transition-all hover:bg-gray-50';
             }
 
             // Update input tipe form manual
@@ -463,8 +207,7 @@
 
             // Bersihkan placeholder awal
             readerElement.innerHTML = '';
-            readerElement.style.background = 'rgba(15, 19, 42, 0.95)';
-            readerElement.classList.add('scanner-active');
+            readerElement.className = 'w-full max-w-lg h-[380px] bg-gray-900 border-2 border-primary-500 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden shadow-lg shadow-primary-500/20';
 
             // Inisialisasi scanner
             html5QrcodeScanner = new Html5Qrcode("reader");
@@ -474,16 +217,14 @@
                 qrbox: { width: 300, height: 300 }
             };
 
-            // Mulai scanner menggunakan kamera belakang (environment)
             html5QrcodeScanner.start(
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
                 onScanFailure
             ).then(() => {
-                // Berhasil start, tambahkan tombol stop di bawah video reader
                 const stopBtn = document.createElement('button');
-                stopBtn.className = 'btn btn-danger stop-btn';
+                stopBtn.className = 'absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm z-10 transition-colors';
                 stopBtn.innerHTML = '<i class="fas fa-stop"></i> Berhenti Scan';
                 stopBtn.onclick = stopScanner;
                 readerElement.appendChild(stopBtn);
@@ -499,7 +240,7 @@
                 html5QrcodeScanner.stop().then(() => {
                     resetScanner();
                 }).catch(err => {
-                    console.error("Gagal menghentikan kamera:", err);
+                    console.error("Failed to stop scanner", err);
                     resetScanner();
                 });
             }
@@ -507,75 +248,81 @@
 
         function resetScanner() {
             const readerElement = document.getElementById('reader');
+            readerElement.className = 'w-full max-w-lg h-[380px] bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl mx-auto flex flex-col items-center justify-center transition-all relative overflow-hidden group hover:border-primary-400 hover:bg-primary-50/30';
             readerElement.innerHTML = `
-                <i class="fas fa-camera"></i>
-                <p style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-muted);">Kamera siap untuk scan QR Code</p>
-                <button onclick="startScanner()" class="btn btn-primary">
+                <i class="fas fa-camera text-6xl text-primary-400 mb-4 opacity-80 group-hover:scale-110 transition-transform"></i>
+                <p class="text-lg text-gray-500 mb-6 font-medium">Kamera siap untuk scan QR Code</p>
+                <button onclick="startScanner()" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2">
                     <i class="fas fa-play"></i> Mulai Scan
                 </button>
             `;
-            readerElement.style.background = 'rgba(255, 255, 255, 0.02)';
-            readerElement.classList.remove('scanner-active');
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            // Hentikan scanner segera setelah terdeteksi
             stopScanner();
 
             const typeText = currentAbsensiType === 'check_in' ? 'Check-in' : 'Check-out';
+            const typeIcon = currentAbsensiType === 'check_in' ? 'sign-in-alt' : 'sign-out-alt';
             const resultElement = document.getElementById('scanner-result');
+            
+            const readerElement = document.getElementById('reader');
+            readerElement.classList.add('hidden');
 
-            // Render loading state & form otomatis
             resultElement.innerHTML = `
-                <div class="alert alert-success" style="margin-bottom:15px;">
-                    <i class="fas fa-check-circle"></i> QR Code berhasil di-scan!
+                <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl mb-6 flex items-center justify-center gap-2 font-bold shadow-sm">
+                    <i class="fas fa-check-circle text-xl"></i> QR Code berhasil di-scan!
                 </div>
-                <div style="background: rgba(255, 123, 0, 0.08); border: 1px solid rgba(255, 123, 0, 0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
-                    <p style="margin: 0; font-weight: 600; color: var(--primary-light);">
-                        <i class="fas fa-qrcode"></i> Kode: <strong>${decodedText}</strong>
-                    </p>
-                    <p style="margin: 5px 0 0 0; color: var(--text-muted);">
-                        <i class="fas fa-${currentAbsensiType === 'check_in' ? 'sign-in-alt' : 'sign-out-alt'}"></i> 
-                        Tipe: <strong>${typeText}</strong>
-                    </p>
+                
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 p-5 rounded-xl mb-6 text-left shadow-sm">
+                    <div class="flex items-center gap-2 mb-2 text-orange-800">
+                        <i class="fas fa-qrcode text-lg opacity-70"></i> 
+                        <span class="text-sm font-medium">Kode:</span> 
+                        <strong class="text-lg tracking-wider font-mono">${decodedText}</strong>
+                    </div>
+                    <div class="flex items-center gap-2 text-orange-700">
+                        <i class="fas fa-${typeIcon} text-lg opacity-70"></i> 
+                        <span class="text-sm font-medium">Tipe:</span> 
+                        <strong class="text-lg">${typeText}</strong>
+                    </div>
                 </div>
+                
                 <form method="POST" action="{{ route('magang.scan.process') }}" id="auto-submit-form">
                     @csrf
                     <input type="hidden" name="qr_code" value="${decodedText}">
                     <input type="hidden" name="absensi_type" value="${currentAbsensiType}">
-                    <button type="submit" class="btn btn-success" style="width: 100%;">
-                        <i class="fas fa-spinner fa-spin"></i> Memproses ${typeText}...
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-spinner fa-spin text-lg"></i> 
+                        <span>Memproses ${typeText}...</span>
                     </button>
                 </form>
             `;
-            resultElement.style.display = 'block';
+            
+            resultElement.classList.remove('hidden');
+            resultElement.classList.add('block');
 
-            // Auto-submit setelah 1 detik untuk pengalaman nirkabel
             setTimeout(() => {
                 document.getElementById('auto-submit-form').submit();
             }, 1000);
         }
 
         function onScanFailure(error) {
-            // Abaikan kegagalan frame scanning biasa (riple noise)
+            // Abaikan kegagalan frame scanning biasa
         }
 
         function newScan() {
-            // Scroll ke scanner atau hilangkan card hasil
             const resultCard = document.getElementById('bukti-absensi-card');
             if (resultCard) {
-                resultCard.style.display = 'none';
+                resultCard.classList.add('hidden');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Fungsi print tanda bukti absensi presisi
         function printAttendance() {
             @if ($scanResult)
                 const typeText = "{{ $scanResult['type'] === 'check_in' ? 'Check-in' : 'Check-out' }}";
                 const typeIcon = "{{ $scanResult['type'] === 'check_in' ? 'sign-in-alt' : 'sign-out-alt' }}";
                 const statusText = "{{ $scanResult['status_absen'] }}";
-                const statusColor = "@if($scanResult['status_absen'] === 'hadir') #28a745 @elseif($scanResult['status_absen'] === 'terlambat') #ffc107 @else #17a2b8 @endif";
+                const statusColor = "@if($scanResult['status_absen'] === 'hadir') #10b981 @elseif($scanResult['status_absen'] === 'terlambat') #f59e0b @else #0ea5e9 @endif";
                 const totalWaktu = "{{ $scanResult['total_waktu_formatted'] ?? '' }}";
                 const totalWaktuStr = "{{ $scanResult['total_waktu'] ?? '' }}";
                 const waktuCheckIn = "{{ ($scanResult['waktu_check_in'] ?? null) ? Carbon\Carbon::parse($scanResult['waktu_check_in'])->format('H:i') . ' WITA' : '' }}";
@@ -583,47 +330,47 @@
                 const win = window.open('', '', 'height=600,width=500');
                 win.document.write('<html><head><title>Bukti Absensi - {{ $scanResult['nama_kegiatan'] }}</title>');
                 win.document.write('<style>');
-                win.document.write('body{font-family:"Segoe UI",sans-serif; text-align:center; padding:30px; background:#f5f7fb;}');
-                win.document.write('.print-container{max-width:400px; margin:0 auto; background:white; padding:30px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.1); border: 1px solid #ddd;}');
-                win.document.write('h2{color:#4361ee; margin-bottom:5px;}');
-                win.document.write('h3{color:#333; margin-bottom:20px; font-size:1.1rem; font-weight:600;}');
-                win.document.write('.info-item{text-align:left; margin:10px 0; padding:10px; background:#f8f9fa; border-radius:8px; border-bottom: 1px solid var(--border-light);}');
-                win.document.write('.total-waktu{background:#fff3cd; border-left:4px solid #fd7e14; padding:10px; margin:15px 0; border-radius:8px;}');
+                win.document.write('body{font-family:"Segoe UI",sans-serif; text-align:center; padding:30px; background:#f8fafc;}');
+                win.document.write('.print-container{max-width:400px; margin:0 auto; background:white; padding:30px; border-radius:24px; box-shadow:0 10px 25px rgba(0,0,0,0.05); border: 1px solid #f1f5f9;}');
+                win.document.write('h2{color:#4361ee; margin-bottom:5px; font-weight:800; font-size: 1.5rem;}');
+                win.document.write('h3{color:#334155; margin-bottom:20px; font-size:1.1rem; font-weight:600;}');
+                win.document.write('.info-item{text-align:left; margin:10px 0; padding:12px 15px; background:#f8fafc; border-radius:12px; border-bottom: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 4px;}');
+                win.document.write('.info-label{font-size:0.8rem; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;}');
+                win.document.write('.info-value{font-size:1rem; color:#1e293b; font-weight:700;}');
+                win.document.write('.total-waktu{background:#fff7ed; border-left:4px solid #f97316; padding:15px; margin:20px 0; border-radius:12px; display:flex; flex-direction:column; gap:4px; text-align:left;}');
+                win.document.write('.status-badge{background:' + statusColor + '; color:white; padding:12px; border-radius:12px; margin:20px 0; font-weight:800; font-size:1.1rem; letter-spacing:0.05em; text-transform:uppercase;}');
                 win.document.write('</style>');
                 win.document.write('</head><body>');
                 win.document.write('<div class="print-container">');
-                win.document.write('<h2>Bukti Absensi</h2>');
+                win.document.write('<h2>BUKTI ABSENSI</h2>');
                 win.document.write('<h3>{{ $scanResult['nama_kegiatan'] }}</h3>');
-                win.document.write('<div style="background:' + statusColor + '; color:white; padding:10px; border-radius:8px; margin:15px 0; font-weight:bold;">');
-                win.document.write(typeText.toUpperCase() + ' - ' + statusText.toUpperCase());
+                win.document.write('<div class="status-badge">');
+                win.document.write(typeText + ' - ' + statusText);
                 win.document.write('</div>');
                 win.document.write('<div class="info-item">');
-                win.document.write('<strong>Nama Pengguna:</strong><br>{{ $username }}');
+                win.document.write('<span class="info-label">Nama Pengguna</span><span class="info-value">{{ $username }}</span>');
                 win.document.write('</div>');
                 win.document.write('<div class="info-item">');
-                win.document.write('<strong>Kode QR:</strong><br>{{ $scanResult['kode_qr'] }}');
+                win.document.write('<span class="info-label">Kode QR</span><span class="info-value font-mono tracking-wider">{{ $scanResult['kode_qr'] }}</span>');
                 win.document.write('</div>');
                 win.document.write('<div class="info-item">');
-                win.document.write('<strong>Hari Absen:</strong><br>{{ $scanResult['hari_absen'] }}');
+                win.document.write('<span class="info-label">Hari Absen</span><span class="info-value">{{ $scanResult['hari_absen'] }}</span>');
                 win.document.write('</div>');
                 if (typeText === 'Check-out' && waktuCheckIn) {
                     win.document.write('<div class="info-item">');
-                    win.document.write('<strong>Waktu Check-in:</strong><br>' + waktuCheckIn);
+                    win.document.write('<span class="info-label">Waktu Check-in</span><span class="info-value">' + waktuCheckIn + '</span>');
                     win.document.write('</div>');
                 }
                 win.document.write('<div class="info-item">');
-                win.document.write('<strong>Waktu ' + typeText + ':</strong><br>{{ $scanResult['waktu_absen_formatted'] }}');
-                win.document.write('</div>');
-                win.document.write('<div class="info-item">');
-                win.document.write('<strong>Waktu Batas:</strong><br>{{ Carbon\Carbon::parse($scanResult['waktu_batas'])->format('H:i') }} WITA');
+                win.document.write('<span class="info-label">Waktu ' + typeText + '</span><span class="info-value" style="color:#4361ee; font-size:1.1rem;">{{ $scanResult['waktu_absen_formatted'] }}</span>');
                 win.document.write('</div>');
                 if (typeText === 'Check-out' && totalWaktu) {
                     win.document.write('<div class="total-waktu">');
-                    win.document.write('<strong><i class="fas fa-clock"></i> Total Waktu Kerja:</strong><br>' + totalWaktu + ' (' + totalWaktuStr + ')');
+                    win.document.write('<span style="font-size:0.8rem; color:#c2410c; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Total Waktu Kerja</span><span style="font-size:1.2rem; font-weight:800; color:#ea580c;">' + totalWaktu + '</span><span style="font-size:0.85rem; color:#f97316;">(' + totalWaktuStr + ')</span>');
                     win.document.write('</div>');
                 }
-                win.document.write('<div style="margin-top:25px; font-size:0.85rem; color:var(--text-muted);">');
-                win.document.write('<p>Badan Pusat Statistik Provinsi Sulawesi Tenggara</p>');
+                win.document.write('<div style="margin-top:30px; font-size:0.75rem; color:#94a3b8; line-height:1.5;">');
+                win.document.write('Dokumen ini sah dari Sistem Presensi Digital<br>Badan Pusat Statistik Provinsi Sulawesi Tenggara');
                 win.document.write('</div>');
                 win.document.write('</div>');
                 win.document.write('</body></html>');
