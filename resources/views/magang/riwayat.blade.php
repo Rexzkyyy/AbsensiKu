@@ -52,9 +52,110 @@
         0% { transform: scale(1); opacity: 0.5; }
         100% { transform: scale(1.4); opacity: 0; }
     }
+
+    /* Responsive table wrapper */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -4px;
+    }
+    .table-responsive table {
+        min-width: 700px; /* agar tidak terlalu sempit di HP */
+        width: 100%;
+    }
+
+    /* Mobile card style for very small screens (optional) - kita tetap pakai tabel dengan overflow */
+    @media (max-width: 640px) {
+        .table-responsive table {
+            min-width: 600px;
+            font-size: 0.8rem;
+        }
+        .table-responsive td, .table-responsive th {
+            padding: 0.5rem 0.75rem !important;
+        }
+        .table-responsive .btn-pdf {
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.7rem !important;
+        }
+        .table-responsive .badge-status {
+            font-size: 0.6rem !important;
+            padding: 0.15rem 0.5rem !important;
+        }
+        .pulse-badge::before {
+            display: none; /* matikan pulse di HP agar tidak berlebihan */
+        }
+    }
+
+    /* Pagination styling agar rapi */
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    .pagination-container .page-item {
+        list-style: none;
+    }
+    .pagination-container .page-link {
+        display: inline-block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        background: white;
+        color: #1e293b;
+        border: 1px solid #e2e8f0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .pagination-container .page-link:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+    .pagination-container .active .page-link {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+    }
+    .pagination-container .disabled .page-link {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /* Kosmetik untuk tombol PDF */
+    .btn-pdf {
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #a7f3d0;
+        padding: 0.3rem 0.8rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 0.7rem;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        white-space: nowrap;
+    }
+    .btn-pdf:hover {
+        background: #059669;
+        color: white;
+        border-color: #059669;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(5, 150, 105, 0.2);
+    }
+
+    /* Card header */
+    .header-card {
+        background: white/70;
+        backdrop-filter: blur(12px);
+        border-radius: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.6);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+        overflow: hidden;
+    }
 </style>
 
-<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+<div class="header-card mb-8">
     <div class="px-6 py-5 border-b border-white/40 bg-white/30">
         <h3 class="font-extrabold text-slate-800 text-xl flex items-center gap-2 tracking-tight">
             <i class="fas fa-history text-cyan-500"></i> Seluruh Kehadiran Saya
@@ -73,7 +174,7 @@
             <p class="text-sm text-gray-400">Belum ada riwayat kehadiran yang tercatat untuk Anda.</p>
         </div>
     @else
-        <div class="overflow-x-auto">
+        <div class="table-responsive">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50/80 border-b border-gray-100 text-[13px]">
@@ -82,7 +183,7 @@
                         <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Kegiatan</th>
                         <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-in</th>
                         <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-out</th>
-                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Durasi Kerja</th>
+                        <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Durasi</th>
                         <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap">Status</th>
                         <th class="py-4 px-5 font-semibold text-gray-600 whitespace-nowrap text-center">Aksi</th>
                     </tr>
@@ -125,22 +226,22 @@
                             </td>
                             <td class="py-4 px-5">
                                 @if ($r->status_cek_in === 'hadir' && ($r->status_cek_out === 'hadir' || empty($r->status_cek_out)))
-                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase badge-status">
                                         <i class="fas fa-check-circle"></i> Hadir
                                     </span>
                                 @elseif ($r->status_cek_in === 'terlambat')
-                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase badge-status">
                                         <i class="fas fa-clock"></i> Terlambat
                                     </span>
                                 @else
-                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase badge-status">
                                         <i class="fas fa-running"></i> Pulang Cepat
                                     </span>
                                 @endif
                             </td>
                             <td class="py-4 px-5 text-center">
                                 <button onclick="downloadPDFAttendance('{{ $r->id_absensi }}', '{{ htmlspecialchars($r->qr->nama_kegiatan ?? 'Kegiatan') }}', '{{ $attendanceDay }}', '{{ $attendanceDate }}', '{{ $checkInTime }}', '{{ $checkOutTime }}', '{{ $r->total_waktu_formatted }}', '{{ $r->total_waktu }}', '{{ $r->status_cek_in }}', '{{ $r->status_cek_out ?? 'hadir' }}')" 
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-cyan-50 text-cyan-600 border border-cyan-100 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all shadow-sm">
+                                        class="btn-pdf">
                                     <i class="fas fa-file-pdf"></i> PDF
                                 </button>
                             </td>
@@ -150,9 +251,11 @@
             </table>
         </div>
         
-        <!-- Pagination Wrapper -->
+        <!-- Pagination -->
         <div class="px-6 py-4 border-t border-gray-50 flex justify-center bg-gray-50/30">
-            {{ $riwayat->links() }}
+            <div class="pagination-container">
+                {{ $riwayat->links() }}
+            </div>
         </div>
     @endif
 </div>
