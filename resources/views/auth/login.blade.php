@@ -441,7 +441,10 @@
             
             .brand-cover-img {
                 display: block;
-                opacity: 0.2;
+                height: 100%;
+                opacity: 0.4;
+                -webkit-mask-image: none;
+                mask-image: none;
             }
 
             .brand-content {
