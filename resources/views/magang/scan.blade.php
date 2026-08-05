@@ -26,23 +26,26 @@
             display: flex;
         }
 
-        /* Scanner frame dengan efek neon */
+        /* Scanner frame - lebih besar & putih terang */
         .scan-frame {
             position: relative;
-            width: 280px;
-            height: 280px;
-            border-radius: 24px;
-            box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.3);
-            border: 2px solid rgba(56, 189, 248, 0.6);
+            width: 340px;
+            height: 340px;
+            border-radius: 28px;
+            box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.75),
+                0 0 40px rgba(255, 255, 255, 0.15),
+                0 0 80px rgba(56, 189, 248, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .scan-frame .corner {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 4px solid #38bdf8;
-            border-radius: 6px;
-            filter: drop-shadow(0 0 8px #38bdf8);
+            width: 34px;
+            height: 34px;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
 
         .scan-frame .corner.tl {
@@ -73,15 +76,15 @@
             border-top: none;
         }
 
-        /* Garis scan animasi */
+        /* Garis scan animasi - putih dengan glow */
         .scan-line {
             position: absolute;
-            left: 10%;
-            width: 80%;
+            left: 8%;
+            width: 84%;
             height: 3px;
-            background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #38bdf8, transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), #38bdf8, rgba(255, 255, 255, 0.9), transparent);
             border-radius: 2px;
-            box-shadow: 0 0 20px #38bdf8, 0 0 40px #818cf8;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6), 0 0 60px rgba(255, 255, 255, 0.2);
             animation: scanMove 2.5s ease-in-out infinite;
         }
 
@@ -293,63 +296,11 @@
             font-size: 1.2rem;
         }
 
-        /* Manual input - elegan */
-        .manual-input {
-            margin-top: 24px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 60px;
-            padding: 4px 4px 4px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .manual-input input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 12px 0;
-            color: white;
-            font-family: monospace;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            outline: none;
-            min-width: 0;
-        }
-
-        .manual-input input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            font-family: system-ui, sans-serif;
-            letter-spacing: 0;
-            font-weight: 400;
-        }
-
-        .manual-input button {
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        .manual-input button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
         /* Responsive */
         @media (max-width: 640px) {
             .scan-frame {
-                width: 220px;
-                height: 220px;
+                width: 260px;
+                height: 260px;
             }
 
             .result-card {
@@ -359,14 +310,6 @@
             .type-toggle .type-item {
                 font-size: 0.8rem;
                 padding: 10px 14px;
-            }
-
-            .manual-input {
-                padding: 4px 4px 4px 16px;
-            }
-
-            .manual-input input {
-                font-size: 0.85rem;
             }
         }
 
@@ -387,7 +330,7 @@
             }
         }
 
-        /* Confetti sederhana */
+        /* Confetti */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -432,7 +375,7 @@
             <div class="badge">
                 <i class="fas fa-qrcode"></i> SCAN <span id="overlay-scan-type">CHECK-IN</span>
             </div>
-            <div style="width: 28px;"></div> <!-- spacer -->
+            <div style="width: 28px;"></div>
         </div>
 
         <!-- Camera Feed -->
@@ -449,8 +392,8 @@
             </div>
         </div>
 
-        <!-- Bottom: Pilihan tipe & manual input (di dalam fullscreen) -->
-        <div class="absolute bottom-8 left-0 right-0 z-20 px-4 flex flex-col items-center gap-4">
+        <!-- Bottom: Pilihan tipe (manual input dihapus) -->
+        <div class="absolute bottom-10 left-0 right-0 z-20 px-4 flex flex-col items-center gap-4">
             <!-- Type Toggle -->
             <div class="type-toggle w-full max-w-sm">
                 <button class="type-item active" id="type-checkin-btn" onclick="selectAbsensiType('check_in')">
@@ -461,19 +404,11 @@
                 </button>
             </div>
 
-            <!-- Manual Input (opsional) -->
-            <form method="POST" action="{{ route('magang.scan.process') }}" class="manual-input w-full max-w-sm">
-                @csrf
-                <input type="hidden" name="absensi_type" id="absensi_type" value="check_in">
-                <input type="text" name="qr_code" placeholder="Masukkan kode QR manual" required>
-                <button type="submit"><i class="fas fa-arrow-right"></i></button>
-            </form>
-
-            <p class="text-white/40 text-xs mt-1">Arahkan kamera ke QR Code kegiatan</p>
+            <p class="text-white/50 text-sm font-light tracking-wide">Arahkan kamera ke QR Code kegiatan</p>
         </div>
     </div>
 
-    <!-- Tempat untuk menampilkan hasil scan (muncul saat scan berhasil) -->
+    <!-- Tempat untuk menampilkan hasil scan -->
     <div id="scan-result-container"
         class="fixed inset-0 z-[10000] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 hidden"
         onclick="if(event.target===this) closeResult()">
@@ -521,9 +456,11 @@
 
             html5QrcodeScanner = new Html5Qrcode("reader");
 
+            // Ukuran qrbox disesuaikan dengan frame (lebih besar)
+            const qrboxSize = window.innerWidth < 640 ? 220 : 300;
             const config = {
                 fps: 20,
-                qrbox: { width: 250, height: 250 },
+                qrbox: { width: qrboxSize, height: qrboxSize },
                 aspectRatio: window.innerWidth / window.innerHeight
             };
 
@@ -535,7 +472,6 @@
             ).catch(err => {
                 console.error("Gagal mengakses kamera:", err);
                 alert("Tidak dapat mengakses kamera. Pastikan Anda memberikan izin akses kamera.");
-                // Tampilkan opsi manual saja
                 document.getElementById('fullscreen-scanner').classList.remove('active');
             });
         }
@@ -555,20 +491,16 @@
 
         function closeFullscreen() {
             document.getElementById('fullscreen-scanner').classList.remove('active');
-            // Tampilkan pesan bahwa scanner dimatikan, atau redirect ke halaman lain
-            // Kita biarkan layar kosong dengan background hitam
         }
 
         function onScanSuccess(decodedText, decodedResult) {
             if (isProcessing) return;
             isProcessing = true;
 
-            // Hentikan scanner sementara
             if (html5QrcodeScanner) {
                 html5QrcodeScanner.stop().catch(() => { });
             }
 
-            // Tampilkan hasil
             showScanResult(decodedText);
         }
 
@@ -580,9 +512,7 @@
             const container = document.getElementById('scan-result-container');
             const content = document.getElementById('scan-result-content');
             const typeText = currentAbsensiType === 'check_in' ? 'Check-in' : 'Check-out';
-            const typeIcon = currentAbsensiType === 'check_in' ? 'sign-in-alt' : 'sign-out-alt';
 
-            // Tampilkan loading dulu
             content.innerHTML = `
                     <div class="text-center py-8">
                         <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-white/70"></div>
@@ -591,7 +521,6 @@
                 `;
             container.classList.remove('hidden');
 
-            // Kirim ke server via AJAX (agar tidak reload halaman)
             fetch('{{ route('magang.scan.process') }}', {
                 method: 'POST',
                 headers: {
@@ -606,12 +535,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Tampilkan hasil sukses
                         renderSuccessResult(data, qrCode);
-                        // Efek confetti
                         triggerConfetti();
                     } else {
-                        // Tampilkan error
                         renderErrorResult(data.message || 'Terjadi kesalahan.');
                     }
                 })
@@ -702,9 +628,7 @@
 
         function closeResult() {
             document.getElementById('scan-result-container').classList.add('hidden');
-            // Restart scanner
             startScanner();
-            // Hapus confetti
             document.getElementById('confetti-container').classList.add('hidden');
             document.getElementById('confetti-container').innerHTML = '';
         }
@@ -726,22 +650,14 @@
                 el.style.transform = `rotate(${Math.random() * 360}deg)`;
                 container.appendChild(el);
             }
-            // Hilangkan setelah beberapa detik
             setTimeout(() => {
                 container.classList.add('hidden');
                 container.innerHTML = '';
             }, 4000);
         }
 
-        // Fungsi print (menggunakan data yang sudah ada)
         function printAttendanceFromData(qrCode) {
-            // Ambil data dari elemen yang tampil (jika ada)
             const content = document.getElementById('scan-result-content');
-            // Kita bisa ambil teks atau minta server untuk print
-            // Karena kita tidak menyimpan data di JS, kita bisa fetch ulang atau kirim ke window print
-            // Untuk kemudahan, kita buka halaman print dengan data yang sama (gunakan route)
-            // Tapi lebih baik kita cetak dari data yang ada di DOM
-            // Kita ekstrak info dari DOM
             const infoRows = content.querySelectorAll('.info-row');
             let printData = {};
             infoRows.forEach(row => {
@@ -780,7 +696,7 @@
             win.print();
         }
 
-        // Override fungsi selectAbsensiType untuk update badge
+        // Override selectAbsensiType untuk update badge
         window.selectAbsensiType = function (type) {
             currentAbsensiType = type;
             document.getElementById('absensi_type').value = type;
