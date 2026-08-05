@@ -422,18 +422,27 @@
             margin-right: 4px;
         }
 
+        .mobile-only-title {
+            display: none;
+        }
+
         /* ═══════════════ RESPONSIVE ═══════════════ */
         @media (max-width: 960px) {
+            .mobile-only-title {
+                display: block;
+            }
+
             .login-split {
                 flex-direction: column;
                 height: 100vh;
-                overflow-y: auto;
+                overflow: hidden; /* No scroll */
             }
 
             .brand-panel {
                 width: 100%;
+                height: 45vh;
                 min-height: 45vh;
-                padding: 40px 30px;
+                padding: 0;
                 justify-content: center;
                 align-items: center;
                 flex: none;
@@ -442,43 +451,29 @@
             .brand-cover-img {
                 display: block;
                 height: 100%;
-                opacity: 0.4;
+                width: 100%;
+                opacity: 0.6;
                 -webkit-mask-image: none;
                 mask-image: none;
             }
 
-            .brand-content {
-                text-align: center;
-                margin-bottom: 0;
-            }
-
-            .brand-content h1 {
-                font-size: 2rem;
-            }
-
-            .brand-content h1 span {
-                font-size: 1.2rem;
-                display: inline;
-            }
-
-            .brand-tagline {
-                margin-bottom: 0;
-                font-size: 0.95rem;
-                max-width: 100%;
-            }
-            
-            .brand-features-grid, .brand-footer {
-                display: none;
+            .brand-content, .brand-features-grid, .brand-footer {
+                display: none; /* Sembunyikan semua teks di atas khusus mobile */
             }
 
             .form-panel {
                 width: 100%;
-                padding: 40px 30px;
+                height: 55vh;
+                padding: 20px;
+                flex: none;
+                align-items: flex-start; /* Biar card naik sedikit ke atas jika kurang ruang */
             }
 
             .login-card {
-                padding: 36px 28px;
+                padding: 25px 20px;
                 max-width: 100%;
+                width: 100%;
+                margin: 0;
             }
         }
 
@@ -546,6 +541,12 @@
         <div class="form-panel">
             <div class="login-card">
                 <div class="form-header">
+                    <!-- Title for mobile since top text is hidden -->
+                    <div class="mobile-only-title" style="margin-bottom: 15px;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 2px;">AbsensiKu</h2>
+                        <span style="font-size: 0.9rem; color: var(--primary);">BPS Sultra</span>
+                    </div>
+
                     <span class="greeting-badge">Selamat Datang</span>
                     <h2>Masuk ke Akun Anda</h2>
                     <p>Silakan login untuk melanjutkan</p>
