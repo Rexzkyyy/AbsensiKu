@@ -5,6 +5,86 @@
 
 @section('content')
 
+<style>
+    /* Glowing Neon Inputs */
+    .input-group {
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+    .input-group:focus-within {
+        transform: translateY(-2px);
+    }
+    .input-group::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #8b5cf6, #3b82f6, transparent);
+        transition: all 0.4s ease;
+        transform: translateX(-50%);
+        box-shadow: 0 0 10px #8b5cf6, 0 0 20px #3b82f6;
+    }
+    .input-group:focus-within::after {
+        width: 100%;
+    }
+    
+    /* Bouncing Micro-interactions */
+    .input-icon {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .input-group:focus-within .input-icon {
+        color: #8b5cf6;
+        transform: scale(1.2) rotate(5deg);
+        text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    }
+    
+    /* Ripple Effect on Button */
+    .ripple-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    .ripple-btn .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transform: scale(0);
+        animation: ripple-anim 0.6s linear;
+        pointer-events: none;
+    }
+    @keyframes ripple-anim {
+        to { transform: scale(4); opacity: 0; }
+    }
+    
+    /* Fade In Form */
+    .fade-in-form {
+        animation: fadeInSlideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    @keyframes fadeInSlideUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Confetti container */
+    .confetti-container {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 10000; overflow: hidden;
+    }
+    .confetti {
+        position: absolute;
+        width: 10px; height: 10px;
+        border-radius: 2px;
+        animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+        0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+</style>
+
 @if ($magang)
 <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-3xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
     <div class="flex items-center gap-3">
@@ -45,12 +125,12 @@
         <p class="text-blue-100 text-sm mt-1 font-medium">Harap isi data berikut dengan lengkap dan benar sesuai SK Magang Anda.</p>
     </div>
 
-    <form method="POST" action="{{ route('magang.peserta.update') }}" class="p-6 md:p-8">
+    <form method="POST" action="{{ route('magang.peserta.update') }}" class="p-6 md:p-8 fade-in-form" id="biodata-form">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="nama_lengkap">
-                    <i class="fas fa-user text-gray-400 mr-1.5 w-4 text-center"></i> Nama Lengkap
+                    <i class="fas fa-user text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Nama Lengkap
                 </label>
                 <input type="text" id="nama_lengkap" name="nama_lengkap" 
                        value="{{ old('nama_lengkap', $magang->nama_lengkap ?? '') }}"
@@ -58,9 +138,9 @@
                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800">
             </div>
             
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="instansi">
-                    <i class="fas fa-university text-gray-400 mr-1.5 w-4 text-center"></i> Asal Instansi / Universitas
+                    <i class="fas fa-university text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Asal Instansi / Universitas
                 </label>
                 <input type="text" id="instansi" name="instansi" 
                        value="{{ old('instansi', $magang->instansi ?? '') }}"
@@ -68,9 +148,9 @@
                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800">
             </div>
 
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="posisi_magang">
-                    <i class="fas fa-briefcase text-gray-400 mr-1.5 w-4 text-center"></i> Posisi Magang
+                    <i class="fas fa-briefcase text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Posisi Magang
                 </label>
                 <input type="text" id="posisi_magang" name="posisi_magang" 
                        value="{{ old('posisi_magang', $magang->posisi_magang ?? '') }}"
@@ -78,9 +158,9 @@
                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800">
             </div>
             
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="pembimbing">
-                    <i class="fas fa-user-tie text-gray-400 mr-1.5 w-4 text-center"></i> Nama Pembimbing Lapangan
+                    <i class="fas fa-user-tie text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Nama Pembimbing Lapangan
                 </label>
                 <input type="text" id="pembimbing" name="pembimbing" 
                        value="{{ old('pembimbing', $magang->pembimbing ?? '') }}"
@@ -88,18 +168,18 @@
                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800">
             </div>
 
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="tanggal_mulai">
-                    <i class="fas fa-calendar-alt text-gray-400 mr-1.5 w-4 text-center"></i> Tanggal Mulai Magang
+                    <i class="fas fa-calendar-alt text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Tanggal Mulai Magang
                 </label>
                 <input type="date" id="tanggal_mulai" name="tanggal_mulai" 
                        value="{{ old('tanggal_mulai', $magang->tanggal_mulai ?? '') }}" required
                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800">
             </div>
             
-            <div>
+            <div class="input-group">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="tanggal_selesai">
-                    <i class="fas fa-calendar-check text-gray-400 mr-1.5 w-4 text-center"></i> Tanggal Selesai Magang
+                    <i class="fas fa-calendar-check text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Tanggal Selesai Magang
                 </label>
                 <input type="date" id="tanggal_selesai" name="tanggal_selesai" 
                        value="{{ old('tanggal_selesai', $magang->tanggal_selesai ?? '') }}" required
@@ -107,9 +187,9 @@
             </div>
         </div>
 
-        <div class="mb-8">
+        <div class="mb-8 input-group">
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="catatan">
-                <i class="fas fa-sticky-note text-gray-400 mr-1.5 w-4 text-center"></i> Catatan Tambahan (Opsional)
+                <i class="fas fa-sticky-note text-gray-400 mr-1.5 w-4 text-center input-icon"></i> Catatan Tambahan (Opsional)
             </label>
             <textarea id="catatan" name="catatan" rows="4" 
                       placeholder="Tuliskan catatan tambahan (misal: Batch Magang, No. Surat, dll)"
@@ -117,10 +197,69 @@
         </div>
 
         <div>
-            <button type="submit" class="w-full md:w-auto md:min-w-[250px] bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-3.5 px-6 rounded-2xl transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-1 flex items-center justify-center gap-2">
-                <i class="fas fa-save"></i> Simpan Data Biodata
+            <button type="submit" id="submit-btn" class="ripple-btn w-full md:w-auto md:min-w-[250px] bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-3.5 px-6 rounded-2xl transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-1 flex items-center justify-center gap-2">
+                <i class="fas fa-save" id="btn-icon"></i> <span id="btn-text">Simpan Data Biodata</span>
             </button>
         </div>
     </form>
 </div>
+
+<!-- Confetti container -->
+<div id="confetti-container" class="confetti-container hidden"></div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('biodata-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnIcon = document.getElementById('btn-icon');
+        const btnText = document.getElementById('btn-text');
+        
+        // Ripple Effect
+        submitBtn.addEventListener('click', function(e) {
+            let x = e.clientX - e.target.getBoundingClientRect().left;
+            let y = e.clientY - e.target.getBoundingClientRect().top;
+            let ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            this.appendChild(ripple);
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Form Submit handling for spinner and confetti
+        form.addEventListener('submit', function(e) {
+            // Kita tidak melakukan e.preventDefault() agar form tetap submit secara normal (sinkron)
+            // Namun kita tetap bisa merubah tampilan tombol selama form memproses request POST
+            btnIcon.className = 'fas fa-spinner fa-spin';
+            btnText.textContent = 'Menyimpan...';
+            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            
+            // Konfeti cepat sebelum reload halaman!
+            triggerConfetti();
+        });
+
+        function triggerConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+            const colors = ['#8b5cf6', '#3b82f6', '#34d399', '#f472b6', '#fcd34d'];
+            for (let i = 0; i < 80; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.width = (Math.random() * 8 + 4) + 'px';
+                el.style.height = (Math.random() * 8 + 4) + 'px';
+                el.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                el.style.animationDelay = (Math.random() * 0.5) + 's';
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(el);
+            }
+        }
+    });
+</script>
 @endsection

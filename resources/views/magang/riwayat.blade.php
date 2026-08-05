@@ -4,6 +4,56 @@
 @section('header_title', 'Riwayat Kehadiran')
 
 @section('content')
+
+<style>
+    /* Staggered Fade Up for Table Rows */
+    .table-row-animate {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUpRow 0.5s ease-out forwards;
+    }
+    @keyframes fadeUpRow {
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Interactive Hover Rows */
+    .interactive-row {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border-left: 3px solid transparent;
+    }
+    .interactive-row:hover {
+        background-color: #ffffff !important;
+        transform: scale(1.01) translateX(5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        z-index: 10;
+        position: relative;
+    }
+    
+    /* Glowing Border based on status */
+    .row-hadir:hover { border-left-color: #34d399; }
+    .row-terlambat:hover { border-left-color: #fbbf24; }
+    .row-pulangcepat:hover { border-left-color: #38bdf8; }
+
+    /* Pulsing Badges */
+    .pulse-badge {
+        position: relative;
+    }
+    .pulse-badge::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 9999px;
+        background: inherit;
+        opacity: 0.4;
+        z-index: -1;
+        animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse-ring {
+        0% { transform: scale(1); opacity: 0.5; }
+        100% { transform: scale(1.4); opacity: 0; }
+    }
+</style>
+
 <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
     <div class="px-6 py-5 border-b border-white/40 bg-white/30">
         <h3 class="font-extrabold text-slate-800 text-xl flex items-center gap-2 tracking-tight">
@@ -45,8 +95,12 @@
                             $checkOutTime = $r->absen_cek_out ? Carbon\Carbon::parse($r->absen_cek_out)->format('H:i') . ' WITA' : '-';
                             $attendanceDay = $r->hari_absen;
                             $attendanceDate = Carbon\Carbon::parse($r->created_at)->isoFormat('D MMMM Y');
+                            
+                            $rowStatusClass = 'row-hadir';
+                            if ($r->status_cek_in === 'terlambat') $rowStatusClass = 'row-terlambat';
+                            if ($r->status_cek_out === 'pulang_cepat') $rowStatusClass = 'row-pulangcepat';
                         @endphp
-                        <tr class="hover:bg-gray-50/50 transition">
+                        <tr class="hover:bg-gray-50/50 transition interactive-row table-row-animate {{ $rowStatusClass }}" style="animation-delay: {{ $index * 100 }}ms;">
                             <td class="py-4 px-5 text-sm text-gray-500 font-mono">{{ $rowNum }}</td>
                             <td class="py-4 px-5">
                                 <div class="font-bold text-gray-700 text-sm">{{ $attendanceDay }}</div>
@@ -71,15 +125,15 @@
                             </td>
                             <td class="py-4 px-5">
                                 @if ($r->status_cek_in === 'hadir' && ($r->status_cek_out === 'hadir' || empty($r->status_cek_out)))
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase">
                                         <i class="fas fa-check-circle"></i> Hadir
                                     </span>
                                 @elseif ($r->status_cek_in === 'terlambat')
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase">
                                         <i class="fas fa-clock"></i> Terlambat
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase">
+                                    <span class="pulse-badge inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase">
                                         <i class="fas fa-running"></i> Pulang Cepat
                                     </span>
                                 @endif

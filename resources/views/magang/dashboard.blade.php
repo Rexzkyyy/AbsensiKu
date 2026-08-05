@@ -3,35 +3,127 @@
 @section('header_title', 'Dashboard')
 
 @section('content')
+
+<style>
+    /* 3D Tilt Card effect */
+    .tilt-card {
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+    }
+    .tilt-content {
+        transform: translateZ(30px);
+    }
+    
+    /* Typing animation */
+    .typewriter {
+        overflow: hidden; /* Ensures the content is not revealed until the animation */
+        border-right: .15em solid white; /* The typwriter cursor */
+        white-space: nowrap; /* Keeps the content on a single line */
+        margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+        letter-spacing: .02em; /* Adjust as needed */
+        animation: 
+            typing 3.5s steps(40, end),
+            blink-caret .75s step-end infinite;
+        display: inline-block;
+        max-width: fit-content;
+    }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: white; }
+    }
+
+    /* Staggered Fade Up for List Items */
+    .stagger-item {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Glowing Hover Effects */
+    .glow-hover {
+        transition: all 0.3s ease;
+    }
+    .glow-hover:hover {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        transform: translateY(-3px) scale(1.02);
+    }
+    .glow-btn-scan {
+        position: relative;
+        overflow: hidden;
+    }
+    .glow-btn-scan::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        transform: scale(0);
+        transition: transform 0.5s ease;
+        opacity: 0;
+    }
+    .glow-btn-scan:hover::after {
+        transform: scale(1);
+        opacity: 0.3;
+        transition: transform 0s, opacity 0.5s ease;
+    }
+
+    /* Animated background gradient for the top card */
+    .animated-bg-card {
+        background: linear-gradient(135deg, #2563eb, #6366f1, #8b5cf6, #3b82f6);
+        background-size: 300% 300%;
+        animation: gradient-shift 8s ease infinite;
+    }
+    @keyframes gradient-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>
+
 <!-- Welcome & Time Section -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <div class="lg:col-span-2 bg-gradient-to-br from-blue-600 via-primary-600 to-cyan-500 rounded-3xl p-6 md:p-10 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] relative overflow-hidden flex flex-col justify-center">
+    <div class="lg:col-span-2 animated-bg-card rounded-3xl p-6 md:p-10 text-white shadow-[0_15px_40px_-10px_rgba(99,102,241,0.5)] relative overflow-hidden flex flex-col justify-center tilt-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <!-- Decorative Background -->
         <div class="absolute -right-10 -top-10 w-64 h-64 bg-white/20 rounded-full blur-3xl mix-blend-overlay"></div>
         <div class="absolute right-32 -bottom-20 w-48 h-48 bg-cyan-300/30 rounded-full blur-2xl mix-blend-overlay"></div>
         <div class="absolute left-10 top-10 w-24 h-24 bg-blue-300/20 rounded-full blur-xl mix-blend-overlay"></div>
         
-        <div class="relative z-10">
-            <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Halo, {{ htmlspecialchars($username) }}! 👋</h2>
-            <p class="text-blue-100 mb-6 md:text-lg">Selamat datang di sistem absensi digital</p>
+        <div class="relative z-10 tilt-content">
+            <div class="typewriter-container overflow-hidden max-w-full">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight typewriter" style="display: inline-block;">Halo, {{ htmlspecialchars($username) }}! 👋</h2>
+            </div>
+            <p class="text-blue-100 mb-6 md:text-lg opacity-0 animate-[fadeUp_0.8s_ease_0.8s_forwards]">Selamat datang di sistem absensi digital</p>
             
-            <div class="flex flex-wrap gap-3">
-                <a href="{{ route('magang.scan') }}" class="inline-flex items-center gap-2 bg-white text-primary-600 font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm">
-                    <i class="fas fa-qrcode"></i> Scan QR Code
+            <div class="flex flex-wrap gap-3 opacity-0 animate-[fadeUp_0.8s_ease_1.2s_forwards]">
+                <a href="{{ route('magang.scan') }}" class="glow-hover glow-btn-scan inline-flex items-center gap-2 bg-white text-primary-600 font-bold px-6 py-3 rounded-2xl hover:bg-gray-50 transition shadow-lg text-sm md:text-base">
+                    <i class="fas fa-qrcode text-lg"></i> Scan QR Code
                 </a>
-                <a href="{{ route('magang.peserta') }}" class="inline-flex items-center gap-2 bg-primary-700/50 hover:bg-primary-700 text-white font-semibold px-5 py-2.5 rounded-xl border border-primary-500/30 transition backdrop-blur-sm shadow-sm">
-                    <i class="fas fa-users"></i> Data Peserta
+                <a href="{{ route('magang.peserta') }}" class="glow-hover inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3 rounded-2xl border border-white/30 transition backdrop-blur-md shadow-lg text-sm md:text-base">
+                    <i class="fas fa-users text-lg"></i> Data Peserta
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Digital Clock Card -->
-    <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-6 flex flex-col items-center justify-center text-center">
-        <div class="text-sm font-bold text-blue-600 mb-2 uppercase tracking-widest" id="current-date">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
-        <div class="text-5xl md:text-6xl font-black text-slate-800 tracking-tighter mb-4 drop-shadow-sm" id="current-time">{{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }}</div>
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full text-xs font-bold text-slate-600 border border-white/50 shadow-sm">
-            <i class="fas fa-map-marker-alt text-blue-500"></i>
+    <div class="bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_15px_30px_rgb(0,0,0,0.05)] border border-white/80 p-6 flex flex-col items-center justify-center text-center tilt-card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-scale="1.02">
+        <div class="tilt-content flex flex-col items-center">
+            <div class="text-sm font-bold text-primary-500 mb-2 uppercase tracking-widest" id="current-date">{{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
+            <div class="text-5xl md:text-6xl font-black bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent tracking-tighter mb-4 drop-shadow-sm" id="current-time">{{ Carbon\Carbon::now('Asia/Makassar')->format('H:i:s') }}</div>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full text-xs font-bold text-slate-600 border border-white/50 shadow-sm animate-[pulse_3s_ease-in-out_infinite]">
+                <i class="fas fa-map-marker-alt text-blue-500 animate-bounce"></i>
             <span>Kendari - WITA</span>
         </div>
     </div>
@@ -127,7 +219,7 @@
                     $initials = strtoupper(substr($username, 0, 2));
                 @endphp
                 
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4 px-2 {{ $borderLeft }} pl-4 -ml-4 bg-gray-50/30 rounded-r-xl mb-2 hover:bg-gray-50 transition">
+                <div class="stagger-item flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4 px-2 {{ $borderLeft }} pl-4 -ml-4 bg-gray-50/30 rounded-r-xl mb-2 hover:bg-white hover:shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300" style="animation-delay: {{ $loop->index * 150 }}ms;">
                     
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-gray-600 flex flex-shrink-0 items-center justify-center font-bold shadow-inner text-sm">
@@ -185,4 +277,18 @@
         @endif
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<!-- Load Vanilla-tilt.js for 3D effects -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<script>
+    // Inisialisasi Vanilla Tilt
+    VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
+        max: 5,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.2,
+    });
+</script>
 @endsection
