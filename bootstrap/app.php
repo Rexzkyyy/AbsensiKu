@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'mentor' => \App\Http\Middleware\MentorMiddleware::class,
             'magang' => \App\Http\Middleware\MagangMiddleware::class,
         ]);
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

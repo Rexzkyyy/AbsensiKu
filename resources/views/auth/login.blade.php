@@ -57,85 +57,53 @@
         /* ── Left Panel: Branding ── */
         .brand-panel {
             flex: 1;
-            background: linear-gradient(135deg, #4361ee 0%, #7209b7 50%, #f72585 100%);
+            width: 50%;
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 50px;
-            position: relative;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 60px 60px;
             overflow: hidden;
+            background: linear-gradient(135deg, #02489c 0%, #02489c 45%, #00a651 80%, #f37021 100%);
         }
 
-        /* Decorative circles on brand panel */
-        .brand-panel::before {
-            content: '';
+        .brand-cover-img {
             position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            top: -150px;
-            right: -100px;
-        }
-
-        .brand-panel::after {
-            content: '';
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            bottom: -100px;
-            left: -80px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.35;
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
 
         .brand-content {
             position: relative;
             z-index: 2;
-            text-align: center;
+            text-align: left;
             color: white;
-            max-width: 420px;
-        }
-
-        .brand-logo-circle {
-            width: 90px;
-            height: 90px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
-
-        .brand-logo-circle img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 24px;
-        }
-
-        .brand-logo-circle i {
-            font-size: 2.2rem;
-            color: white;
+            margin-bottom: 25px;
         }
 
         .brand-content h1 {
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             font-weight: 800;
             margin-bottom: 12px;
             letter-spacing: -0.02em;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .brand-content h1 span {
-            opacity: 0.85;
+            display: block;
+            font-size: 1.6rem;
+            opacity: 0.9;
             font-weight: 600;
+            margin-top: 5px;
         }
 
         .brand-tagline {
@@ -143,61 +111,67 @@
             opacity: 0.85;
             font-weight: 400;
             line-height: 1.6;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
+            max-width: 90%;
         }
 
-        /* Feature badges on brand panel */
-        .brand-features {
+        .brand-features-grid {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        .brand-feature {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        .brand-feat-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 16px 20px;
-            border-radius: 16px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
             transition: var(--transition);
         }
 
-        .brand-feature:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateX(5px);
-        }
-
-        .brand-feature-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
+        .brand-feat-item:hover {
             background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
+            transform: translateY(-2px);
         }
 
-        .brand-feature-text h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 2px;
+        .brand-feat-item i {
+            color: #ff9e00;
+            font-size: 1rem;
         }
 
-        .brand-feature-text p {
-            font-size: 0.78rem;
-            opacity: 0.75;
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .brand-footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
             font-weight: 400;
         }
+
+        .brand-footer strong {
+            color: white;
+            font-weight: 600;
+        }
+
+
 
         /* ── Right Panel: Login Form ── */
         .form-panel {
             flex: 1;
+            width: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -455,30 +429,43 @@
             }
 
             .brand-panel {
-                padding: 40px 30px;
+                width: 100%;
+                padding: 40px 30px 30px;
                 min-height: auto;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .brand-cover-img {
+                display: none;
+            }
+
+            .brand-content {
+                text-align: center;
+                margin-bottom: 0;
             }
 
             .brand-content h1 {
-                font-size: 1.7rem;
+                font-size: 2rem;
+            }
+
+            .brand-content h1 span {
+                font-size: 1.2rem;
+                display: inline;
             }
 
             .brand-tagline {
-                margin-bottom: 25px;
+                margin-bottom: 0;
                 font-size: 0.95rem;
+                max-width: 100%;
             }
-
-            .brand-features {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-
-            .brand-feature {
-                flex: 1;
-                min-width: 200px;
+            
+            .brand-features-grid, .brand-footer {
+                display: none;
             }
 
             .form-panel {
+                width: 100%;
                 padding: 40px 30px;
             }
 
@@ -490,7 +477,7 @@
 
         @media (max-width: 600px) {
             .brand-panel {
-                padding: 35px 20px;
+                padding: 35px 20px 20px;
             }
 
             .brand-content h1 {
@@ -499,26 +486,10 @@
 
             .brand-tagline {
                 font-size: 0.88rem;
-                margin-bottom: 20px;
-            }
-
-            .brand-features {
-                flex-direction: column;
-            }
-
-            .brand-feature {
-                padding: 12px 16px;
-            }
-
-            .brand-logo-circle {
-                width: 70px;
-                height: 70px;
-                border-radius: 18px;
-                margin-bottom: 20px;
             }
 
             .form-panel {
-                padding: 30px 20px;
+                padding: 25px 20px;
             }
 
             .login-card {
@@ -536,44 +507,31 @@
     <div class="login-split">
         <!-- ═══ Left: Branding Panel ═══ -->
         <div class="brand-panel">
-            <div class="brand-content">
-                <div class="brand-logo-circle">
-                    <img src="{{ asset('assets/img/logo_login.png') }}" alt="Logo BPS" id="brand-logo-img"
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-fingerprint\'></i>';">
-                </div>
+            <img src="{{ asset('assets/img/logo_login.png') }}" class="brand-cover-img" alt="Cover"
+                 onerror="this.style.display='none';">
 
+            <div class="brand-content">
                 <h1>AbsensiKu <span>— BPS Sultra</span></h1>
                 <p class="brand-tagline">Sistem Presensi Digital Badan Pusat Statistik Provinsi Sulawesi Tenggara</p>
 
-                <div class="brand-features">
-                    <div class="brand-feature">
-                        <div class="brand-feature-icon">
-                            <i class="fas fa-chart-pie"></i>
-                        </div>
-                        <div class="brand-feature-text">
-                            <h4>Laporan Real-time</h4>
-                            <p>Log absensi masuk secara instan ke dashboard</p>
-                        </div>
+                <div class="brand-features-grid">
+                    <div class="brand-feat-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Real-time Sync</span>
                     </div>
-                    <div class="brand-feature">
-                        <div class="brand-feature-icon">
-                            <i class="fas fa-qrcode"></i>
-                        </div>
-                        <div class="brand-feature-text">
-                            <h4>QR Code Secure</h4>
-                            <p>Enkripsi kode QR acak untuk keamanan log</p>
-                        </div>
+                    <div class="brand-feat-item">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QR Security</span>
                     </div>
-                    <div class="brand-feature">
-                        <div class="brand-feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="brand-feature-text">
-                            <h4>Multi-Device</h4>
-                            <p>Akses dari perangkat mana saja, kapan saja</p>
-                        </div>
+                    <div class="brand-feat-item">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Smart Analytics</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="brand-footer">
+                <p>Created by <strong>BPS Sultra</strong> x <strong>Magang Hub Batch 2 2025</strong></p>
             </div>
         </div>
 
