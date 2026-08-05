@@ -87,12 +87,18 @@ class LoginController extends Controller
      */
     private function redirectUserByRole($user)
     {
-        if ($user->role === 'mentor' || $user->role === 'admin') {
+        $role = strtolower(trim((string) $user->role));
+
+        if ($role === 'mentor' || $role === 'admin') {
             return redirect()->route('admin.dashboard');
-        } elseif ($user->role === 'magang') {
+        } elseif ($role === 'magang') {
             return redirect()->route('magang.dashboard');
         }
 
-        return redirect()->route('admin.dashboard');
+        Auth::logout();
+
+        return redirect()->route('login')->withErrors([
+            'error' => 'Role akun tidak valid. Hubungi admin untuk memperbaiki data user.',
+        ]);
     }
 }

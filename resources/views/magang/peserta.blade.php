@@ -9,7 +9,7 @@
         /* Glassmorphism & Neon Inputs */
         .input-group {
             position: relative;
-            transition: transform 0.3s ease;
+            transition: transform 0.18s ease;
         }
 
         .input-group:focus-within {
@@ -24,7 +24,7 @@
             width: 0;
             height: 2px;
             background: linear-gradient(90deg, transparent, #8b5cf6, #3b82f6, transparent);
-            transition: all 0.4s ease;
+            transition: width 0.22s ease;
             transform: translateX(-50%);
             box-shadow: 0 0 10px #8b5cf6, 0 0 20px #3b82f6;
         }
@@ -34,13 +34,12 @@
         }
 
         .input-icon {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: color 0.18s ease, transform 0.18s ease;
         }
 
         .input-group:focus-within .input-icon {
             color: #8b5cf6;
-            transform: scale(1.2) rotate(5deg);
-            text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+            transform: scale(1.08);
         }
 
         /* Ripple Button */
@@ -67,7 +66,7 @@
 
         /* Fade In Form */
         .fade-in-form {
-            animation: fadeInSlideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation: fadeInSlideUp 0.28s ease forwards;
             opacity: 0;
             transform: translateY(20px);
         }
@@ -291,14 +290,14 @@
                 container.classList.remove('hidden');
                 container.innerHTML = '';
                 const colors = ['#8b5cf6', '#3b82f6', '#34d399', '#f472b6', '#fcd34d'];
-                for (let i = 0; i < 80; i++) {
+                for (let i = 0; i < 36; i++) {
                     const el = document.createElement('div');
                     el.className = 'confetti';
                     el.style.left = Math.random() * 100 + '%';
                     el.style.background = colors[Math.floor(Math.random() * colors.length)];
                     el.style.width = (Math.random() * 8 + 4) + 'px';
                     el.style.height = (Math.random() * 8 + 4) + 'px';
-                    el.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                    el.style.animationDuration = (Math.random() * 1 + 1) + 's';
                     el.style.animationDelay = (Math.random() * 0.5) + 's';
                     el.style.transform = `rotate(${Math.random() * 360}deg)`;
                     container.appendChild(el);
@@ -307,7 +306,7 @@
                 setTimeout(() => {
                     container.classList.add('hidden');
                     container.innerHTML = '';
-                }, 4000);
+                }, 2200);
             }
         });
     </script>

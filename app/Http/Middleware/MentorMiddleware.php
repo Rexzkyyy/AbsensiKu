@@ -18,9 +18,17 @@ class MentorMiddleware
             return redirect()->route('login');
         }
 
-        $role = Auth::user()->role;
+        $role = strtolower(trim((string) Auth::user()->role));
         if ($role === 'mentor' || $role === 'admin') {
             return $next($request);
+        }
+
+        if ($role !== 'magang') {
+            Auth::logout();
+
+            return redirect()->route('login')->withErrors([
+                'error' => 'Role akun tidak valid. Hubungi admin untuk memperbaiki data user.',
+            ]);
         }
 
         // Jika bukan mentor/admin, redirect ke dashboard magang

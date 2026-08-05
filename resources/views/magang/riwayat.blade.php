@@ -9,8 +9,8 @@
     /* Staggered Fade Up for Table Rows */
     .table-row-animate {
         opacity: 0;
-        transform: translateY(20px);
-        animation: fadeUpRow 0.5s ease-out forwards;
+        transform: translateY(10px);
+        animation: fadeUpRow 0.24s ease-out forwards;
     }
     @keyframes fadeUpRow {
         to { opacity: 1; transform: translateY(0); }
@@ -18,12 +18,12 @@
     
     /* Interactive Hover Rows */
     .interactive-row {
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
         border-left: 3px solid transparent;
     }
     .interactive-row:hover {
         background-color: #ffffff !important;
-        transform: scale(1.01) translateX(5px);
+        transform: translateX(3px);
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
         z-index: 10;
         position: relative;
@@ -46,7 +46,7 @@
         background: inherit;
         opacity: 0.4;
         z-index: -1;
-        animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        animation: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     @keyframes pulse-ring {
         0% { transform: scale(1); opacity: 0.5; }
@@ -201,7 +201,7 @@
                             if ($r->status_cek_in === 'terlambat') $rowStatusClass = 'row-terlambat';
                             if ($r->status_cek_out === 'pulang_cepat') $rowStatusClass = 'row-pulangcepat';
                         @endphp
-                        <tr class="hover:bg-gray-50/50 transition interactive-row table-row-animate {{ $rowStatusClass }}" style="animation-delay: {{ $index * 100 }}ms;">
+                        <tr class="hover:bg-gray-50/50 transition interactive-row table-row-animate {{ $rowStatusClass }}" style="animation-delay: {{ $index * 35 }}ms;">
                             <td class="py-4 px-5 text-sm text-gray-500 font-mono">{{ $rowNum }}</td>
                             <td class="py-4 px-5">
                                 <div class="font-bold text-gray-700 text-sm">{{ $attendanceDay }}</div>
@@ -262,10 +262,29 @@
 @endsection
 
 @section('scripts')
-<!-- Load html2pdf bundle from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-    function downloadPDFAttendance(id, kegiatan, hari, tanggal, cekIn, cekOut, durasi, totalSec, statusCekIn, statusCekOut) {
+    let html2pdfPromise = null;
+
+    function loadHtml2Pdf() {
+        if (window.html2pdf) {
+            return Promise.resolve(window.html2pdf);
+        }
+
+        if (!html2pdfPromise) {
+            html2pdfPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                script.onload = () => resolve(window.html2pdf);
+                script.onerror = () => reject(new Error('Gagal memuat library PDF.'));
+                document.head.appendChild(script);
+            });
+        }
+
+        return html2pdfPromise;
+    }
+
+    async function downloadPDFAttendance(id, kegiatan, hari, tanggal, cekIn, cekOut, durasi, totalSec, statusCekIn, statusCekOut) {
+        const html2pdf = await loadHtml2Pdf();
         let statusText = 'Hadir';
         let statusColor = '#00b4d8';
         

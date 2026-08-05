@@ -4,6 +4,7 @@ const urlsToCache = [
   '/offline.html',
   '/manifest.json',
   '/assets/img/logo_login.png',
+  '/assets/img/logo_login.webp',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png'
 ];

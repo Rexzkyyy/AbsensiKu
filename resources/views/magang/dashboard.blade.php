@@ -6,21 +6,11 @@
 @section('content')
 
     <style>
-        /* Efek tilt lebih subtle */
-        .tilt-card {
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-        }
-
-        .tilt-content {
-            transform: translateZ(15px);
-        }
-
         /* Animasi fade up untuk item */
         .stagger-item {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.5s ease forwards;
+            transform: translateY(10px);
+            animation: fadeUp 0.28s ease forwards;
         }
 
         @keyframes fadeUp {
@@ -32,7 +22,7 @@
 
         /* Hover efek yang tidak berlebihan */
         .glow-hover {
-            transition: all 0.25s ease;
+            transition: box-shadow 0.18s ease, transform 0.18s ease;
         }
 
         .glow-hover:hover {
@@ -42,23 +32,7 @@
 
         /* Background gradient untuk kartu atas */
         .animated-bg-card {
-            background: linear-gradient(135deg, #2563eb, #6366f1, #8b5cf6);
-            background-size: 200% 200%;
-            animation: gradient-shift 10s ease infinite;
-        }
-
-        @keyframes gradient-shift {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
         }
 
         /* Perbaikan responsif untuk jam */
@@ -80,7 +54,7 @@
 
         /* Card riwayat absensi */
         .attendance-item {
-            transition: all 0.2s ease;
+            transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
         }
 
         .attendance-item:hover {
@@ -93,14 +67,13 @@
     <!-- Welcome & Time Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
         <!-- Kartu Welcome -->
-        <div class="lg:col-span-2 animated-bg-card rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden flex flex-col justify-center tilt-card"
-            data-tilt data-tilt-max="3" data-tilt-speed="300" data-tilt-glare data-tilt-max-glare="0.15">
+        <div class="lg:col-span-2 animated-bg-card rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden flex flex-col justify-center">
             <!-- Decorative elements (lebih subtle) -->
             <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
             <div class="absolute right-20 -bottom-16 w-36 h-36 bg-cyan-300/20 rounded-full blur-2xl"></div>
 
-            <div class="relative z-10 tilt-content">
-                <h2 class="text-2xl md:text-3xl font-bold mb-2">Halo, {{ htmlspecialchars($username) }}! 👋</h2>
+            <div class="relative z-10">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">Halo, {{ htmlspecialchars($username) }}!</h2>
                 <p class="text-blue-100 text-sm md:text-base mb-5">Selamat datang di sistem absensi digital</p>
 
                 <div class="flex flex-wrap gap-3">
@@ -117,9 +90,8 @@
         </div>
 
         <!-- Kartu Jam Digital -->
-        <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-md border border-white/60 p-6 flex flex-col items-center justify-center text-center tilt-card"
-            data-tilt data-tilt-max="5" data-tilt-speed="300" data-tilt-scale="1.02">
-            <div class="tilt-content flex flex-col items-center">
+        <div class="bg-white/90 rounded-2xl shadow-md border border-white/60 p-6 flex flex-col items-center justify-center text-center">
+            <div class="flex flex-col items-center">
                 <div class="text-xs font-bold text-primary-500 uppercase tracking-wider mb-1" id="current-date">
                     {{ Carbon\Carbon::now('Asia/Makassar')->isoFormat('dddd, D MMMM Y') }}</div>
                 <div class="font-black text-slate-800 tracking-tight drop-shadow-sm" id="current-time">
@@ -236,7 +208,7 @@
                     @endphp
 
                     <div class="stagger-item attendance-item flex flex-col md:flex-row md:items-center justify-between gap-3 py-3 px-3 {{ $borderLeft }} pl-4 -ml-4 bg-gray-50/50 rounded-r-xl mb-2 hover:bg-white transition"
-                        style="animation-delay: {{ $loop->index * 100 }}ms;">
+                        style="animation-delay: {{ $loop->index * 40 }}ms;">
 
                         <div class="flex items-center gap-3">
                             <div
@@ -296,18 +268,4 @@
             @endif
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <!-- Load Vanilla-tilt.js for 3D effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-    <script>
-        // Inisialisasi Vanilla Tilt dengan nilai lebih subtle
-        VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
-            max: 5,
-            speed: 300,
-            glare: true,
-            "max-glare": 0.15,
-        });
-    </script>
 @endsection

@@ -17,11 +17,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
 
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Tailwind CSS (CDN for instant deployment) -->
@@ -31,7 +26,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
                     },
                     colors: {
                         primary: {
@@ -88,11 +83,8 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
         }
 
-        /* Animated background - lembut */
-        .animated-bg {
-            background: linear-gradient(-45deg, #f5f3ff, #e0e7ff, #fae8ff, #f0fdf4);
-            background-size: 400% 400%;
-            animation: gradient-x 15s ease infinite;
+        @view-transition {
+            navigation: auto;
         }
 
         /* Custom Scrollbar */
@@ -120,7 +112,39 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #f8fafc;
+        }
+
+        main {
+            view-transition-name: page;
+        }
+
+        ::view-transition-old(page),
+        ::view-transition-new(page) {
+            animation-duration: 170ms;
+            animation-timing-function: ease-out;
+        }
+
+        .nav-loading {
+            cursor: progress;
+        }
+
+        .nav-loading main {
+            opacity: 0.72;
+            transform: translateY(2px);
+            transition: opacity 0.14s ease, transform 0.14s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 
@@ -128,20 +152,7 @@
 </head>
 
 <body
-    class="animated-bg text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative"
-    x-data="{ pageLoaded: false }" x-init="setTimeout(() => pageLoaded = true, 80)">
-
-    <!-- Decorative Background Elements (Animated Blobs) -->
-    <div
-        class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary-400/20 blur-[100px] pointer-events-none animate-blob">
-    </div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-500/10 blur-[100px] pointer-events-none animate-blob"
-        style="animation-delay: 2s"></div>
-    <div class="fixed top-[40%] left-[20%] w-[30%] h-[30%] rounded-full bg-emerald-400/10 blur-[80px] pointer-events-none animate-blob"
-        style="animation-delay: 4s"></div>
-
-    <!-- Alpine.js for interactive UI -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative">
 
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -173,10 +184,7 @@
 
         <!-- Main Content Area - dengan padding bawah agar tidak tertutup bottom nav -->
         <main
-            class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative transition-all duration-500 ease-out transform pb-20 lg:pb-8"
-            x-show="pageLoaded" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
-            style="display: none;">
+            class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative transition-all duration-150 ease-out transform pb-20 lg:pb-8">
 
             <!-- Session Messages -->
             @if(session('success'))
@@ -237,6 +245,31 @@
         }
         setInterval(updateTime, 1000);
         document.addEventListener('DOMContentLoaded', updateTime);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefetched = new Set();
+
+            function prefetchUrl(url) {
+                if (!url || prefetched.has(url) || url === window.location.href) return;
+
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = url;
+                document.head.appendChild(link);
+                prefetched.add(url);
+            }
+
+            document.querySelectorAll('a[href^="{{ url('/') }}"], a[href^="/"], a[href^="http://127.0.0.1"], a[href^="http://localhost"]').forEach(link => {
+                link.addEventListener('pointerenter', () => prefetchUrl(link.href), { passive: true });
+                link.addEventListener('touchstart', () => prefetchUrl(link.href), { passive: true });
+                link.addEventListener('click', event => {
+                    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || link.target) return;
+                    document.body.classList.add('nav-loading');
+                });
+            });
+        });
     </script>
 
     @yield('scripts')
