@@ -17,6 +17,9 @@ Route::get('/sys-clear-cache', function () {
 // Public Login Routes
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::get('/login', function () {
+    return redirect()->route('login');
+});
 
 // Logout Route (Auth required)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
