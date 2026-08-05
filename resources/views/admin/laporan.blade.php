@@ -1,218 +1,116 @@
 @extends('layouts.app')
 
 @section('title', 'Laporan Absensi')
-
 @section('header_title', 'Laporan Kehadiran Magang')
 
-@section('styles')
-<style>
-    /* Filter Laporan Styles */
-    .report-filter-card {
-        background: var(--glass-bg);
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: var(--card-shadow);
-        margin-bottom: 25px;
-        border: 1px solid rgba(0,0,0,0.03);
-    }
-    
-    .filter-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .btn-search {
-        padding: 12px 20px;
-        background: linear-gradient(135deg, var(--primary), var(--primary-light));
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: var(--transition);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .btn-print-report {
-        padding: 12px 20px;
-        background: linear-gradient(135deg, #17a2b8, #3dcad8);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: var(--transition);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-    
-    .btn-print-report:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
-    }
-
-    /* Table styles */
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-    
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        text-align: left;
-    }
-    
-    th, td {
-        padding: 15px 20px;
-        border-bottom: 1px solid var(--border-light);
-    }
-    
-    th {
-        background-color: rgba(67,97,238,0.03);
-        font-weight: 600;
-        color: var(--text-dark);
-        font-size: 0.95rem;
-    }
-    
-    tr:hover {
-        background-color: rgba(67, 97, 238, 0.02);
-    }
-    
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: capitalize;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .status-hadir {
-        background: rgba(40, 167, 69, 0.15);
-        color: var(--success);
-    }
-    
-    .status-terlambat {
-        background: rgba(255, 193, 7, 0.15);
-        color: #92400e;
-    }
-    
-    .status-pulang-cepat {
-        background: rgba(23, 162, 184, 0.15);
-        color: var(--early);
-    }
-
-    /* Pagination container */
-    .pagination-wrapper {
-        margin-top: 25px;
-        display: flex;
-        justify-content: center;
-    }
-</style>
-@endsection
-
 @section('content')
-<div class="report-filter-card">
-    <h3 class="section-title"><i class="fas fa-filter"></i> Filter Laporan</h3>
+<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+    <div class="bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-5">
+        <h3 class="font-extrabold text-white text-xl flex items-center gap-2">
+            <i class="fas fa-filter text-cyan-200"></i> Filter Laporan
+        </h3>
+    </div>
     
-    <form method="GET" action="{{ route('admin.laporan') }}">
-        <div class="filter-grid">
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="search">Cari Nama Peserta</label>
-                <input type="text" class="form-input" id="search" name="search" value="{{ htmlspecialchars($search ?? '') }}" placeholder="Nama peserta...">
-            </div>
-            
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="kegiatan">Pilih Kegiatan</label>
-                <select class="form-input" id="kegiatan" name="kegiatan">
-                    <option value="all">Semua Kegiatan</option>
-                    @foreach ($kegiatanList as $kegiatan)
-                        <option value="{{ $kegiatan->id_qr }}" {{ $selectedKegiatan == $kegiatan->id_qr ? 'selected' : '' }}>
-                            {{ htmlspecialchars($kegiatan->nama_kegiatan) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="status_cek_in">Status Cek In</label>
-                <select class="form-input" id="status_cek_in" name="status_cek_in">
-                    <option value="all" {{ $statusCekIn === 'all' ? 'selected' : '' }}>Semua Status</option>
-                    <option value="hadir" {{ $statusCekIn === 'hadir' ? 'selected' : '' }}>Hadir</option>
-                    <option value="terlambat" {{ $statusCekIn === 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                </select>
+    <div class="p-6 md:p-8">
+        <form method="GET" action="{{ route('admin.laporan') }}">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="search">Cari Nama Peserta</label>
+                    <input type="text" id="search" name="search" value="{{ htmlspecialchars($search ?? '') }}" placeholder="Nama peserta..."
+                           class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="kegiatan">Pilih Kegiatan</label>
+                    <select id="kegiatan" name="kegiatan" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                        <option value="all">Semua Kegiatan</option>
+                        @foreach ($kegiatanList as $kegiatan)
+                            <option value="{{ $kegiatan->id_qr }}" {{ $selectedKegiatan == $kegiatan->id_qr ? 'selected' : '' }}>
+                                {{ htmlspecialchars($kegiatan->nama_kegiatan) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="status_cek_in">Status Cek In</label>
+                    <select id="status_cek_in" name="status_cek_in" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                        <option value="all" {{ $statusCekIn === 'all' ? 'selected' : '' }}>Semua Status</option>
+                        <option value="hadir" {{ $statusCekIn === 'hadir' ? 'selected' : '' }}>Hadir</option>
+                        <option value="terlambat" {{ $statusCekIn === 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="status_cek_out">Status Cek Out</label>
+                    <select id="status_cek_out" name="status_cek_out" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                        <option value="all" {{ $statusCekOut === 'all' ? 'selected' : '' }}>Semua Status</option>
+                        <option value="hadir" {{ $statusCekOut === 'hadir' ? 'selected' : '' }}>Hadir</option>
+                        <option value="pulang_cepat" {{ $statusCekOut === 'pulang_cepat' ? 'selected' : '' }}>Pulang Cepat</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="status_cek_out">Status Cek Out</label>
-                <select class="form-input" id="status_cek_out" name="status_cek_out">
-                    <option value="all" {{ $statusCekOut === 'all' ? 'selected' : '' }}>Semua Status</option>
-                    <option value="hadir" {{ $statusCekOut === 'hadir' ? 'selected' : '' }}>Hadir</option>
-                    <option value="pulang_cepat" {{ $statusCekOut === 'pulang_cepat' ? 'selected' : '' }}>Pulang Cepat</option>
-                </select>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end border-t border-gray-100 pt-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="start_date">Dari Tanggal</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ htmlspecialchars($startDate ?? '') }}"
+                           class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1" for="end_date">Sampai Tanggal</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ htmlspecialchars($endDate ?? '') }}"
+                           class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all outline-none text-gray-800 text-sm">
+                </div>
+                
+                <div class="lg:col-span-2 flex flex-col sm:flex-row gap-3">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-3 px-4 rounded-2xl transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i class="fas fa-search"></i> Cari Data
+                    </button>
+                    <a href="{{ route('admin.laporan.export', request()->query()) }}" target="_blank" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-4 rounded-2xl transition-all shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:-translate-y-1 flex items-center justify-center gap-2 text-center">
+                        <i class="fas fa-print"></i> Cetak Laporan
+                    </a>
+                    <a href="{{ route('admin.laporan') }}" class="sm:w-32 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 font-bold py-3 px-4 rounded-2xl transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 text-center">
+                        <i class="fas fa-redo text-slate-400"></i> Reset
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="filter-grid">
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="start_date">Dari Tanggal</label>
-                <input type="date" class="form-input" id="start_date" name="start_date" value="{{ htmlspecialchars($startDate ?? '') }}">
-            </div>
-            
-            <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="end_date">Sampai Tanggal</label>
-                <input type="date" class="form-input" id="end_date" name="end_date" value="{{ htmlspecialchars($endDate ?? '') }}">
-            </div>
-            
-            <div class="form-group" style="margin-bottom:0; display:flex; gap:10px; align-items:flex-end; grid-column: span 2;">
-                <button type="submit" class="btn-search" style="flex:1; justify-content:center; padding: 14px;">
-                    <i class="fas fa-search"></i> Cari Data
-                </button>
-                <a href="{{ route('admin.laporan.export', request()->query()) }}" target="_blank" class="btn-print-report" style="flex:1; justify-content:center; padding: 14px;">
-                    <i class="fas fa-print"></i> Cetak Laporan
-                </a>
-                <a href="{{ route('admin.laporan') }}" class="btn btn-reset" style="padding: 14px 20px;">
-                    <i class="fas fa-redo"></i> Reset
-                </a>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
-<div class="card">
-    <h3 class="section-title"><i class="fas fa-clipboard-list"></i> Logs Kehadiran</h3>
+<div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden mb-8">
+    <div class="px-6 py-5 border-b border-white/40 bg-white/30">
+        <h3 class="font-extrabold text-slate-800 text-xl flex items-center gap-2 tracking-tight">
+            <i class="fas fa-clipboard-list text-blue-500"></i> Logs Kehadiran
+        </h3>
+    </div>
     
-    <div class="table-container">
-        @if ($laporan->isEmpty())
-            <div style="text-align:center; color:var(--text-muted); padding: 40px;">
-                <i class="fas fa-folder-open fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
-                <p>Tidak ada data absensi magang yang cocok dengan kriteria filter.</p>
+    @if ($laporan->isEmpty())
+        <div class="text-center py-16 flex flex-col justify-center items-center">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-4">
+                <i class="fas fa-folder-open text-3xl"></i>
             </div>
-        @else
-            <table>
+            <h4 class="font-medium text-gray-600">Data Tidak Ditemukan</h4>
+            <p class="text-sm text-gray-400">Tidak ada data absensi magang yang cocok dengan kriteria filter.</p>
+        </div>
+    @else
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Peserta Magang</th>
-                        <th>Hari / Tanggal</th>
-                        <th>Kegiatan</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Jam Kerja</th>
-                        <th>Status</th>
+                    <tr class="bg-gray-50/80 border-b border-gray-100 text-[13px]">
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">No</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Peserta Magang</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Hari / Tanggal</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Kegiatan</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-in</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Check-out</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap">Jam Kerja</th>
+                        <th class="py-3 px-5 font-semibold text-gray-600 whitespace-nowrap text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-50">
                     @foreach ($laporan as $index => $log)
                         @php
                             $rowNum = $laporan->firstItem() + $index;
@@ -220,52 +118,60 @@
                             $checkOutTime = $log->absen_cek_out ? Carbon\Carbon::parse($log->absen_cek_out)->format('H:i') . ' WITA' : '-';
                             $attendanceDate = Carbon\Carbon::parse($log->created_at)->isoFormat('D MMMM Y');
                         @endphp
-                        <tr>
-                            <td>{{ $rowNum }}</td>
-                            <td>
-                                <strong>{{ htmlspecialchars($log->user->magang->nama_lengkap ?? $log->user->username ?? 'Magang') }}</strong>
-                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
-                                    <i class="fas fa-university"></i> {{ htmlspecialchars($log->user->magang->instansi ?? '-') }}
+                        <tr class="hover:bg-gray-50/50 transition">
+                            <td class="py-3 px-5 text-sm text-gray-500 font-mono">{{ $rowNum }}</td>
+                            <td class="py-3 px-5">
+                                <div class="font-bold text-gray-800 text-sm">{{ htmlspecialchars($log->user->magang->nama_lengkap ?? $log->user->username ?? 'Magang') }}</div>
+                                <div class="text-[11px] text-gray-500 flex items-center gap-1 mt-0.5">
+                                    <i class="fas fa-university text-gray-400"></i> {{ htmlspecialchars($log->user->magang->instansi ?? '-') }}
                                 </div>
                             </td>
-                            <td>
-                                <strong>{{ $log->hari_absen }}</strong>
-                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">{{ $attendanceDate }}</div>
+                            <td class="py-3 px-5">
+                                <div class="font-bold text-gray-700 text-sm">{{ $log->hari_absen }}</div>
+                                <div class="text-xs text-gray-500 mt-0.5">{{ $attendanceDate }}</div>
                             </td>
-                            <td>{{ htmlspecialchars($log->qr->nama_kegiatan ?? 'Kegiatan') }}</td>
-                            <td>
-                                <span style="color:var(--success); font-weight:500;">{{ $checkInTime }}</span>
-                                <div style="font-size:0.75rem; color:var(--text-muted);">Cek in: {{ $log->status_cek_in }}</div>
+                            <td class="py-3 px-5 text-sm text-gray-600 max-w-[150px] truncate">
+                                {{ htmlspecialchars($log->qr->nama_kegiatan ?? 'Kegiatan') }}
                             </td>
-                            <td>
-                                <span style="color:var(--total-waktu); font-weight:500;">{{ $checkOutTime }}</span>
+                            <td class="py-3 px-5">
+                                <div class="font-bold text-emerald-600 text-sm">{{ $checkInTime }}</div>
+                                <div class="text-[11px] text-gray-500 mt-0.5 capitalize">Cek in: {{ $log->status_cek_in }}</div>
+                            </td>
+                            <td class="py-3 px-5">
+                                <div class="font-bold text-amber-600 text-sm">{{ $checkOutTime }}</div>
                                 @if ($log->absen_cek_out)
-                                    <div style="font-size:0.75rem; color:var(--text-muted);">Cek out: {{ $log->status_cek_out ?? 'hadir' }}</div>
+                                    <div class="text-[11px] text-gray-500 mt-0.5 capitalize">Cek out: {{ $log->status_cek_out ?? 'hadir' }}</div>
                                 @endif
                             </td>
-                            <td>
-                                <strong>{{ $log->total_waktu_formatted }}</strong>
-                                <div style="font-size:0.75rem; color:var(--text-muted);">({{ $log->total_waktu }})</div>
+                            <td class="py-3 px-5">
+                                <div class="font-bold text-gray-800 text-sm">{{ $log->total_waktu_formatted }}</div>
+                                <div class="text-[11px] text-gray-500 mt-0.5">({{ $log->total_waktu }})</div>
                             </td>
-                            <td>
+                            <td class="py-3 px-5 text-center">
                                 @if ($log->status_cek_in === 'hadir' && ($log->status_cek_out === 'hadir' || empty($log->status_cek_out)))
-                                    <span class="status-badge status-hadir"><i class="fas fa-check-circle"></i> Hadir</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-emerald-100 text-emerald-700 border-emerald-200 uppercase">
+                                        <i class="fas fa-check-circle"></i> Hadir
+                                    </span>
                                 @elseif ($log->status_cek_in === 'terlambat')
-                                    <span class="status-badge status-terlambat"><i class="fas fa-clock"></i> Terlambat</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-amber-100 text-amber-700 border-amber-200 uppercase">
+                                        <i class="fas fa-clock"></i> Terlambat
+                                    </span>
                                 @else
-                                    <span class="status-badge status-pulang-cepat"><i class="fas fa-running"></i> Pulang Cepat</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full border bg-cyan-100 text-cyan-700 border-cyan-200 uppercase">
+                                        <i class="fas fa-running"></i> Pulang Cepat
+                                    </span>
                                 @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            
-            <!-- Pagination Wrapper -->
-            <div class="pagination-wrapper">
-                {{ $laporan->links() }}
-            </div>
-        @endif
-    </div>
+        </div>
+        
+        <!-- Pagination Wrapper -->
+        <div class="px-6 py-4 border-t border-gray-50 flex justify-center bg-gray-50/30">
+            {{ $laporan->links() }}
+        </div>
+    @endif
 </div>
 @endsection
