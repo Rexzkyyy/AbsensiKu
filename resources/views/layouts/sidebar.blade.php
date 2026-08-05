@@ -3,8 +3,7 @@
 @endphp
 
 <!-- Desktop Sidebar -->
-<aside class="hidden lg:flex flex-col w-64 bg-white/70 backdrop-blur-xl border-r border-white/50 h-screen shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20 transition-all duration-300 relative"
-       :class="{ '-ml-64': sidebarOpen }">
+<aside class="hidden lg:flex flex-col w-64 bg-white/70 backdrop-blur-xl border-r border-white/50 h-screen shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20 transition-all duration-300 relative">
     <div class="h-16 flex items-center px-6 border-b border-gray-100">
         <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
             <i class="fas fa-fingerprint text-primary-600"></i>
@@ -95,6 +94,12 @@
                 <i class="fas fa-file-alt text-xl"></i>
             </div>
             <span class="mt-1">Laporan</span>
+        </a>
+        <a href="{{ route('logout') }}" onclick="return confirmLogout()" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all text-red-400 font-medium hover:text-red-600">
+            <div class="p-2">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+            </div>
+            <span class="mt-1">Keluar</span>
         </a>
     @elseif ($role === 'magang')
         <a href="{{ route('magang.dashboard') }}" class="flex flex-col items-center p-2 text-[10px] sm:text-xs transition-all {{ Request::is('magang') || Request::is('magang/dashboard') ? 'text-blue-600 font-extrabold -translate-y-1' : 'text-slate-400 font-medium hover:text-slate-600' }}">

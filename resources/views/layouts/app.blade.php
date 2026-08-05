@@ -94,7 +94,7 @@
 
 <body
     class="animated-bg text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex h-screen relative"
-    x-data="{ sidebarOpen: false, pageLoaded: false }"
+    x-data="{ pageLoaded: false }"
     x-init="setTimeout(() => pageLoaded = true, 50)">
 
     <!-- Decorative Background Elements (Animated Blobs) -->
@@ -104,10 +104,6 @@
 
     <!-- Alpine.js for interactive UI -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Sidebar Overlay (Mobile) -->
-    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden"
-        @click="sidebarOpen = false"></div>
 
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -119,11 +115,6 @@
         <header
             class="glass-panel z-30 py-3 px-6 flex items-center justify-between sticky top-0 transition-all duration-300">
             <div class="flex items-center gap-4">
-                <!-- Mobile Menu Button -->
-                <button @click="sidebarOpen = true"
-                    class="lg:hidden text-gray-500 hover:text-primary-600 focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
                 <h1 class="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">@yield('header_title')</h1>
             </div>
 
