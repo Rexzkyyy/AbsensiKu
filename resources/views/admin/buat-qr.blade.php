@@ -66,10 +66,13 @@
                 </div>
                 
                 <div class="flex flex-col sm:flex-row w-full gap-3">
-                    <button onclick="printGeneratedQR('{{ $generatedData['url_img'] }}', '{{ $generatedData['kode'] }}', '{{ htmlspecialchars($generatedData['nama_kegiatan']) }}', '{{ Carbon\Carbon::parse($generatedData['expired'])->isoFormat('D MMM Y - H:i') }} WITA')" class="flex-1 bg-white hover:bg-gray-50 text-emerald-700 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex justify-center items-center gap-2 shadow-lg">
+                    <button onclick="printGeneratedQR('{{ $generatedData['url_img'] }}', '{{ $generatedData['kode'] }}', '{{ htmlspecialchars($generatedData['nama_kegiatan']) }}', '{{ Carbon\Carbon::parse($generatedData['expired'])->isoFormat('D MMM Y - H:i') }} WITA')" class="flex-1 bg-white hover:bg-gray-50 text-emerald-700 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex justify-center items-center gap-2 shadow-lg text-sm">
                         <i class="fas fa-print"></i> Cetak QR
                     </button>
-                    <a href="{{ route('admin.buat_qr') }}" class="flex-1 bg-emerald-800/40 hover:bg-emerald-800/60 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 flex justify-center items-center gap-2">
+                    <button onclick="downloadQRPDF('{{ $generatedData['url_img'] }}', '{{ $generatedData['kode'] }}', '{{ htmlspecialchars($generatedData['nama_kegiatan']) }}', '{{ Carbon\Carbon::parse($generatedData['expired'])->isoFormat('D MMM Y - H:i') }} WITA')" class="flex-1 bg-white hover:bg-red-50 border border-transparent hover:border-red-200 text-red-600 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex justify-center items-center gap-2 shadow-lg text-sm">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                    <a href="{{ route('admin.buat_qr') }}" class="flex-1 bg-emerald-800/40 hover:bg-emerald-800/60 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 flex justify-center items-center gap-2 text-sm">
                         <i class="fas fa-redo"></i> Selesai
                     </a>
                 </div>
@@ -287,11 +290,14 @@
             </div>
         </div>
         
-        <div class="flex gap-4">
-            <button id="modal-print-btn" class="flex-1 bg-white hover:bg-gray-50 text-gray-800 font-bold py-3.5 px-4 rounded-xl border-2 border-gray-200 transition-all flex items-center justify-center gap-2">
+        <div class="flex gap-3">
+            <button id="modal-print-btn" class="flex-1 bg-white hover:bg-gray-50 text-gray-800 font-bold py-3.5 px-2 rounded-xl border-2 border-gray-200 transition-all flex items-center justify-center gap-2 text-sm">
                 <i class="fas fa-print"></i> Cetak
             </button>
-            <button onclick="closeQrModal()" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center">
+            <button id="modal-pdf-btn" class="flex-1 bg-white hover:bg-red-50 text-red-600 font-bold py-3.5 px-2 rounded-xl border-2 border-red-200 transition-all flex items-center justify-center gap-2 text-sm">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button onclick="closeQrModal()" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 px-2 rounded-xl transition-all shadow-md flex items-center justify-center text-sm">
                 Tutup
             </button>
         </div>
@@ -301,6 +307,55 @@
 
 @section('scripts')
 <script>
+    // Setup html2pdf lazy load
+    let html2pdfPromise = null;
+    function loadHtml2Pdf() {
+        if (window.html2pdf) return Promise.resolve(window.html2pdf);
+        if (!html2pdfPromise) {
+            html2pdfPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                script.onload = () => resolve(window.html2pdf);
+                script.onerror = () => reject(new Error('Gagal memuat html2pdf.js'));
+                document.head.appendChild(script);
+            });
+        }
+        return html2pdfPromise;
+    }
+
+    async function downloadQRPDF(url, kode, nama, expired) {
+        try {
+            const html2pdf = await loadHtml2Pdf();
+            const element = document.createElement('div');
+            element.style.padding = '30px';
+            element.style.textAlign = 'center';
+            element.style.fontFamily = '"Segoe UI", sans-serif';
+            element.innerHTML = `
+                <div style="max-width:350px; margin:0 auto; padding:20px; border:2px dashed #4361ee; border-radius:15px; background:white;">
+                    <h2 style="color:#4361ee; margin-bottom:5px; font-size:1.8rem;">AbsensiKu</h2>
+                    <h3 style="color:#333; margin:5px 0 20px 0;">${nama}</h3>
+                    <img src="${url}" alt="QR Code" style="width:220px; height:220px; margin:15px 0; display:block; margin-left:auto; margin-right:auto;">
+                    <br>
+                    <span style="background:#e9ecef; padding:8px 15px; border-radius:10px; font-size:0.9rem; font-weight:600;">KODE: ${kode}</span>
+                    <p style="font-size:0.8rem; color:#6b7280; margin-top:20px;">Berlaku s/d: ${expired}</p>
+                </div>
+            `;
+            
+            const opt = {
+                margin:       1,
+                filename:     `QR_${kode}_${nama.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().from(element).set(opt).save();
+        } catch (e) {
+            alert('Gagal membuat PDF. Periksa koneksi internet Anda untuk memuat library PDF.');
+            console.error(e);
+        }
+    }
+
     // Fungsi print QR Code presisi cetak mandiri
     function printGeneratedQR(url, kode, nama, expired) {
         const win = window.open('', '', 'height=500,width=450');
@@ -341,6 +396,9 @@
         
         document.getElementById('modal-print-btn').onclick = function() {
             printGeneratedQR('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + kode, kode, nama, expired);
+        };
+        document.getElementById('modal-pdf-btn').onclick = function() {
+            downloadQRPDF('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + kode, kode, nama, expired);
         };
         
         modal.classList.remove('hidden');

@@ -36,6 +36,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Untuk navigasi halaman (HTML), gunakan Network First, fallback ke offline.html
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => caches.match('/offline.html'))
@@ -43,22 +44,33 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+  // Tentukan apakah request ini adalah aset statis (gambar, css, js, font)
+  const isStaticAsset = event.request.url.match(/\.(png|jpg|jpeg|gif|svg|webp|css|js|woff2?|ttf|eot)$/i) || 
+                        event.request.url.includes('/assets/');
 
-      return fetch(event.request).then(response => {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
+  if (isStaticAsset) {
+    // Untuk aset statis, gunakan Cache First, fallback ke Network lalu cache hasilnya
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
 
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
-
-        return response;
-      });
-    })
-  );
+        return fetch(event.request).then(response => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
+          return response;
+        }).catch(() => {
+          // Abaikan error jaringan untuk aset statis agar tidak memblokir render
+        });
+      })
+    );
+  } else {
+    // Untuk request GET lainnya (seperti AJAX, Fetch HTML, API), gunakan Network Only
+    // Ini mencegah caching CSRF token yang sudah kedaluwarsa (419 Page Expired)
+    event.respondWith(fetch(event.request));
+  }
 });

@@ -1,59 +1,60 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
+  <h1>Sistem Absensi Magang Berbasis QR Code</h1>
+  <p><strong>BPS Provinsi Sulawesi Tenggara</strong></p>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## 📖 Tentang Proyek
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Absensiku** adalah sistem informasi absensi modern berbasis QR Code yang dirancang khusus untuk memanajemen kehadiran peserta magang di Badan Pusat Statistik (BPS) Provinsi Sulawesi Tenggara. Sistem ini memungkinkan pemantauan kehadiran yang lebih akurat, cepat, dan transparan, baik bagi para mentor pembimbing maupun peserta magang itu sendiri.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sistem ini dikembangkan dari nol menggunakan kerangka kerja Laravel dan teknologi web modern lainnya untuk memastikan kecepatan, keamanan, dan skalabilitas aplikasi.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Fitur Utama
 
-## Learning Laravel
+Aplikasi ini dibagi menjadi dua peran (role) pengguna utama:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 👨‍💼 Administrator / Mentor
+*   **Manajemen Akun (User Management):** Tambah, edit, dan hapus akun peserta magang.
+*   **Generator QR Code Dinamis:** Membuat QR Code absensi yang memiliki batas waktu kedaluwarsa untuk mencegah kecurangan.
+*   **Pemantauan Kehadiran Real-time:** Melihat siapa saja peserta yang telah melakukan check-in maupun check-out pada hari ini.
+*   **Export Laporan:** Mengunduh dan mencetak rekapitulasi data absensi (Excel) untuk kebutuhan laporan akademik/kantor.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🎓 Peserta Magang (Intern)
+*   **Profil Pengguna:** Melengkapi biodata diri (foto, universitas asal, no HP, dll).
+*   **Scan QR Code:** Melakukan absen masuk (check-in) dan pulang (check-out) hanya dengan memindai QR code menggunakan kamera smartphone.
+*   **Riwayat Absensi Pribadi:** Memantau history absensi setiap hari serta mencetak/download bukti kehadiran dalam format PDF.
 
-## Laravel Sponsors
+## 🛠️ Teknologi yang Digunakan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Aplikasi ini dibangun dengan *Tech Stack* (tumpukan teknologi) terbaik di kelasnya:
+*   **Backend:** [Laravel](https://laravel.com) (PHP Framework)
+*   **Frontend:** Blade Templating, HTML5, Vanilla CSS / Tailwind CSS, JavaScript murni
+*   **Database:** MySQL
+*   **Fitur Spesifik:** HTML5 QR Code Scanner (untuk pemindaian via browser)
 
-### Premium Partners
+## 📂 Dokumentasi Lengkap
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Penjelasan terperinci dan menyeluruh mengenai sistem, cara penggunaan, dan arsitektur dapat Anda temukan di dalam direktori `docs`. Kami membaginya satu per satu agar mudah dipahami:
 
-## Contributing
+1. [Panduan Penggunaan (Admin & Peserta)](docs/PANDUAN_PENGGUNAAN.md)
+2. [Pengenalan Proyek](docs/01_Pengenalan.md)
+3. [Arsitektur & Teknologi](docs/02_Arsitektur_Teknologi.md)
+4. [Penjelasan Fitur Utama](docs/03_Fitur_Utama.md)
+5. [Panduan Instalasi (Development)](docs/04_Panduan_Instalasi.md)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 💻 Kredit & Pengembang
 
-## Code of Conduct
+Sistem Absensiku ini dianalisis, dirancang, dan dikembangkan secara penuh (Full Stack) oleh:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Ikhsanuddin Rezki**  
+*Full Stack Web Programmer*  
+Proyek ini dibuat sebagai bagian dari pemenuhan target program magang  **Badan Pusat Statistik (BPS) Provinsi Sulawesi Tenggara**.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<div align="center">
+  Dibuat dengan ❤️ menggunakan Laravel dan didedikasikan untuk kemajuan BPS Provinsi Sulawesi Tenggara.
+</div>
